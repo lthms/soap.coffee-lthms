@@ -3,8 +3,8 @@
 }
 
 body, html {
-    height: 100%;
     width: 100%;
+    height: 100%;
     padding: 0;
     margin: 0;
     font-size: 100%;
@@ -30,13 +30,23 @@ h1 {
 body#default {
     max-width: 500px;
     margin: auto;
+    padding: 1em;
     font-size: 130%;
+    overflow-x: hidden;
 }
 
 /* coqdoc output */
 
 body#default .code, code {
     font-family: 'Fira Code', monospace;
+}
+
+body#default div.code {
+    white-space: nowrap;
+}
+
+body#default .code {
+    overflow-x: visible;
 }
 
 body#default .code a[href] {
