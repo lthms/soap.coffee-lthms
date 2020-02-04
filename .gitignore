@@ -5,3 +5,4 @@ build/
 *.vo
 .*.aux
 *.glob
+*.html~

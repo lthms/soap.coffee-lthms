@@ -55,8 +55,8 @@ body#default .paragraph {
 /* org-mode output */
 
 .footpara {
-    display: inline-block;
-    margin-left: .4em;
+    display: inline;
+    margin-left: .2em;
 }
 
 /* index */

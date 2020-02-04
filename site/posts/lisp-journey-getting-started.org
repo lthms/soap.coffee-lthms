@@ -219,7 +219,9 @@ file:
 To bundle the game, we can use ~sbcl~ from our command line interface.
 
 #+BEGIN_SRC bash
-sbcl --eval "(ql:quickload :lysk/bundle)" --eval "(lysk.bundle:deliver)" --quit
+sbcl --eval "(ql:quickload :lysk/bundle)" \
+     --eval "(lysk.bundle:deliver)" \
+     --quit
 #+END_SRC
 
 * Conclusion
