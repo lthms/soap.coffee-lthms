@@ -66,16 +66,17 @@ Definition empty {a} (l : list a) : Prop := l = [].
     standard library with the [sumbool] type, and is written as
     follows: [{ empty l } + { ~ empty l }]. *)
 
-  Definition empty_dec {a} (l : list a) : { empty l } + { ~ empty l }.
+Definition empty_dec {a} (l : list a)
+  : { empty l } + { ~ empty l }.
 
-  Proof.
-    refine (match l with
-            | [] => left _ _
-            | _ => right _ _
-            end);
-      unfold empty; trivial.
-    unfold not; intro H; discriminate H.
-  Defined.
+Proof.
+  refine (match l with
+          | [] => left _ _
+          | _ => right _ _
+          end);
+    unfold empty; trivial.
+  unfold not; intro H; discriminate H.
+Defined.
 
 (** In this example, I decided to use the [refine] tactic which is
     convenient when we manipulate the [Set] and [Prop] sorts at the
@@ -85,8 +86,8 @@ Definition empty {a} (l : list a) : Prop := l = [].
 
 (** With [empty_dec], we can define [empty_b]. *)
 
-  Definition empty_b {a} (l : list a) : bool :=
-    if empty_dec l then true else false.
+Definition empty_b {a} (l : list a) : bool :=
+  if empty_dec l then true else false.
 
 (** Let's try to extract [empty_b]:
 
@@ -146,7 +147,8 @@ Definition pop {a} ( l :list a) :=
 (* begin hide *)
 Reset pop.
 (* end hide *)
-Definition pop {a} (l : list a) (h : ~ empty l) : list a.
+Definition pop {a} (l : list a) (h : ~ empty l)
+  : list a.
 
 (** There are, as usual when it comes to lists, two cases to
     consider.
@@ -207,7 +209,9 @@ Definition pop {a} (l : list a) (h : ~ empty l) : list a.
 (* begin hide *)
   Undo.
 (* end hide *)
-  refine (match l as l' return l = l' -> list a with
+  refine (match l as l'
+                return l = l' -> list a
+          with
           | _ :: rst => fun _ => rst
           | [] => fun equ => _
           end eq_refl).
@@ -249,12 +253,15 @@ Inductive sig (A : Type) (P : A -> Prop) : Type :=
 (* begin hide *)
 Reset pop.
 (* end hide *)
-Definition pop {a} (l : list a | ~ empty l) : { l' | exists a, proj1_sig l = cons a l' }.
+Definition pop {a} (l : list a | ~ empty l)
+  : { l' | exists a, proj1_sig l = cons a l' }.
 
 (** If you think the previous use of [match] term was ugly, brace yourselves. *)
 
   refine (match proj1_sig l as l'
-                return proj1_sig l = l' -> { l' | exists a, proj1_sig l = cons a l' } with
+                return proj1_sig l = l'
+                       -> { l' | exists a, proj1_sig l = cons a l' }
+          with
           | [] => fun equ => _
           | (_ :: rst) => fun equ => exist _ rst _
           end eq_refl).
@@ -319,7 +326,8 @@ let pop = function
     difference is [push] accepts lists with no restriction at all. Thus, its
     definition is a simpler, and we can write it without [refine]. *)
 
-Definition push {a} (l : list a) (x : a) : { l' | l' = x :: l } :=
+Definition push {a} (l : list a) (x : a)
+  : { l' | l' = x :: l } :=
   exist _ (x :: l) eq_refl.
 
 (** And the extracted code is just as straightforward.
@@ -335,11 +343,14 @@ let push l a =
     type of [head], namely the returned value of [head] is indeed the firt value
     of [l]. *)
 
-Definition head {a} (l : list a | ~ empty l) : { x | exists r, proj1_sig l = x :: r }.
+Definition head {a} (l : list a | ~ empty l)
+  : { x | exists r, proj1_sig l = x :: r }.
 
 (** It's not a surprise its definition is very close to [pop]. *)
 
-  refine (match proj1_sig l as l' return proj1_sig l = l' -> _ with
+  refine (match proj1_sig l as l'
+                return proj1_sig l = l' -> _
+          with
           | [] => fun equ => _
           | x :: _ => fun equ => exist _ x _
           end eq_refl).
