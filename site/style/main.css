@@ -1,0 +1,126 @@
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-size: 100%;
+    background: #29222E;
+    color: #E0CEED;
+    font-family: 'et-book', serif;
+}
+
+h1, h2, h3, h4, h5, a[href] {
+    color: #68d3a7;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: sans-serif;
+}
+
+h1 {
+    text-align: center;
+}
+
+/* default */
+
+body#default {
+    max-width: 500px;
+    margin: auto;
+    font-size: 130%;
+}
+
+/* coqdoc output */
+
+body#default .code, code {
+    font-family: 'Fira Code', monospace;
+}
+
+body#default .code a[href] {
+    text-decoration: none;
+}
+
+body#default .doc {
+    margin: auto;
+}
+
+body#default .paragraph {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+/* org-mode output */
+
+.footpara {
+    display: inline-block;
+    margin-left: .4em;
+}
+
+/* index */
+
+ul#index {
+    list-style-type: none;
+    padding-left: 0;
+    color: #51415C;
+}
+
+ul#index li {
+    display: flex;
+    flex-direction: row;
+    align-items: first baseline;
+}
+
+ul#index .date {
+    font-family: 'Fira Code', monospace;
+    font-size: 80%;
+    margin-right: 1em;
+
+}
+
+ul#index .title {
+
+}
+
+/* VCARD (index.html) */
+
+body#vcard {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    font-size: 125%;
+}
+
+body#vcard article {
+    max-width: 400px;
+    width: 80%;
+    margin: auto;
+}
+
+body#vcard article img {
+    border: 3px solid #68d3a7;
+    display: block;
+    border-radius: 50%;
+    width: 175px;
+    margin: auto;
+    margin-bottom: 3em;
+}
+
+body#vcard h1 {
+    color: #68d3a7;
+    font-size: 300%;
+    text-align: center;
+}
+
+body#vcard nav dt {
+    font-weight: bold;
+}
+
+body#vcard nav dd {
+}
+
+body#vcard nav dt a {
+    color: #68d3a7;
+}
