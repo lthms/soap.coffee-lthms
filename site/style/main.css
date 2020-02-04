@@ -71,23 +71,16 @@ body#default .paragraph {
 
 /* index */
 
-ul#index {
-    list-style-type: none;
-    padding-left: 0;
-    color: #51415C;
+dl#index {
+    padding-top: 2em;
+    padding-bottom: 2em;
 }
 
-ul#index li {
-    display: flex;
-    flex-direction: row;
-    align-items: first baseline;
-}
-
-ul#index .date {
-    font-family: 'Fira Code', monospace;
+dl#index dd {
+    margin-top: .2em;
     font-size: 80%;
-    margin-right: 1em;
-
+    margin-left: 0px;
+    margin-bottom: 1em;
 }
 
 ul#index .title {

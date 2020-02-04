@@ -1,6 +1,7 @@
 (** #
 <h1>Strongly-Specified Functions in Coq with the <code>refine</code> Tactic</h1>
-<time datetime="2015-07-11">2015-07-11</time>
+
+<span class="time">January 11, 2015</span>
     # *)
 
 (** I started to play with Coq, the interactive theorem prover

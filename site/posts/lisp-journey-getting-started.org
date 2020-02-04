@@ -1,6 +1,7 @@
 #+BEGIN_EXPORT html
 <h1>Discovering Common Lisp with <code>trivial-gamekit</code></h1>
-<time datetime="2018-06-17">2018-06-17</time>
+
+<span class="time">June 17, 2018</span>
 #+END_EXPORT
 
 

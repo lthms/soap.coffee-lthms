@@ -1,6 +1,7 @@
 #+BEGIN_EXPORT html
 <h1>Extensible Type-Safe Error Handling in Haskell</h1>
-<time datetime="2018-02-04">2018-02-04</time>
+
+<span class="time">February 04, 2018</span>
 #+END_EXPORT
 
 #+OPTIONS: toc:nil

@@ -1,12 +1,10 @@
 (** #
 <h1>Strongly-Specified Functions in Coq with the <code>Program</code> Framework</h1>
+# *)
 
-<p>
-This blogpost was initially published on <time
-datetime="2017-01-14">2017-01-14</time>, and as later been heavily rewritten in
-late 2019.
-</p>
-    # *)
+(** This blogpost was initially published on #<span class="time">
+    January 01, 2017</span>#, and as later been heavily rewritten in
+    late 2019. *)
 
 (** #<div id="generate-toc"></div># *)
 

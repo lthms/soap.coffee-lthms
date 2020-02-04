@@ -1,6 +1,7 @@
 (** #
 <h1>Ltac 101</h1>
-<time datetime="2017-10-16">2017-10-16</time>
+
+<span class="time">October 16, 2017</span>
     # *)
 
 (** In this article, I give an overview of my findings about the Ltac language,

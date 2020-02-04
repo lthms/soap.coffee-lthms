@@ -1,6 +1,7 @@
 #+BEGIN_EXPORT html
 <h1>Monad Transformers are a Great Abstraction</h1>
-<time datetime="2017-07-15">2017-07-15</time>
+
+<span class="time">July 15, 2017</span>
 #+END_EXPORT
 
 #+OPTIONS: toc:nil

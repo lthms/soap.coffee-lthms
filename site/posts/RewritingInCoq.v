@@ -1,6 +1,7 @@
 (** #
 <h1>Rewriting in Coq</h1>
-<time datetime="2017-05-13">2017-05-13</time>
+
+<span class="time">May 13, 2017</span>
     # *)
 
 (** I have to confess something. In the published codebase of SpecCert lies a
