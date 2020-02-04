@@ -37,7 +37,7 @@ body#default {
 
 /* coqdoc output */
 
-body#default .code, code {
+body#default .code, code, pre {
     font-family: 'Fira Code', monospace;
 }
 

@@ -48,7 +48,7 @@ Definition lock
 
 <<
 reg : SmramcRegister
-  ============================
+============================
 true = true -> false = false
 >>
 
@@ -67,7 +67,8 @@ Defined.
 
 From Coq Require Import Program.
 
-Program Definition lock'
+#[program]
+Definition lock'
         (reg: SmramcRegister)
   : SmramcRegister :=
   {| d_open := false
@@ -100,7 +101,8 @@ From Coq Require Import List.
 Import ListNotations.
 (* end hide *)
 #[program]
-Definition head {a} (l : list a | l <> []) : { x : a | exists l', x :: l' = l }.
+Definition head {a} (l : list a | l <> [])
+  : { x : a | exists l', x :: l' = l }.
 (* begin hide *)
 Abort.
 (* end hide *)
@@ -117,7 +119,8 @@ Abort.
     Now that [head] have been specified, we have to implement it. *)
 
 #[program]
-Definition head {a} (l: list a | l <> []) : { x : a | exists l', cons x l' = l } :=
+Definition head {a} (l: list a | l <> [])
+  : { x : a | exists l', cons x l' = l } :=
   match l with
   | x :: l' => x
   | [] => !
@@ -183,7 +186,9 @@ Arguments vnil {a}.
 
 <<
 #[program]
-Fixpoint nth {a n} (v : vector a n) (i : nat) {struct v} : option a :=
+Fixpoint nth {a n}
+    (v : vector a n) (i : nat) {struct v}
+  : option a :=
   match v, i with
   | vcons x _, O => Some x
   | vcons x r, S i => nth r i
@@ -194,7 +199,9 @@ Fixpoint nth {a n} (v : vector a n) (i : nat) {struct v} : option a :=
     raises an anomaly. *)
 
 #[program]
-Fixpoint nth {a n} (v : vector a n) (i : nat) {struct v} : option a :=
+Fixpoint nth {a n}
+    (v : vector a n) (i : nat) {struct v}
+  : option a :=
   match v with
   | vcons x r =>
     match i with
@@ -207,8 +214,10 @@ Fixpoint nth {a n} (v : vector a n) (i : nat) {struct v} : option a :=
 (** With [nth], it is possible to give a very precise definition of [take]: *)
 
 #[program]
-Fixpoint take {a n} (v : vector a n) (e : nat | e <= n)
-  : { v': vector a e | forall i : nat, i < e -> nth v' i = nth v i } :=
+Fixpoint take {a n}
+    (v : vector a n) (e : nat | e <= n)
+  : { v' : vector a e | forall i : nat,
+        i < e -> nth v' i = nth v i } :=
   match e with
   | S e' => match v with
             | vcons x r => vcons x (take r e')
@@ -262,8 +271,10 @@ let rec take v = function
     Then I could tackle `drop` in a very similar manner: *)
 
 #[program]
-Fixpoint drop {a n} (v : vector a n) (b : nat | b <= n)
-  : { v': vector a (n - b) | forall i, i < n - b -> nth v' i = nth v (b + i) } :=
+Fixpoint drop {a n}
+    (v : vector a n) (b : nat | b <= n)
+  : { v': vector a (n - b) | forall i,
+        i < n - b -> nth v' i = nth v (b + i) } :=
   match b with
   | 0 => v
   | S n => (match v with
@@ -311,8 +322,10 @@ let rec drop v = function
     had to combine [take] and [drop]. *)
 
 #[program]
-Definition extract {a n} (v : vector a n) (e : nat | e <= n) (b : nat | b <= e)
-  : { v': vector a (e - b) | forall i, i < (e - b) -> nth v' i = nth v (b + i) } :=
+Definition extract {a n} (v : vector a n)
+    (e : nat | e <= n) (b : nat | b <= e)
+  : { v': vector a (e - b) | forall i,
+        i < (e - b) -> nth v' i = nth v (b + i) } :=
   take (drop v b) (e - b).
 
 
@@ -353,7 +366,8 @@ let extract v e b =
 
 #[program]
 Fixpoint map {a b n} (v : vector a n) (f : a -> b)
-  : { v': vector b n | forall i, nth v' i = option_map f (nth v i) } :=
+  : { v': vector b n | forall i,
+        nth v' i = option_map f (nth v i) } :=
   match v with
   | vnil => vnil
   | vcons a v => vcons (f a) (map v f)
@@ -367,9 +381,11 @@ Defined.
 
 (** I also managed to specify and write [append]: *)
 
-Program Fixpoint append {a n m} (v : vector a n) (u : vector a m)
-  : { w : vector a (n + m) | forall i, (i < n -> nth w i = nth v i) /\
-                                       (n <= i -> nth w i = nth u (i - n)) } :=
+Program Fixpoint append {a n m}
+    (v : vector a n) (u : vector a m)
+  : { w : vector a (n + m) | forall i,
+        (i < n -> nth w i = nth v i) /\
+        (n <= i -> nth w i = nth u (i - n)) } :=
   match v with
   | vnil => u
   | vcons a v => vcons a (append v u)
@@ -452,9 +468,11 @@ Fixpoint map2
         (u:    vector B n)
         (f:     A -> B -> C)
         {struct v}
-  : { w: vector C n | forall i, nth w i = f <$> nth v i <*> nth u i } :=
+  : { w: vector C n | forall i,
+        nth w i = f <$> nth v i <*> nth u i } :=
   match v, u with
-  | vcons x rst, vcons x' rst' => vcons (f x x') (map2 rst rst' f)
+  | vcons x rst, vcons x' rst' =>
+      vcons (f x x') (map2 rst rst' f)
   | vnil, vnil => vnil
   | _, _ => !
   end.
@@ -467,7 +485,8 @@ cannot be applied to the terms
  "nat" : "Set"
  "S wildcard'" : "nat"
  "B" : "Type"
-The 3rd term has type "Type" which should be coercible to "nat".
+The 3rd term has type "Type" which should be
+coercible to "nat".
 >> *)
 
 #[program]
@@ -478,7 +497,8 @@ Fixpoint map2
         (u:    vector B n)
         (f:     A -> B -> C)
         {struct v}
-  : { w: vector C n | forall i, nth w i = f <$> nth v i <*> nth u i } := _.
+  : { w: vector C n | forall i,
+        nth w i = f <$> nth v i <*> nth u i } := _.
 
 Next Obligation.
   dependent induction v; dependent induction u.
@@ -505,14 +525,10 @@ Qed.
     it). Have a look at the following code: *)
 
 #[program]
-Fixpoint map2
-        {A B C: Type}
-        {n:     nat}
-        (v:     vector A n)
-        (v':    vector B n)
-        (f:     A -> B -> C)
-        {struct v}
-  : vector C n :=
+Fixpoint map2 {a b c n}
+     (v : vector a n) (v': vector b n)
+     (f:  a -> b -> c) {struct v}
+  : vector c n :=
   match v with
   | _ => vnil
   end.
@@ -526,7 +542,8 @@ cannot be applied to the terms
  "nat" : "Set"
  "0" : "nat"
  "wildcard'" : "vector A n'"
-The 3rd term has type "vector A n'" which should be coercible to "nat".
+The 3rd term has type "vector A n'" which should be
+coercible to "nat".
 >> *)
 (* begin hide *)
 Reset map2.
