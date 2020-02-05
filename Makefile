@@ -6,6 +6,7 @@ COQCARGS   := -async-proofs-cache force
 
 build: ${POSTS}
 	soupault
+	scripts/update-gitignore.sh ${POSTS}
 
 clean:
 	rm -f ${POSTS}

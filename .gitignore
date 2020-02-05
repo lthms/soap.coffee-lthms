@@ -6,3 +6,14 @@ build/
 .*.aux
 *.glob
 *.html~
+
+# begin generated files
+site/posts/monad-transformers.html
+site/posts/lisp-journey-getting-started.html
+site/posts/extensible-type-safe-error-handling.html
+site/posts/Ltac101.html
+site/posts/RewritingInCoq.html
+site/posts/StronglySpecifiedFunctionsProgram.html
+site/posts/MiniHTTPServer.html
+site/posts/StronglySpecifiedFunctions.html
+# begin generated files
