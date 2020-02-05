@@ -20,6 +20,7 @@ force: clean build
 	@coqdoc --no-index --charset utf8 --short --body-only -d site/posts/ \
 	        --coqlib "https://coq.inria.fr/distrib/current/stdlib/" \
 	        $*.v
+	@sed -i -e 's/href="$(shell basename $*.html)\#/href="\#/g' $*.html
 	@rm -f site/posts/coqdoc.css
 
 %.html: %.org
