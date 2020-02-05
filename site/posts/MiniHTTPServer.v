@@ -331,7 +331,9 @@ Definition http_handler `{Provide2 ix FILESYSTEM CONSOLE}
     (base : list directory_id) (req : bytes)
   : impure ix bytes :=
   do echo "new request received\n";
-     echo ("  request size is " ++ Int.bytes_of_int (Bytes.length req) ++ "\n");
+     echo ("  request size is "
+              ++ Int.bytes_of_int (Bytes.length req)
+              ++ "\n");
 
      let* res :=
         match http_request req with
@@ -353,7 +355,8 @@ Definition http_handler `{Provide2 ix FILESYSTEM CONSOLE}
     our [http_handler]. As a consequence, the type of [http_server] exposes the
     three interfaces we use. *)
 
-Definition http_server `{Provide3 ix FILESYSTEM TCP CONSOLE}
+Definition http_server
+   `{Provide3 ix FILESYSTEM TCP CONSOLE}
     (n : nat)
   : impure ix unit :=
   do echo "hello, MiniHTTPServer!\n";
@@ -387,7 +390,8 @@ Definition http_server `{Provide3 ix FILESYSTEM TCP CONSOLE}
     minimum amount of information about past executed primitives. In our case,
     the witness state can be as simple as a set of open file descriptors. *)
 
-Definition fd_set : Type := file_descriptor -> bool.
+Definition fd_set : Type :=
+  file_descriptor -> bool.
 
 (** In addition, we provide the usuals helpers to manipulate (addition,
     deletion) and reason about sets. *)
