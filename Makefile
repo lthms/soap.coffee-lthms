@@ -5,8 +5,8 @@ POSTS      := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html)
 COQCARGS   := -async-proofs-cache force
 
 build: ${POSTS}
-	soupault
-	scripts/update-gitignore.sh ${POSTS}
+	@soupault
+	@scripts/update-gitignore.sh ${POSTS}
 
 clean:
 	rm -f ${POSTS}
