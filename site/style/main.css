@@ -27,37 +27,76 @@ h1 {
 
 /* default */
 
-body#default {
+body#default nav {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 100%;
+}
+
+body#default nav ul {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    list-style-type: none;
+}
+
+body#default nav li {
+    padding-left: .5em;
+    padding-right: .5em;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-size: 150%;
+}
+
+body#default nav li a {
+    text-decoration: none;
+}
+
+body#default header {
+    text-align: center;
+}
+
+body#default img {
+    text-align: center;
+    border: 3px solid #68d3a7;
+    border-radius: 50%;
+    width: 125px;
+}
+
+body#default main {
     max-width: 500px;
     margin: auto;
-    padding: 1em;
+    padding: 0em 1em 1em 1em;
     font-size: 130%;
     overflow-x: hidden;
 }
 
 /* coqdoc output */
 
-body#default .code, code, pre, .inlinecode {
+body#default main .code, code, pre, .inlinecode {
     font-family: 'Fira Code', monospace;
     font-size: 75%;
 }
 
-body#default div.code {
+body#default main div.code {
     white-space: nowrap;
 }
 
-body#default .code {
+body#default main .code {
     overflow-x: visible;
 }
 
-body#default .code a[href] {
+body#default main .code a[href] {
     text-decoration: none;
 }
 
-body#default .doc {
+body#default main .doc {
 }
 
-body#default .paragraph {
+body#default main .paragraph {
     margin-top: 1em;
     margin-bottom: 1em;
 }
@@ -95,8 +134,8 @@ body#vcard article {
 }
 
 body#vcard article img {
-    border: 3px solid #68d3a7;
     display: block;
+    border: 3px solid #68d3a7;
     border-radius: 50%;
     width: 175px;
     margin: auto;
