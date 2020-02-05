@@ -37,8 +37,9 @@ body#default {
 
 /* coqdoc output */
 
-body#default .code, code, pre {
+body#default .code, code, pre, .inlinecode {
     font-family: 'Fira Code', monospace;
+    font-size: 75%;
 }
 
 body#default div.code {
@@ -54,7 +55,6 @@ body#default .code a[href] {
 }
 
 body#default .doc {
-    margin: auto;
 }
 
 body#default .paragraph {
@@ -71,20 +71,12 @@ body#default .paragraph {
 
 /* index */
 
-dl#index {
-    padding-top: 2em;
-    padding-bottom: 2em;
+ul#index {
+    padding-left: 20px;
 }
 
-dl#index dd {
-    margin-top: .2em;
-    font-size: 80%;
-    margin-left: 0px;
-    margin-bottom: 1em;
-}
-
-ul#index .title {
-
+ul#index .date {
+    font-size: 75%;
 }
 
 /* VCARD (index.html) */
