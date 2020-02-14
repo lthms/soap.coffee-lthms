@@ -3,7 +3,7 @@
 
 <p>
   This is the first article (initially published on <span class="time">January
-  11, 2015</span>) of a serie of two on how to write strongly-specified
+  11, 2015</span>) of a series of two on how to write strongly-specified
   functions in Coq. You can read the next part <a
   href="/posts/StronglySpecifiedFunctionsProgram">here</a>.
 </p>
