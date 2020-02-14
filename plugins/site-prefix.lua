@@ -15,7 +15,11 @@ index, link = next(links)
 
 while index do
   href = HTML.get_attribute(link, "href")
+
   if href then
+    -- remove prefix sometimes introduced by org
+    href = Regex.replace(href, "^file://", "")
+
     -- Check if URL starts with a leading "/"
     if Regex.match(href, "^/") then
       -- Remove leading slashes

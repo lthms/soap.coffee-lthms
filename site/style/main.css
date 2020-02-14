@@ -49,6 +49,7 @@ body#default nav li {
     text-transform: uppercase;
     font-family: sans-serif;
     font-size: 130%;
+    font-weight: bold;
 }
 
 body#default nav li a {
@@ -157,4 +158,20 @@ body#vcard nav dd {
 
 body#vcard nav dt a {
     color: #68d3a7;
+}
+
+/* indexes */
+
+.index dt {
+    font-weight: bold;
+    color: #68d3a7;
+}
+
+.index dd {
+    margin-left: 0;
+    margin-bottom: 1em;
+}
+
+.index dd ol {
+    margin-top: 0.3em;
 }

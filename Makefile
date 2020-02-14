@@ -1,5 +1,5 @@
-ORG_POSTS  := $(wildcard site/posts/*.org)
-COQ_POSTS  := $(wildcard site/posts/*.v)
+ORG_POSTS  := $(shell find site/ -name "*.org")
+COQ_POSTS  := $(shell find site/ -name "*.v")
 POSTS      := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html)
 
 COQCARGS   := -async-proofs-cache force

@@ -8,12 +8,13 @@ build/
 *.html~
 
 # begin generated files
+site/posts.html
+site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
-site/posts/DiscoveringCommonLisp.html
-site/posts/Ltac101.html
-site/posts/RewritingInCoq.html
 site/posts/StronglySpecifiedFunctionsProgram.html
 site/posts/MiniHTTPServer.html
 site/posts/StronglySpecifiedFunctions.html
+site/posts/RewritingInCoq.html
+site/posts/Ltac101.html
 # begin generated files
