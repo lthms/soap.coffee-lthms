@@ -1,8 +1,13 @@
 (** #
-<h1>Strongly-Specified Functions in Coq with the <code>refine</code> Tactic</h1>
+<h1>Strongly-Specified Functions in Coq, part 1: using the <code>refine</code> Tactic</h1>
 
-<span class="time">January 11, 2015</span>
-    # *)
+<p>
+  This is the first article (initially published on <span class="time">January
+  11, 2015</span>) of a serie of two on how to write strongly-specified
+  functions in Coq. You can read the next part <a
+  href="/posts/StronglySpecifiedFunctionsProgram">here</a>.
+</p>
+# *)
 
 (** I started to play with Coq, the interactive theorem prover
     developed by Inria, a few weeks ago. It is a very powerful tool,
