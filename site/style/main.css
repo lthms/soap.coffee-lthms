@@ -10,7 +10,7 @@ body, html {
     font-size: 100%;
     background: #29222E;
     color: #E0CEED;
-    font-family: 'et-book', serif;
+    font-family: serif;
 }
 
 h1, h2, h3, h4, h5, a[href] {
@@ -26,6 +26,10 @@ h1 {
 }
 
 /* default */
+
+body#default {
+    overflow-x: hidden;
+}
 
 body#default nav {
     padding-top: 1em;
@@ -68,11 +72,10 @@ body#default img {
 }
 
 body#default main {
-    max-width: 500px;
+    max-width: 550px;
     margin: auto;
     padding: 0em 1em 1em 1em;
     font-size: 130%;
-    overflow-x: hidden;
 }
 
 /* coqdoc output */

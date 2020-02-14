@@ -10,8 +10,8 @@ Over the past years, I have tried to capitalize on my findings. What I have
 lacked in regularity I made up for in subject exoticism.
 
 If you like what you read, have a question or for any other reasons really, you
-can shoot to [[mailto:~lthms/lthms.xyz@lists.sr.ht][the dedicated mailing list]] (see the [[https://lists.sr.ht/~lthms/lthms.xyz/%3C20190127111504.n27ttkvtl7l3lzwb%40ideepad.localdomain%3E][annoucement]] for a guide on how
-to subscribe).
+can shoot an email to [[mailto:~lthms/lthms.xyz@lists.sr.ht][the dedicated mailing list]] (see the [[https://lists.sr.ht/~lthms/lthms.xyz/%3C20190127111504.n27ttkvtl7l3lzwb%40ideepad.localdomain%3E][annoucement]] for a
+guide on how to subscribe).
 
 * About Coq
 
@@ -31,7 +31,7 @@ machine-checked proofs.
   The ~rewrite~ tactics are really useful, since they are not limited to the Coq
   built-in equality relation.
 
-- A Series on Specifying Strongly-Specified Funcions in Coq ::
+- A Series on Strongly-Specified Funcions in Coq ::
   Coq ~Prop~ sort allows for defining properties function arguments have to
   satisfy, such that using such a function requires providing a proof the
   property is satisfied.
