@@ -9,6 +9,7 @@ build/
 
 # begin generated files
 site/posts.html
+site/news/ColorlessThemes-0.2.html
 site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
