@@ -1,4 +1,4 @@
-function fix_urls (links, attr, prefix_url)
+function prefix_urls (links, attr, prefix_url)
   index, link = next(links)
 
   while index do
@@ -10,7 +10,6 @@ function fix_urls (links, attr, prefix_url)
 
       -- Check if URL starts with a leading "/"
       if Regex.match(href, "^/") then
-        -- Remove leading slashes
         href = Regex.replace(href, "^/*", "")
         href = prefix_url .. href
         HTML.set_attribute(link, attr, href)
@@ -30,7 +29,7 @@ if not Regex.match(prefix_url, "(.*)/$") then
   prefix_url = prefix_url .. "/"
 end
 
-fix_urls(HTML.select(page, "a"), "href", prefix_url)
-fix_urls(HTML.select(page, "link"), "href", prefix_url)
-fix_urls(HTML.select(page, "img"), "src", prefix_url)
-fix_urls(HTML.select(page, "script"), "src", prefix_url)
+prefix_urls(HTML.select(page, "a"), "href", prefix_url)
+prefix_urls(HTML.select(page, "link"), "href", prefix_url)
+prefix_urls(HTML.select(page, "img"), "src", prefix_url)
+prefix_urls(HTML.select(page, "script"), "src", prefix_url)
