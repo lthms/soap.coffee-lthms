@@ -1,3 +1,7 @@
+$bg-color: #fcfcfc
+$fg-color: #333
+$primary-color: black
+
 *
   box-sizing: border-box
 
@@ -7,12 +11,12 @@ body, html
     padding: 0
     margin: 0
     font-size: 100%
-    background: #29222E
-    color: #E0CEED
+    background: $bg-color
+    color: $fg-color
     font-family: 'et-book', serif
 
 h1, h2, h3, h4, h5, a[href]
-    color: #68d3a7
+    color: $primary-color
 
 h1, h2, h3, h4, h5
     font-family: sans-serif
@@ -55,7 +59,7 @@ body#default
 
         img
             text-align: center
-            border: 3px solid #68d3a7
+            border: 3px solid $primary-color
             border-radius: 50%
             width: 125px
 
@@ -107,14 +111,14 @@ body#vcard
 
         img
             display: block
-            border: 3px solid #68d3a7
+            border: 3px solid $primary-color
             border-radius: 50%
             width: 175px
             margin: auto
             margin-bottom: 3em
 
     h1
-        color: #68d3a7
+        color: $primary-color
         font-size: 300%
         text-align: center
 
@@ -122,14 +126,14 @@ body#vcard
         font-weight: bold
 
         a
-            color: #68d3a7
+            color: $primary-color
 
 /* indexes */
 
 .index
     dt
         font-weight: bold
-        color: #68d3a7
+        color: $primary-color
 
     dd
         margin-left: 0
