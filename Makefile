@@ -1,15 +1,16 @@
+SASS       := $(shell find site/ -name "*.sass")
 ORG_POSTS  := $(shell find site/ -name "*.org")
 COQ_POSTS  := $(shell find site/ -name "*.v")
-POSTS      := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html)
+INPUTS     := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html) $(SASS:.sass=.css)
 
 COQCARGS   := -async-proofs-cache force
 
-build: ${POSTS}
+build: ${INPUTS}
 	@soupault
-	@scripts/update-gitignore.sh ${POSTS}
+	@scripts/update-gitignore.sh ${INPUTS}
 
 clean:
-	rm -f ${POSTS}
+	rm -f ${INPUTS}
 	rm -rf build
 
 force: clean build
@@ -26,5 +27,9 @@ force: clean build
 %.html: %.org
 	@echo "export $*.org"
 	@emacs $< --batch --eval "(setq org-html-htmlize-output-type nil)" --eval "(org-html-export-to-html nil nil nil t)" --kill
+
+%.css: %.sass
+	@echo "compile $*.sass"
+	@sassc --style=compressed --sass $< $@
 
 .PHONY: clean build force

@@ -1,14 +1,18 @@
-
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title> <!-- set automatically, see soupault.conf --> </title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://soap.coffee/~lthms/vendors/fira-code.2/font.css">
-    <link rel="stylesheet" href="https://soap.coffee/~lthms/style/main.css">
+    <link rel="stylesheet" href="/style/main.css">
+    <noscript id="lazyloading">
+      <link rel="stylesheet" href="/vendors/katex.0.11.1/katex.css">
+      <link rel="stylesheet" href="/vendors/fork-awesome.1.1.7/fork-awesome.min.css">
+      <link rel="stylesheet" href="/vendors/fira-code.2/font.css">
+      <link rel="stylesheet" href="/vendors/et-book/font.css">
+    </noscript>
+    <script defer src="/vendors/katex.0.11.1/katex.min.js"></script>
+    <script defer src="/vendors/katex.0.11.1/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
   </head>
   <body id="default">
     <nav>
@@ -18,11 +22,19 @@
       </ul>
     </nav>
     <header>
-      <img src="https://avatars0.githubusercontent.com/u/1141231?s=460&v=4">
+      <img src="/img/merida.webp">
     </header>
     <main>
     <!-- your page content will be inserted here,
          see the content_selector option in soupault.conf -->
     </main>
+    <script>
+      let noscript = document.getElementById('lazyloading');
+      let resources = noscript.innerText.split('\n');
+
+      for (var ix in resources) {
+          noscript.insertAdjacentHTML('beforebegin', resources[ix]);
+      }
+    </script>
   </body>
 </html>

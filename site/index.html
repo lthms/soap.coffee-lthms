@@ -3,14 +3,17 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://soap.coffee/~lthms/vendors/fira-code.2/font.css">
-    <link rel="stylesheet" href="https://soap.coffee/~lthms/style/main.css">
+    <link rel="stylesheet" href="/style/main.css">
+    <noscript id="lazyloading">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.1.7/css/fork-awesome.min.css" integrity="sha256-gsmEoJAws/Kd3CjuOQzLie5Q3yshhvmo7YNtBG7aaEY=" crossorigin="anonymous">
+      <link rel="stylesheet" href="/vendors/fira-code.2/font.css">
+      <link rel="stylesheet" href="/vendors/et-book/font.css">
+    </noscript>
     <title></title>
   </head>
   <body id="vcard">
     <article>
-      <img src="https://avatars0.githubusercontent.com/u/1141231?s=460&v=4">
+      <img src="/img/merida.webp">
 
       <p>
         Hi, awesome stranger.
@@ -56,5 +59,13 @@
         I wish you a wonderful day.
       </p>
     </article>
+    <script>
+      let noscript = document.getElementById('lazyloading');
+      let resources = noscript.innerText.split('\n');
+
+      for (var ix in resources) {
+          noscript.insertAdjacentHTML('beforebegin', resources[ix]);
+      }
+    </script>
   </body>
 </html>
