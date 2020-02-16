@@ -1,8 +1,7 @@
-(** #
-<h1>Rewriting in Coq</h1>
+(** #<h1>Rewriting in Coq</h1>#
 
-<span class="time">May 13, 2017</span>
-    # *)
+    This article has originally been published on #<span class="time">May 13,
+    2017</span>.# *)
 
 (** I have to confess something. In the published codebase of SpecCert lies a
     shameful secret. It takes the form of a set of axioms which are not
@@ -14,7 +13,9 @@
     term in a proof using a ad-hoc equivalence relation and, when
     necessary, a proper morphism. *)
 
-(** #<div id="generate-toc"></div># *)
+(** #<div id="generate-toc"></div>#
+
+    #<div id="history">site/posts/RewritingInCoq.v</div># *)
 
 (** ** Gate: Our Case Study *)
 
