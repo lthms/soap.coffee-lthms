@@ -1,13 +1,9 @@
-(** #
-<h1>Strongly-Specified Functions in Coq, part 1: using the <code>refine</code> Tactic</h1>
+(** # <h1>Strongly-Specified Functions in Coq, part 1: using the <code>refine</code> Tactic</h1>#
 
-<p>
-  This is the first article (initially published on <span class="time">January
-  11, 2015</span>) of a series of two on how to write strongly-specified
-  functions in Coq. You can read the next part <a
-  href="/posts/StronglySpecifiedFunctionsProgram">here</a>.
-</p>
-# *)
+  This is the first article (initially published on #<span class="time">January
+  11, 2015</span>#) of a series of two on how to write strongly-specified
+  functions in Coq. You can read the next part #<a
+  href="/posts/StronglySpecifiedFunctionsProgram">here</a>#. *)
 
 (** I started to play with Coq, the interactive theorem prover
     developed by Inria, a few weeks ago. It is a very powerful tool,
@@ -23,15 +19,17 @@
     return value is the list passed in argument in which the first
     element has been removed for example.
 
-    But since we will manipulate lists in this article, we first
+    #<div id="generate-toc"></div>#
+
+    #<div id="history">site/posts/StronglySpecifiedFunctions.v</div># *)
+
+(** ** Is this list empty? *)
+
+(** Since we will manipulate lists in this article, we first
     enable several notations of the standard library. *)
 
 From Coq Require Import List.
 Import ListNotations.
-
-(** #<div id="generate-toc"></div># *)
-
-(** ** Is this list empty? *)
 
 (** It's the first question to deal with when manipulating
     lists. There are some functions that require their arguments not

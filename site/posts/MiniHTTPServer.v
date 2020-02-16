@@ -1,6 +1,7 @@
 (** #<h1>Implementing and Certifying a Web Server in Coq</h1># *)
 
-(** #<span class="time">February 02, 2020</span># *)
+(** This article has originally been published on #<span class="time">February
+02, 2020</span>#. *)
 
 (** FreeSpec is a general-purpose framework for implementing (with a Free monad)
     and certifying (with contracts) impure computations. In this tutorial, we
@@ -10,6 +11,8 @@
     closes all its file descriptors.
 
     #<div id="generate-toc"></div>#
+
+    #<div id="history">site/posts/MiniHTTPServer.v</div>#
 
     The [FreeSpec.Core] module reexports the key component provided by
     FreeSpec. *)

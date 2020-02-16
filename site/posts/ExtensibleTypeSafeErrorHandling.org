@@ -1,11 +1,16 @@
 #+BEGIN_EXPORT html
 <h1>Extensible Type-Safe Error Handling in Haskell</h1>
 
-<span class="time">February 04, 2018</span>
+<p>This article has originally been published on <span class="time">February 04,
+2018</span>.</p>
 #+END_EXPORT
 
 #+OPTIONS: toc:nil
 #+TOC: headlines 2
+
+#+BEGIN_EXPORT html
+<div id="history">site/posts/ExtensibleTypeSafeErrorHandling.org</div>
+#+END_EXPORT
 
 A colleague of mine introduced me to the benefits of [[https://crates.io/crates/error-chain][~error-chain~]], a crate which
 aims to implement /“consistent error handling”/ for Rust. I found the overall

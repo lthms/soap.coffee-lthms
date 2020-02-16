@@ -1,18 +1,13 @@
-(** #
-<h1>Strongly-Specified Functions in Coq, part 2: the <code>Program</code> Framework</h1>
+(** #<h1>Strongly-Specified Functions in Coq, part 2: the <code>Program</code> Framework</h1>#
 
-<p>
-  This is the second article (initially published on <span class="time">January
-  01, 2017</span>) of a series of two on how to write strongly-specified
-  functions in Coq. You can read the previous part <a
-  href="/posts/StronglySpecifiedFunctions">here</a>.
-</p>
-# *)
+    This is the second article (initially published on #<span
+    class="time">January 01, 2017</span>#) of a series of two on how to write
+    strongly-specified functions in Coq. You can read the previous part #<a
+    href="/posts/StronglySpecifiedFunctions">here</a>#. # *)
 
-(** #<div id="generate-toc"></div># *)
+(** #<div id="generate-toc"></div>#
 
-(** For the past few weeks, I have been playing around with the <<Program>> (or
-    Russel) framework of Coq. *)
+    #<div id="history">site/posts/StronglySpecifiedFunctionsProgram.v</div># *)
 
 (** ** The Theory *)
 
