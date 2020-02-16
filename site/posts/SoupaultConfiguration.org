@@ -1,3 +1,10 @@
+#+BEGIN_EXPORT html
+<h1><code>soap.coffee/~lthms</code> Soupault Configuration</h1>
+
+<div id="history">site/posts/SoupaultConfiguration.org</div>
+#+END_EXPORT
+
+#+BEGIN_SRC toml :tangle ../../soupault.conf
 [settings]
   strict = true
   verbose = false
@@ -60,3 +67,4 @@
   selector = "#history"
   command = "./scripts/generate_history.sh \"templates/history.html\""
   action = "replace_content"
+#+END_SRC

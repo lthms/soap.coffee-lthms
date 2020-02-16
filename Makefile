@@ -5,7 +5,7 @@ INPUTS     := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html) $(SASS:.sass=.css)
 
 COQCARGS   := -async-proofs-cache force
 
-build: ${INPUTS}
+build: ${INPUTS} soupault.conf
 	@soupault
 	@scripts/update-gitignore.sh ${INPUTS}
 
@@ -14,6 +14,10 @@ clean:
 	rm -rf build
 
 force: clean build
+
+soupault.conf: site/posts/SoupaultConfiguration.org
+	@echo "generate soupault.conf"
+	@emacs $< --batch --eval "(org-babel-tangle)" --kill 2>/dev/null
 
 %.html: %.v
 	@echo "export $*.v"
