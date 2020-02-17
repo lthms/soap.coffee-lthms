@@ -19,10 +19,6 @@ function generate_history_json () {
 
         local pre_name="$(git --no-pager show --stat=10000 ${hash} | sed -e 's/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'  | grep "=> ${name}" | xargs | cut -d' ' -f1)"
 
-        if [[ ! -z "${pre_name}" ]]; then
-            name="$(echo ${pre_name})"
-        fi
-
         if [[ ${count} -eq 0 ]]; then
             echo -n "[ "
         else
@@ -30,6 +26,10 @@ function generate_history_json () {
         fi
 
         echo "${line}, \"filename\":\"${name}\"}"
+
+        if [[ ! -z "${pre_name}" ]]; then
+            name="$(echo ${pre_name})"
+        fi
 
         count=$(( ${count} + 1 ))
     done < <(echo "${logs}")
