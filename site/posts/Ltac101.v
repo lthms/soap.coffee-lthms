@@ -22,17 +22,18 @@
     property [P] is a state invariant of a given transition system. As a
     consequence, they have the very same “shape:”
 
-    \( \forall s\ l\ s', P(s) \wedge s \overset{l\ }{\mapsto} s' \rightarrow  P(s') \),
-    that is, if [P] is satisfied for [s], and there exists a transition from [s]
-    to [s'], then [P] is satisfied for [s'].
+    #<span class="imath">#\forall s\ l\ s', P(s) \wedge s \overset{l\ }{\mapsto}
+    s' \rightarrow P(s')#</span>#, that is, if [P] is satisfied for [s], and there
+    exists a transition from [s] to [s'], then [P] is satisfied for [s'].
 
     Both states and labels are encoded in record, and the first thing I was
     doing at the time with them was [destruct]ing them. Similarly, the predicate
-    [P] is an aggregation of sub-predicates (using \( \wedge \)). In practice,
-    most of my proofs started with something like [intros [x1 [y1 z1]] [a b] [x2
-    [y2 z2]] [HP1 [HP2 [HP3 HP4]]] [R1|R2]]. Nothing copy/past cannot solve at
-    first, of course, but as soon as the definitions change, you have to change
-    every single [intros] and it is quite boring, to say the least.
+    [P] is an aggregation of sub-predicates (using #<span
+    class="imath">#\wedge#</span>#). In practice, most of my proofs started with
+    something like [intros [x1 [y1 z1]] [a b] [x2 [y2 z2]] [HP1 [HP2 [HP3 HP4]]]
+    [R1|R2]]. Nothing copy/past cannot solve at first, of course, but as soon as
+    the definitions change, you have to change every single [intros] and it is
+    quite boring, to say the least.
 
     The solution is simple: define a new tactic to use in place of your “raw”
     [intros]: *)

@@ -67,4 +67,10 @@
   selector = "#history"
   command = "./scripts/generate_history.sh \"templates/history.html\""
   action = "replace_content"
+
+[widgets.math]
+  widget = "preprocess_element"
+  selector = ".imath"
+  command = "node scripts/katex.js"
+  action = "replace_content"
 #+END_SRC

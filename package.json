@@ -1,0 +1,10 @@
+{
+  "name": "lthms",
+  "version": "1.0.0",
+  "description": "soap.coffee/~lthms scripts",
+  "author": "Thomas Letan <lthms@soap.coffee>",
+  "private": true,
+  "dependencies": {
+    "katex": "^0.11.1"
+  }
+}

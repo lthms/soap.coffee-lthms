@@ -6,6 +6,8 @@ build/
 .*.aux
 *.glob
 *.html~
+node_modules/
+package-lock.json
 
 # begin generated files
 site/posts.html
