@@ -6,6 +6,7 @@ build/
 .*.aux
 *.glob
 *.html~
+soupault.conf
 node_modules/
 package-lock.json
 
