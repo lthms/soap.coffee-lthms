@@ -213,8 +213,8 @@ Fixpoint nth {a n}
 #[program]
 Fixpoint take {a n}
     (v : vector a n) (e : nat | e <= n)
-  : { v' : vector a e | forall i : nat,
-        i < e -> nth v' i = nth v i } :=
+  : { u : vector a e | forall i : nat,
+        i < e -> nth u i = nth v i } :=
   match e with
   | S e' => match v with
             | vcons x r => vcons x (take r e')
@@ -368,7 +368,8 @@ Program Fixpoint append {a n m}
     (v : vector a n) (u : vector a m)
   : { w : vector a (n + m) | forall i,
         (i < n -> nth w i = nth v i) /\
-        (n <= i -> nth w i = nth u (i - n)) } :=
+        (n <= i -> nth w i = nth u (i - n))
+    } :=
   match v with
   | vnil => u
   | vcons a v => vcons a (append v u)
@@ -413,11 +414,10 @@ Defined.
     introduce [option_app], a function that Haskellers know all to well as being
     part of the <<Applicative>> type class. *)
 
-Definition option_app
-           {A B: Type}
-           (opf: option (A -> B))
-           (opx: option A)
-  : option B :=
+Definition option_app {a b}
+    (opf: option (a -> b))
+    (opx: option a)
+  : option b :=
   match opf, opx with
   | Some f, Some x => Some (f x)
   | _, _ => None
@@ -444,15 +444,12 @@ Infix "<*>" := option_app (at level 55).
 
 <<
 #[program]
-Fixpoint map2
-        {A B C: Type}
-        {n:     nat}
-        (v:     vector A n)
-        (u:    vector B n)
-        (f:     A -> B -> C)
-        {struct v}
-  : { w: vector C n | forall i,
-        nth w i = f <$> nth v i <*> nth u i } :=
+Fixpoint map2 {a b c n}
+    (v : vector a n) (u : vector b n)
+    (f : a -> b -> c) {struct v}
+  : { w: vector c n | forall i,
+        nth w i = f <$> nth v i <*> nth u i
+    } :=
   match v, u with
   | vcons x rst, vcons x' rst' =>
       vcons (f x x') (map2 rst rst' f)
@@ -462,40 +459,34 @@ Fixpoint map2
 >>
 
 <<
-Error: Illegal application:
+Illegal application:
 The term "@eq" of type "forall A : Type, A -> A -> Prop"
 cannot be applied to the terms
  "nat" : "Set"
  "S wildcard'" : "nat"
- "B" : "Type"
-The 3rd term has type "Type" which should be
-coercible to "nat".
+ "b" : "Type"
+The 3rd term has type "Type" which should be coercible
+to "nat".
 >> *)
 
 #[program]
-Fixpoint map2
-        {A B C: Type}
-        {n:     nat}
-        (v:     vector A n)
-        (u:    vector B n)
-        (f:     A -> B -> C)
-        {struct v}
-  : { w: vector C n | forall i,
-        nth w i = f <$> nth v i <*> nth u i } := _.
+Fixpoint map2 {a b c n}
+    (v : vector a n) (u : vector b n)
+    (f : a -> b -> c) {struct v}
+  : { w: vector c n | forall i,
+        nth w i = f <$> nth v i <*> nth u i
+    } := _.
 
 Next Obligation.
   dependent induction v; dependent induction u.
   + remember (IHv u f) as u'.
     inversion u'.
-    refine (exist _ (vcons (f a a0) x) _).
+    refine (exist _ (vcons (f a0 a1) x) _).
     intros i.
     induction i.
-    * cbv.
-      reflexivity.
-    * simpl.
-      apply (H i).
+    * reflexivity.
+    * apply (H i).
   + refine (exist _ vnil _).
-    cbv.
     reflexivity.
 Qed.
 
@@ -505,18 +496,20 @@ Qed.
     to hard for what I got in return and therefore I am convinced <<Program>> is
     not ready (at least for a dependent type, I cannot tell for the rest). For
     instance, I found at least one bug in Program logic (I still have to report
-    it). Have a look at the following code: *)
+    it). Have a look at the following code:
 
+<<
 #[program]
 Fixpoint map2 {a b c n}
-     (v : vector a n) (v': vector b n)
-     (f:  a -> b -> c) {struct v}
+     (u : vector a n) (v : vector b n)
+     (f : a -> b -> c) {struct v}
   : vector c n :=
-  match v with
+  match u with
   | _ => vnil
   end.
+>>
 
-(** It gives the following error:
+    It gives the following error:
 
 <<
 Error: Illegal application:
@@ -528,6 +521,3 @@ cannot be applied to the terms
 The 3rd term has type "vector A n'" which should be
 coercible to "nat".
 >> *)
-(* begin hide *)
-Reset map2.
-(* end hide *)
