@@ -3,9 +3,10 @@ ORG_POSTS  := $(shell find site/ -name "*.org")
 COQ_POSTS  := $(shell find site/ -name "*.v")
 INPUTS     := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html) $(SASS:.sass=.css)
 
-COQCARGS   := -async-proofs-cache force
+COQCARGS   := -async-proofs-cache force -w -custom-entry-overriden
 
 build: ${INPUTS} soupault.conf
+	@echo "run soupault"
 	@soupault
 	@scripts/update-gitignore.sh ${INPUTS}
 
