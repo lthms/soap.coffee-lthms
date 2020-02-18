@@ -1,0 +1,64 @@
+#+BEGIN_EXPORT html
+<h1>Thanks!</h1>
+
+<article class="index">
+#+END_EXPORT
+
+This website could not exist without (many) awesome free software
+projects. Although I could not list them all even if I wanted, my desire is at
+least to try keeping up-to-date a curated description of the “main” ones.
+
+#+OPTIONS: toc:nil
+#+TOC: headlines 2
+
+#+BEGIN_EXPORT html
+<div id="history">site/posts/Thanks.org</div>
+#+END_EXPORT
+
+* Authoring Content
+
+- [[https://www.gnu.org/software/emacs][Emacs]] ::
+  Emacs is an extensible editor which I use daily to author this website
+  content, and write the code related to this website (and any code, really). It
+  is part of the [[https://www.gnu.org/gnu/gnu.html][GNU project]].
+- [[https://orgmode.org/][Org mode]] ::
+  Org mode is a major mode of Emacs which I use to author several posts. It has
+  initially been written by [[https://staff.science.uva.nl/~dominik/][Carsten Dominik]], and is currently maintained by
+  [[http://bzg.fr/][Bastien Guerry]].
+- [[https://coq.inria.fr/][Coq]] ::
+  Coq is a theorem prover and a proof assistant built by [[https://www.inria.fr/fr][Inria]]. Many of my posts
+  on Coq are regular Coq file processed by ~coqdoc~.
+
+* Static Website Generation
+
+- [[https://soupault.neocities.org][soupault]] ::
+  Soupault is a static website generator and HTML processor written by [[https://www.baturin.org/][Daniil
+  Baturin]].
+- [[https://github.com/sass/sassc][~sassc~]] ::
+  ~sassc~ is a compiler for SASS files (actually, a wrapper around [[https://github.com/sass/libsass][~libsass~]]),
+  authored by [[https://github.com/akhleung][Aaron Leung]], [[https://github.com/hcatlin][Hampton Catlin]], [[https://github.com/mgreter][Marcel Greter]], and [[https://github.com/xzyfer][Michael Mifsud]].
+- [[https://www.gnu.org/software/make/][GNU Make]] ::
+  GNU Make is a build automation tool which ensures HTML files are generated
+  from my posts before calling soupault. It is part of the [[https://www.gnu.org/gnu/gnu.html][GNU project]].
+
+* Frontend
+
+- [[https://forkaweso.me/Fork-Awesome/][Fork Awesome]] ::
+  Fork Awesome is a collection of icons for the web. It is a community fork of
+  [[https://fontawesome.com/][Font Awesome]].
+- [[https://katex.org][KaTeX]] ::
+  Katex is the “fastest” math typesetting library for the web, and is uses to
+  render inline mathematics in my posts at build time. It has been created by
+  [[https://github.com/xymostech][Emily Eisenberg]] and [[https://sophiebits.com/][Sophie Alpert]], with the help of [[https://github.com/KaTeX/KaTeX/graphs/contributors][many contributors]].
+- [[https://github.com/tonsky/FiraCode][Fira Code]] ::
+  Fira Code is a monospaced font by [[https://github.com/tonsky][Nikita Prokopov]] inspired with Fira Mono by
+  the [[https://www.mozilla.org/en-US/][Mozilla Foundation]], with “programming ligatures” (/e.g./, =>>==, ====,
+  =!==, etc.), and it is used here for verbatim content (principally source
+  code).
+- [[https://edwardtufte.github.io/et-book/][ET Book]] ::
+  ET Book is a webfont of the typeface used in [[http://www.edwardtufte.com/][Edward Tufte]]’s books, converted
+  by [[http://adamschwartz.co/][Adam Schwartz]]. It is used as the main font of this website.
+
+#+BEGIN_EXPORT html
+</article>
+#+END_EXPORT
