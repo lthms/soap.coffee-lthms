@@ -246,14 +246,8 @@ Defined.
     [{ v': vector A e | forall (i : nat | i < e), nth v' i = nth v i
     }]. However, this made the goals and hypotheses become very hard
     to read and to use. Sigma-types in sigma-types: not a good
-    idea. *)
+    idea.
 
-From Coq Require Import Extraction.
-
-Extraction Implicit take [a n].
-Extraction take.
-
-(**
 <<
 (** val take : 'a1 vector -> nat -> 'a1 vector **)
 
@@ -298,13 +292,9 @@ Next Obligation.
   now apply PeanoNat.Nat.nle_succ_0 in H.
 Defined.
 
-(*begin hide *)
-Extraction Implicit drop [a n].
-Extraction drop.
-(* end hide *)
 (** The proofs are easy to write, and the extracted code is exactly what one might
-    want it to be: *)
-(**
+    want it to be:
+
 <<
 (** val drop : 'a1 vector -> nat -> 'a1 vector **)
 let rec drop v = function
@@ -342,10 +332,6 @@ Next Obligation.
   lia.
 Defined.
 
-(*begin hide *)
-Extraction Implicit extract [a n].
-Extraction extract.
-(* end hide *)
 (** The proofs are straightforward because the specifications of [drop] and
     [take] are precise enough, and we do not need to have a look at their
     implementations. The extracted version of [extract] is as clean as we can
