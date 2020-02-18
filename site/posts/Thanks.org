@@ -8,10 +8,11 @@ This website could not exist without (many) awesome free software
 projects. Although I could not list them all even if I wanted, my desire is at
 least to try keeping up-to-date a curated description of the “main” ones.
 
-#+OPTIONS: toc:nil
-#+TOC: headlines 2
+#+OPTIONS: toc:nil num:nil
 
 #+BEGIN_EXPORT html
+<div id="generate-toc"></div>
+
 <div id="history">site/posts/Thanks.org</div>
 #+END_EXPORT
 
