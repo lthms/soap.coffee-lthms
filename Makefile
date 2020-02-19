@@ -1,6 +1,7 @@
 SASS       := $(shell find site/ -name "*.sass")
 INPUTS     := $(SASS:.sass=.css)
 MAKEFILES  := org.mk coq.mk
+ROOT       := $(shell pwd)
 
 include ${MAKEFILES}
 

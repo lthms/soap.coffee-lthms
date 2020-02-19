@@ -80,7 +80,6 @@ body#default main .code, code, pre, .inlinecode, tt
 body#default
     main
         /* coqdoc output */
-
         div.code
             white-space: nowrap
             overflow-x: visible
@@ -96,13 +95,15 @@ body#default
             margin-bottom: 1em
 
         /* org-mode output */
-
         .footpara
             display: inline
             margin-left: .2em
 
-/* VCARD (index.html) */
+        .section-number-2:after, .section-number-3:after, .section-number-4:after
+            content: ". "
 
+
+/* VCARD (index.html) */
 body#vcard
     display: flex
     align-items: center

@@ -27,7 +27,6 @@ pijul clone "https://pijul.lthms.xyz/lkn/lysk"
 In addition, the complete project detailed in this article is available [[https://gist.github.com/lthms/9833f4851843119c966917775b4c4180][as a
 gist]].
 
-#+OPTIONS: toc:nil
 #+TOC: headlines 2
 
 #+BEGIN_EXPORT html
