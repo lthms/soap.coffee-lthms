@@ -67,17 +67,20 @@ One of my goal with this website is for it to /feel/ simple, but the truth is
 under the hood it is generated from a bunch of files using a not-that-simple
 process.
 
-- A Series on Generating this Static Website ::
-  This website uses a literate programming approach, where most of the pieces
-  used to build it are documented and actually part of its content.
+- [[/posts/meta/][A Series on Generating this Static Website]] ::
+  The toolchain behind the generation of this website ---called *~cleopatra~*---
+  is a literate programming document which build itself in addition to the HTML
+  files composing this corner of the Internet.
 
-  1. [[/posts/meta/Contents][Authoring Contents and HTML Generation ~(WIP)~]]
-  2. [[/posts/meta/Soupault/][Configuring ~soupault~ ~(WIP)~]]
+  1. Bootstrapping an Extensible Toolchain ~(TODO)~
+  2. [[/posts/meta/Contents][Authoring Contents and HTML Generation ~(WIP)~]]
+  3. [[/posts/meta/Soupault/][Configuring ~soupault~ ~(WIP)~]]
 
 
 - [[/posts/Thanks/][Thanks!]] ::
   If it were not for many awesome FOSS projects, this corner of the Internet
-  would not exists. This is my attempt to
+  would not exists. This is my attempt to give well-deserved credit to them and
+  their creators.
 
 #+BEGIN_EXPORT html
 </article>
