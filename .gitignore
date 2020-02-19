@@ -27,4 +27,5 @@ site/posts/RewritingInCoq.html
 site/posts/Ltac101.html
 org.mk
 coq.mk
+scripts/export-org.el
 # begin generated files

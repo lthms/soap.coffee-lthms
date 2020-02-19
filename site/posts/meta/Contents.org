@@ -17,9 +17,10 @@
 #+BEGIN_SRC makefile :tangle ../../../org.mk
 ORG_POSTS := $(shell find site/ -name "*.org")
 INPUTS += $(ORG_POSTS:.org=.html)
+GEN_SCRIPTS += scripts/export-org.el
 
-%.html: %.org
-	@echo "export $*.org"
+%.html : %.org scripts/export-org.el
+	@echo "  export  $*.org"
 	@emacs $< --batch --kill \
            --load="${ROOT}/scripts/export-org.el" \
 #+END_SRC
@@ -34,15 +35,15 @@ INPUTS += $(ORG_POSTS:.org=.html)
 COQ_POSTS := $(shell find site/ -name "*.v")
 INPUTS += $(COQ_POSTS:.v=.html)
 
-COQCARGS   := -async-proofs-cache force \
-              -w -custom-entry-overriden
-COQDOCARGS := --no-index --charset utf8 --short --body-only \
-              --coqlib "https://coq.inria.fr/distrib/current/stdlib/"
+COQCARG := -async-proofs-cache force \
+           -w -custom-entry-overriden
+COQDOCARG := --no-index --charset utf8 --short --body-only \
+             --coqlib "https://coq.inria.fr/distrib/current/stdlib/"
 
-%.html: %.v
-	@echo "export $*.v"
-	@coqc ${COQCARGS} $<
-	@coqdoc ${COQDOCARGS} -d $(shell dirname $<) $<
+%.html : %.v
+	@echo "  export  $*.v"
+	@coqc ${COQCARG} $<
+	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
 	@sed -i -e 's/href="$(shell basename $@)\#/href="\#/g' $@
 	@rm -f $(shell dirname $<)/coqdoc.css
 #+END_SRC

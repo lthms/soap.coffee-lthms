@@ -1,10 +1,10 @@
 #+BEGIN_EXPORT html
-<h1><code>soap.coffee/~lthms</code> Soupault Configuration</h1>
+<h1><code>soupault</code> Configuration</h1>
 
 <div id="history">site/posts/meta/Soupault.org</div>
 #+END_EXPORT
 
-#+BEGIN_SRC toml :tangle ../../soupault.conf
+#+BEGIN_SRC toml :tangle ../../../soupault.conf
 [settings]
   strict = true
   verbose = false
@@ -13,7 +13,10 @@
   build_dir = "build"
 
   page_file_extensions = ["html"]
-  ignore_extensions = ["draft", "vo", "vok", "vos", "glob", "html~", "org", "aux", "sass"]
+  ignore_extensions = [
+    "draft", "vo", "vok", "vos", "glob",
+    "html~", "org", "aux", "sass",
+  ]
 
   generator_mode = true
   complete_page_selector = "html"
