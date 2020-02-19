@@ -1,4 +1,4 @@
-(** #<h1>Ltac 101</h1>#
+(** * Ltac 101
 
     This article has originally been published on #<span class="time">October
     16, 2017</span>#. *)

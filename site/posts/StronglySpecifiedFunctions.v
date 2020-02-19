@@ -1,4 +1,4 @@
-(** #<h1>Strongly-Specified Functions in Coq, part 1: using the <code>refine</code> Tactic</h1>#
+(** * Strongly-Specified Functions in Coq, part 1: using the <<refine>> Tactic
 
     This is the first article (initially published on #<span
     class="time">January 11, 2015</span>#) of a series of two on how to write

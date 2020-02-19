@@ -1,4 +1,4 @@
-(** #<h1>Strongly-Specified Functions in Coq, part 2: the <code>Program</code> Framework</h1>#
+(** * Strongly-Specified Functions in Coq, part 2: the <<Program>> Framework
 
     This is the second article (initially published on #<span
     class="time">January 01, 2017</span>#) of a series of two on how to write

@@ -1,4 +1,4 @@
-(** #<h1>Implementing and Certifying a Web Server in Coq</h1># *)
+(** * Implementing and Certifying a Web Server in Coq *)
 
 (** This article has originally been published on #<span class="time">February
 02, 2020</span>#. *)

@@ -1,4 +1,4 @@
-(** #<h1>Rewriting in Coq</h1>#
+(** * Rewriting in Coq
 
     This article has originally been published on #<span class="time">May 13,
     2017</span>.# *)
