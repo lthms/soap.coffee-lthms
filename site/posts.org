@@ -61,6 +61,24 @@ Common Lisp is a venerable programming languages like no other I know.
   From the creation of a Lisp package up to the creation of a standalone
   executable.
 
+* About this website
+
+One of my goal with this website is for it to /feel/ simple, but the truth is
+under the hood it is generated from a bunch of files using a not-that-simple
+process.
+
+- A Series on Generating this Static Website ::
+  This website uses a literate programming approach, where most of the pieces
+  used to build it are documented and actually part of its content.
+
+  1. [[/posts/meta/Contents][Authoring Contents and HTML Generation ~(WIP)~]]
+  2. [[/posts/meta/Soupault/][Configuring ~soupault~ ~(WIP)~]]
+
+
+- [[/posts/Thanks/][Thanks!]] ::
+  If it were not for many awesome FOSS projects, this corner of the Internet
+  would not exists. This is my attempt to
+
 #+BEGIN_EXPORT html
 </article>
 #+END_Export
