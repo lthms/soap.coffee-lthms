@@ -53,7 +53,7 @@ From FreeSpec Require Import Core.
     defining indendent primitives as part of different interfaces. In our case,
     this means we will have three different interfaces. *)
 
-(** **** The TCP Interface *)
+(** **** The [TCP] Interface *)
 
 (** We first consider the interface which will allows us to interact with TCP
     sockets. The related primitives will rely on socket _descriptors_, whose
@@ -163,7 +163,7 @@ Definition close_socket `{Provide ix TCP}
   : impure ix unit :=
   request (CloseTCPSocket socket).
 
-(** **** The FILESYSTEM Interface *)
+(** **** The [FILESYSTEM] Interface *)
 
 (** We provide a similar description of the [FILESYSEM] interface, and define
     the basic impure computations that we will then leverage to use it (thanks
@@ -197,7 +197,7 @@ Definition read `{Provide ix FILESYSTEM}
   : impure ix bytes :=
   request (Read fd).
 
-(** **** The CONSOLE Interface *)
+(** **** The [CONSOLE] Interface *)
 
 (** Finally, FreeSpec already provides a few generic interfaces for FreeSpec
     users, including a [CONSOLE] interface:
