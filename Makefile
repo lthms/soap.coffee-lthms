@@ -1,37 +1,32 @@
 SASS       := $(shell find site/ -name "*.sass")
-ORG_POSTS  := $(shell find site/ -name "*.org")
-COQ_POSTS  := $(shell find site/ -name "*.v")
-INPUTS     := $(ORG_POSTS:.org=.html) $(COQ_POSTS:.v=.html) $(SASS:.sass=.css)
+INPUTS     := $(SASS:.sass=.css)
+MAKEFILES  := org.mk coq.mk
 
-COQCARGS   := -async-proofs-cache force -w -custom-entry-overriden
+include ${MAKEFILES}
 
 build: ${INPUTS} soupault.conf
 	@echo "run soupault"
 	@soupault
-	@scripts/update-gitignore.sh ${INPUTS}
+	@echo "update gitignore"
+	@scripts/update-gitignore.sh ${INPUTS} ${MAKEFILES}
 
 clean:
-	rm -f ${INPUTS}
-	rm -rf build
+	@echo "remove generated makefiles"
+	@rm -f ${MAKEFILES}
+	@echo "remove generated files in site/"
+	@rm -f ${INPUTS}
+	@echo "remove build/ directory"
+	@rm -rf build
 
 force: clean build
 
-soupault.conf: site/posts/SoupaultConfiguration.org
+soupault.conf: site/posts/meta/Soupault.org
 	@echo "generate soupault.conf"
 	@emacs $< --batch --eval "(org-babel-tangle)" --kill 2>/dev/null
 
-%.html: %.v
-	@echo "export $*.v"
-	@coqc ${COQCARGS} $*.v
-	@coqdoc --no-index --charset utf8 --short --body-only -d site/posts/ \
-	        --coqlib "https://coq.inria.fr/distrib/current/stdlib/" \
-	        $*.v
-	@sed -i -e 's/href="$(shell basename $*.html)\#/href="\#/g' $*.html
-	@rm -f site/posts/coqdoc.css
-
-%.html: %.org
-	@echo "export $*.org"
-	@emacs $< --batch --eval "(setq org-html-htmlize-output-type nil)" --eval "(org-html-export-to-html nil nil nil t)" --kill
+org.mk coq.mk &: site/posts/meta/Contents.org
+	@echo "generate org.mk, coq.mk"
+	@emacs $< --batch --eval "(org-babel-tangle)" --kill 2>/dev/null
 
 %.css: %.sass
 	@echo "compile $*.sass"

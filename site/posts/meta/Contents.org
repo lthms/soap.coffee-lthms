@@ -1,0 +1,48 @@
+#+BEGIN_EXPORT html
+<h1>Authoring Contents and HTML Generation</h1>
+#+END_EXPORT
+
+* Using Org files
+
+** Author Guidelines
+
+** Generation Process
+
+#+BEGIN_SRC emacs-lisp :tangle ../../../scripts/configure-org.el
+(setq org-html-htmlize-output-type nil)
+(org-html-export-to-html nil nil nil t)
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle ../../../org.mk
+ORG_POSTS := $(shell find site/ -name "*.org")
+INPUTS += $(ORG_POSTS:.org=.html)
+
+%.html: %.org
+	@echo "export $*.org"
+	@emacs $< \
+	   --batch \
+           --load=$(shell pwd)/scripts/configure-org.el \
+	   --kill
+#+END_SRC
+
+* Using Coq files
+
+#+BEGIN_SRC makefile :tangle ../../../coq.mk
+COQ_POSTS := $(shell find site/ -name "*.v")
+INPUTS += $(COQ_POSTS:.v=.html)
+
+COQCARGS   := -async-proofs-cache force -w -custom-entry-overriden
+
+%.html: %.v
+	@echo "export $*.v"
+	@coqc ${COQCARGS} $*.v
+	@coqdoc --no-index --charset utf8 --short --body-only -d site/posts/ \
+	        --coqlib "https://coq.inria.fr/distrib/current/stdlib/" \
+	        $*.v
+	@sed -i -e 's/href="$(shell basename $*.html)\#/href="\#/g' $*.html
+	@rm -f site/posts/coqdoc.css
+#+END_SRC
+
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:

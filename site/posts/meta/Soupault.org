@@ -1,7 +1,7 @@
 #+BEGIN_EXPORT html
 <h1><code>soap.coffee/~lthms</code> Soupault Configuration</h1>
 
-<div id="history">site/posts/SoupaultConfiguration.org</div>
+<div id="history">site/posts/meta/Soupault.org</div>
 #+END_EXPORT
 
 #+BEGIN_SRC toml :tangle ../../soupault.conf
