@@ -3,40 +3,43 @@
 #+END_EXPORT
 
 #+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/tangle-org.el")
+  (require 'org)
   (setq org-src-preserve-indentation t)
   (org-babel-tangle)
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/bootstrap.mk")
-GEN_SCRIPTS += scripts/export-org.el
-MAKEFILES += org.mk coq.mk
+SASS := $(shell find site/ -name "*.sass")
+
+GENFILES += scripts/export-org.el org.mk coq.mk \
+            $(SASS:.sass=.css) soupault.conf
+
+EMACS := ROOT="${ROOT}" emacs
 
 include org.mk coq.mk
 
-build : ${INPUTS} soupault.conf
+TANGLEARGS := --batch \
+              --load="${ROOT}/scripts/tangle-org.el"
+
+build : ${GENFILES}
 	@echo "     run  soupault"
 	@soupault
 	@echo "  update  .gitignore"
-	@scripts/update-gitignore.sh ${INPUTS} ${MAKEFILES} ${GEN_SCRIPTS}
+	@scripts/update-gitignore.sh ${GENFILES}
 
 clean :
-	@echo "  remove  generated makefiles"
-	@rm -f ${MAKEFILES}
-	@echo "  remove  generated files in site/"
-	@rm -f ${INPUTS}
-	@echo "  remove  build/ directory"
-	@rm -rf build
+	@echo "  remove  generated files"
+	@rm -rf ${GENFILES} build/
 
 force : clean build
 
-soupault.conf : site/posts/meta/Soupault.org
+soupault.conf : ${CLEODIR}/Soupault.org
 	@echo "  tangle  $<"
-	@emacs $< --batch --load="${ROOT}/scripts/tangle-org.el" 2>/dev/null
+	@${EMACS} $< ${TANGLEARGS}
 
-
-org.mk coq.mk scripts/export-org.el &: site/posts/meta/Contents.org
+org.mk coq.mk scripts/export-org.el &: ${CLEODIR}/Contents.org
 	@echo "  tangle  $<"
-	@emacs $< --batch --load="${ROOT}/scripts/tangle-org.el" 2>/dev/null
+	@${EMACS} $< ${TANGLEARGS}
 
 %.css : %.sass
 	@echo " compile  $*.sass"

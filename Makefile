@@ -1,16 +1,14 @@
-SASS := $(shell find site/ -name "*.sass")
-INPUTS := $(SASS:.sass=.css)
-MAKEFILES := bootstrap.mk
 ROOT := $(shell pwd)
-GEN_SCRIPTS := scripts/tangle-org.el
-EMACSARGS := --batch --eval "(require 'org)" \
-             --eval "(org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))" \
-             --eval "(org-babel-tangle)"
+CLEODIR := site/posts/meta/
+GENFILES := scripts/tangle-org.el bootstrap.mk
 
-include ${MAKEFILES}
+include bootstrap.mk
 
 bootstrap.mk scripts/tangle-org.el &: site/posts/meta/Bootstrap.org
 	@echo "  tangle  $<"
-	@ROOT="${ROOT}" emacs $< ${EMACSARGS} 2>/dev/null
+	@ROOT="${ROOT}" emacs $< --batch \
+	                  --eval "(require 'org)" \
+	                  --eval "(setq org-src-preserve-indentation t)" \
+	                  --eval "(org-babel-tangle)"
 
 .PHONY: clean build force

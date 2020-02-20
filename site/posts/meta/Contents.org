@@ -8,20 +8,22 @@
 
 ** Generation Process
 
-#+BEGIN_SRC emacs-lisp :tangle ../../../scripts/export-org.el
+#+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/export-org.el")
 (setq org-html-htmlize-output-type nil)
 (setq org-export-with-toc nil)
 (org-html-export-to-html nil nil nil t)
 #+END_SRC
 
-#+BEGIN_SRC makefile :tangle ../../../org.mk
+#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/org.mk")
 ORG_POSTS := $(shell find site/ -name "*.org")
-INPUTS += $(ORG_POSTS:.org=.html)
+GENFILES += $(ORG_POSTS:.org=.html)
+
+EXPORTARGS := --batch \
+              --load="${ROOT}/scripts/export-org.el"
 
 %.html : %.org scripts/export-org.el
 	@echo "  export  $*.org"
-	@emacs $< --batch --kill \
-           --load="${ROOT}/scripts/export-org.el" \
+	@${EMACS} $< ${EXPORTARGS}
 #+END_SRC
 
 * Using Coq files
@@ -30,14 +32,15 @@ INPUTS += $(ORG_POSTS:.org=.html)
 
 ** Generation Process
 
-#+BEGIN_SRC makefile :tangle ../../../coq.mk
+#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/coq.mk")
 COQ_POSTS := $(shell find site/ -name "*.v")
-INPUTS += $(COQ_POSTS:.v=.html)
+GENFILES += $(COQ_POSTS:.v=.html)
 
+COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
 COQCARG := -async-proofs-cache force \
            -w -custom-entry-overriden
-COQDOCARG := --no-index --charset utf8 --short --body-only \
-             --coqlib "https://coq.inria.fr/distrib/current/stdlib/"
+COQDOCARG := --no-index --charset utf8 --short \
+             --body-only --coqlib "${COQLIB}"
 
 %.html : %.v
 	@echo "  export  $*.v"
