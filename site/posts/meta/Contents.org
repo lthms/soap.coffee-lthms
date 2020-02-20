@@ -17,7 +17,6 @@
 #+BEGIN_SRC makefile :tangle ../../../org.mk
 ORG_POSTS := $(shell find site/ -name "*.org")
 INPUTS += $(ORG_POSTS:.org=.html)
-GEN_SCRIPTS += scripts/export-org.el
 
 %.html : %.org scripts/export-org.el
 	@echo "  export  $*.org"

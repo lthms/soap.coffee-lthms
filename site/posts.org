@@ -72,7 +72,7 @@ process.
   is a literate programming document which build itself in addition to the HTML
   files composing this corner of the Internet.
 
-  1. Bootstrapping an Extensible Toolchain ~(TODO)~
+  1. [[/posts/meta/Bootstrap/][Bootstrapping an Extensible Toolchain ~(TODO)~]]
   2. [[/posts/meta/Contents][Authoring Contents and HTML Generation ~(WIP)~]]
   3. [[/posts/meta/Soupault/][Configuring ~soupault~ ~(WIP)~]]
 

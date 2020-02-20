@@ -1,37 +1,16 @@
 SASS := $(shell find site/ -name "*.sass")
 INPUTS := $(SASS:.sass=.css)
-MAKEFILES := org.mk coq.mk
+MAKEFILES := bootstrap.mk
 ROOT := $(shell pwd)
-GEN_SCRIPTS :=
+GEN_SCRIPTS := scripts/tangle-org.el
+EMACSARGS := --batch --eval "(require 'org)" \
+             --eval "(org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))" \
+             --eval "(org-babel-tangle)"
 
 include ${MAKEFILES}
 
-build : ${INPUTS} soupault.conf
-	@echo "     run  soupault"
-	@soupault
-	@echo "  update  .gitignore"
-	@scripts/update-gitignore.sh ${INPUTS} ${MAKEFILES} ${GEN_SCRIPTS}
-
-clean :
-	@echo "  remove  generated makefiles"
-	@rm -f ${MAKEFILES}
-	@echo "  remove  generated files in site/"
-	@rm -f ${INPUTS}
-	@echo "  remove  build/ directory"
-	@rm -rf build
-
-force : clean build
-
-soupault.conf : site/posts/meta/Soupault.org
+bootstrap.mk scripts/tangle-org.el &: site/posts/meta/Bootstrap.org
 	@echo "  tangle  $<"
-	@emacs $< --batch --eval "(org-babel-tangle)" --kill
-
-org.mk coq.mk scripts/export-org.el &: site/posts/meta/Contents.org
-	@echo "  tangle  $<"
-	@emacs $< --batch --eval "(org-babel-tangle)" --kill 2>/dev/null
-
-%.css : %.sass
-	@echo " compile  $*.sass"
-	@sassc --style=compressed --sass $< $@
+	@ROOT="${ROOT}" emacs $< ${EMACSARGS} 2>/dev/null
 
 .PHONY: clean build force

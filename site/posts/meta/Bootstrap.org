@@ -1,0 +1,48 @@
+#+BEGIN_EXPORT html
+<h1>Bootstrapping an Extensible Toolchain</h1>
+#+END_EXPORT
+
+#+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/tangle-org.el")
+  (setq org-src-preserve-indentation t)
+  (org-babel-tangle)
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/bootstrap.mk")
+GEN_SCRIPTS += scripts/export-org.el
+MAKEFILES += org.mk coq.mk
+
+include org.mk coq.mk
+
+build : ${INPUTS} soupault.conf
+	@echo "     run  soupault"
+	@soupault
+	@echo "  update  .gitignore"
+	@scripts/update-gitignore.sh ${INPUTS} ${MAKEFILES} ${GEN_SCRIPTS}
+
+clean :
+	@echo "  remove  generated makefiles"
+	@rm -f ${MAKEFILES}
+	@echo "  remove  generated files in site/"
+	@rm -f ${INPUTS}
+	@echo "  remove  build/ directory"
+	@rm -rf build
+
+force : clean build
+
+soupault.conf : site/posts/meta/Soupault.org
+	@echo "  tangle  $<"
+	@emacs $< --batch --load="${ROOT}/scripts/tangle-org.el" 2>/dev/null
+
+
+org.mk coq.mk scripts/export-org.el &: site/posts/meta/Contents.org
+	@echo "  tangle  $<"
+	@emacs $< --batch --load="${ROOT}/scripts/tangle-org.el" 2>/dev/null
+
+%.css : %.sass
+	@echo " compile  $*.sass"
+	@sassc --style=compressed --sass $< $@
+#+END_SRC
+
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:

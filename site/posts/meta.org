@@ -24,7 +24,7 @@ according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
 
 *Beware* this series is far from being complete.
 
-- Bootstrapping an Extensible Toolchain ~(TODO)~ ::
+- [[/posts/meta/Bootstrap][Bootstrapping an Extensible Toolchain ~(TODO)~]] ::
 
 - [[/posts/meta/Contents][Authoring Content and HTML Generation ~(WIP)~]] ::
 
