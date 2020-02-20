@@ -6,7 +6,7 @@
 
 ** Author Guidelines
 
-** Generation Process
+** Under the Hood
 
 #+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/export-org.el")
 (setq org-html-htmlize-output-type nil)
@@ -16,7 +16,8 @@
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/org.mk")
 ORG_POSTS := $(shell find site/ -name "*.org")
-GENFILES += $(ORG_POSTS:.org=.html)
+CONTENTS += $(ORG_POSTS:.org=.html)
+GENSASS += site/style/org.sass
 
 EXPORTARGS := --batch \
               --load="${ROOT}/scripts/export-org.el"
@@ -26,15 +27,25 @@ EXPORTARGS := --batch \
 	@${EMACS} $< ${EXPORTARGS}
 #+END_SRC
 
+#+BEGIN_SRC sass :tangle (concat (getenv "ROOT") "/site/style/org.sass")
+.footpara
+    display: inline
+    margin-left: .2em
+
+.section-number-2:after, .section-number-3:after, .section-number-4:after
+    content: ". "
+#+END_SRC
+
 * Using Coq files
 
 ** Author Guidelines
 
-** Generation Process
+** Under the Hood
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/coq.mk")
 COQ_POSTS := $(shell find site/ -name "*.v")
-GENFILES += $(COQ_POSTS:.v=.html)
+CONTENTS += $(COQ_POSTS:.v=.html)
+GENSASS += site/style/coq.sass
 
 COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
 COQCARG := -async-proofs-cache force \
@@ -48,6 +59,22 @@ COQDOCARG := --no-index --charset utf8 --short \
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
 	@sed -i -e 's/href="$(shell basename $@)\#/href="\#/g' $@
 	@rm -f $(shell dirname $<)/coqdoc.css
+#+END_SRC
+
+#+BEGIN_SRC sass :tangle (concat (getenv "ROOT") "/site/style/coq.sass")
+div.code
+    white-space: nowrap
+    overflow-x: visible
+
+.code a[href]
+    text-decoration: none
+
+    .fa-external-link
+      display: none
+
+.paragraph
+    margin-top: 1em
+    margin-bottom: 1em
 #+END_SRC
 
 # Local Variables:

@@ -9,27 +9,28 @@
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/bootstrap.mk")
-SASS := $(shell find site/ -name "*.sass")
-
+GENSASS :=
+CONTENTS :=
 GENFILES += scripts/export-org.el org.mk coq.mk \
-            $(SASS:.sass=.css) soupault.conf
+            sass.mk soupault.conf
 
 EMACS := ROOT="${ROOT}" emacs
 
-include org.mk coq.mk
+include org.mk coq.mk sass.mk
 
 TANGLEARGS := --batch \
-              --load="${ROOT}/scripts/tangle-org.el"
+              --load="${ROOT}/scripts/tangle-org.el" \
+              2>/dev/null
 
-build : ${GENFILES}
+build : ${CONTENTS} ${GENFILES}
 	@echo "     run  soupault"
 	@soupault
 	@echo "  update  .gitignore"
-	@scripts/update-gitignore.sh ${GENFILES}
+	@scripts/update-gitignore.sh ${CONTENTS} ${GENFILES} ${GENSASS}
 
 clean :
 	@echo "  remove  generated files"
-	@rm -rf ${GENFILES} build/
+	@rm -rf ${CONTENTS} ${GENFILES} build/
 
 force : clean build
 
@@ -41,9 +42,9 @@ org.mk coq.mk scripts/export-org.el &: ${CLEODIR}/Contents.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLEARGS}
 
-%.css : %.sass
-	@echo " compile  $*.sass"
-	@sassc --style=compressed --sass $< $@
+sass.mk ${SASS} &: ${CLEODIR}/Theme.org
+	@echo "  tangle  $<"
+	@${EMACS} $< ${TANGLEARGS}
 #+END_SRC
 
 # Local Variables:

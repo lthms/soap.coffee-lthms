@@ -4,7 +4,7 @@
 <div id="history">site/posts/meta/Soupault.org</div>
 #+END_EXPORT
 
-#+BEGIN_SRC toml :tangle ../../../soupault.conf
+#+BEGIN_SRC toml :tangle (concat (getenv "ROOT") "/soupault.conf")
 [settings]
   strict = true
   verbose = false
