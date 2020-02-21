@@ -3,21 +3,21 @@
 #+END_EXPORT
 
 #+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/tangle-org.el")
-  (require 'org)
-  (setq org-src-preserve-indentation t)
-  (org-babel-tangle)
+(require 'org)
+(setq org-src-preserve-indentation t)
+(org-babel-tangle)
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/bootstrap.mk")
 GENSASS :=
 CONTENTS :=
-GENFILES += scripts/export-org.el org.mk coq.mk \
-            sass.mk soupault.conf
-
-EMACS := ROOT="${ROOT}" emacs
+GENFILES += org.mk scripts/export-org.el coq.mk \
+            sass.mk ${SASS} templates/main.html \
+            soupault.conf
 
 include org.mk coq.mk sass.mk
 
+EMACS := ROOT="${ROOT}" emacs
 TANGLEARGS := --batch \
               --load="${ROOT}/scripts/tangle-org.el" \
               2>/dev/null
@@ -38,11 +38,14 @@ soupault.conf : ${CLEODIR}/Soupault.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLEARGS}
 
-org.mk coq.mk scripts/export-org.el &: ${CLEODIR}/Contents.org
+org.mk scripts/export-org.el site/style/org.sass \
+coq.mk site/style/coq.sass \
+  &: ${CLEODIR}/Contents.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLEARGS}
 
-sass.mk ${SASS} &: ${CLEODIR}/Theme.org
+sass.mk ${SASS} templates/main.html \
+  &: ${CLEODIR}/Theme.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLEARGS}
 #+END_SRC

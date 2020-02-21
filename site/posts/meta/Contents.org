@@ -9,15 +9,49 @@
 ** Under the Hood
 
 #+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/export-org.el")
-(setq org-html-htmlize-output-type nil)
+(require 'package)
+
+(setq user-emacs-directory (concat (getenv "ROOT") "/emacs.d"))
+(setq package-user-dir (concat (getenv "ROOT") "/emacs.d"))
+(setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+(package-initialize)
+
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+(defun require-packages-force (&rest packages)
+  "Ensure every PACKAGES is available"
+  (mapcar
+   (lambda (package)
+     (let ((package (if (listp package)
+                        package
+                      (cons package package))))
+       (if (not (package-installed-p (car package)))
+           (package-install (car package)))
+       (if (cdr package)
+           (require (cdr package)))
+       package))
+   packages))
+
+(require-packages-force
+ 'org 'htmlize 'nordless-theme
+ 'sass-mode 'haskell-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/export-org.el")
+(setq htmlize-output-type 'inline-css)
 (setq org-export-with-toc nil)
 (org-html-export-to-html nil nil nil t)
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/org.mk")
 ORG_POSTS := $(shell find site/ -name "*.org")
+
 CONTENTS += $(ORG_POSTS:.org=.html)
 GENSASS += site/style/org.sass
+GENFILES += emacs.d/
 
 EXPORTARGS := --batch \
               --load="${ROOT}/scripts/export-org.el"

@@ -75,6 +75,7 @@ process.
   1. [[/posts/meta/Bootstrap/][Bootstrapping an Extensible Toolchain ~(TODO)~]]
   2. [[/posts/meta/Contents][Authoring Contents and HTML Generation ~(WIP)~]]
   3. [[/posts/meta/Soupault/][Configuring ~soupault~ ~(WIP)~]]
+  4. [[/posts/meta/Theme/][Theming and Templating ~(WIP)~]]
 
 
 - [[/posts/Thanks/][Thanks!]] ::

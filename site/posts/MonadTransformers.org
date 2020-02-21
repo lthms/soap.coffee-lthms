@@ -43,9 +43,10 @@ Monad. It carries an environment in a transparent way. The only thing is, I was
 already using the State Monad to carry the computation result. But that’s not an
 issue with the Monad Transformers.
 
-#+BEGIN_SRC patch
+#+BEGIN_SRC diff
 -type Builder = StateT Text IO
 +type Builder = StateT Text (ReaderT Language IO)
+
 #+END_SRC
 
 As you may have already understood, I wasn't using the “raw” ~State~ Monad, but
@@ -56,7 +57,7 @@ function call easily” problem.
 
 Retrieving the chosen language is as simple as:
 
-#+BEGIN_SRC patch
+#+BEGIN_SRC haskell
 getLanguage :: Builder Language
 getLanguage = lift ask
 #+END_SRC

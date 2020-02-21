@@ -30,13 +30,13 @@ site/posts/Ltac101.html
 site/style/main.css
 scripts/tangle-org.el
 bootstrap.mk
-scripts/export-org.el
 org.mk
+scripts/export-org.el
 coq.mk
 sass.mk
+templates/main.html
 soupault.conf
-site/style/org.sass
-site/style/coq.sass
+emacs.d/
 site/style/main.sass
 site/style/org.sass
 site/style/coq.sass

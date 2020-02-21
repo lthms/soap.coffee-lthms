@@ -24,9 +24,11 @@ according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
 
 *Beware* this series is far from being complete.
 
-- [[/posts/meta/Bootstrap][Bootstrapping an Extensible Toolchain ~(TODO)~]] ::
+- [[/posts/meta/Bootstrap][Bootstrapping an Extensible Toolchain ~(WIP)~]] ::
 
 - [[/posts/meta/Contents][Authoring Content and HTML Generation ~(WIP)~]] ::
+
+- [[/posts/meta/Theme][Theming and Templating ~(WIP)~]] ::
 
 - [[/posts/meta/Soupault/][Soupault Configuration ~(WIP)~]] ::
 

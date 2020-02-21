@@ -1,6 +1,9 @@
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
+
 GENFILES := scripts/tangle-org.el bootstrap.mk
+
+default: build
 
 include bootstrap.mk
 
@@ -11,4 +14,4 @@ bootstrap.mk scripts/tangle-org.el &: ${CLEODIR}/Bootstrap.org
 	                  --eval "(setq org-src-preserve-indentation t)" \
 	                  --eval "(org-babel-tangle)" 2>/dev/null
 
-.PHONY: clean build force
+.PHONY: clean build force default
