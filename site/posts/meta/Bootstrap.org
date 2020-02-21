@@ -2,6 +2,72 @@
 <h1>Bootstrapping an Extensible Toolchain</h1>
 #+END_EXPORT
 
+A literate program is a particular type of software program where the sentence
+/“the code is the documentation”/ is actually the expected result, rather than
+an admission of failure. That is, the same source files are used to generate the
+program *and* the documentation.
+
+That being said, *~cleopatra~* is a toolchain to build a website before being a
+literate program, and one of its objective is to be /part of this very website
+it is used to generate/. To acheive this, *~cleopatra~* has been written as a
+collection of org files which can be either “tangled” using [[https://orgmode.org/worg/org-contrib/babel/][Babel]] or “exported”
+as a HTML document. Tangling here refers to extracted marked code blocks into
+files.
+
+The page you are currently reading is *~cleopatra~* entry point. Its primilarly
+purpose is to introduce two Makefiles: ~Makefile~ and ~bootstrap.mk~.
+
+* The Root of Generation
+
+~Makefile~ serves two purposes: it initiates a few global variables, and it
+provides a rule to generate ~bootstrap.mk~.  At this point, some readers may
+wonder /why/ we need ~Makefile~ in this context, and the motivation behind this
+choice is really reminescent of a boot sequence. The rationale is that we need a
+“starting point” for *~cleopatra~*. The toolchain cannot live solely inside
+org-files, otherwise there would not have any code to execute the first time we
+tried to generate the website. We need an initial Makefile, one that has little
+chance to change, so that we can almost consider it read-only. Contrary to the
+other Makefiles that we will generate, this one will not be deleted by ~make
+clean~.
+
+This is similar to your computer: it requires a firmware to boot, whose purpose
+—in a nutshell— is to find and load an operating system.
+
+Modifying the content of ~Makefile~ in this document /will/ modify
+~Makefile~. This means one can easily put *~cleopatra~* into an inconsistent
+state, which would prevent further generation. This is why the generated
+~Makefile~ should be versioned, so that you can use
+
+#+BEGIN_SRC shell
+git restore Makefile
+#+END_SRC
+
+before fixing your error.
+
+#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/Makefile") :noweb tangle
+ROOT := $(shell pwd)
+CLEODIR := site/posts/meta
+GENFILES := scripts/tangle-org.el bootstrap.mk
+EMACS := ROOT="${ROOT}" emacs
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/Makefile") :noweb tangle
+default: build
+
+include bootstrap.mk
+
+Makefile bootstrap.mk scripts/tangle-org.el \
+  &: ${CLEODIR}/Bootstrap.org
+	@echo "  tangle  $<"
+	@${EMACS} $< --batch \
+	   --eval "(require 'org)" \
+	   --eval "(setq org-src-preserve-indentation t)" \
+	   --eval "(org-babel-tangle)" 2>/dev/null
+#+END_SRC
+
+* Bootstrapping
+
+#+NAME: tangle-org
 #+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/tangle-org.el")
 (require 'org)
 (setq org-src-preserve-indentation t)
@@ -17,7 +83,6 @@ GENFILES += org.mk scripts/export-org.el coq.mk \
 
 include org.mk coq.mk sass.mk
 
-EMACS := ROOT="${ROOT}" emacs
 TANGLEARGS := --batch \
               --load="${ROOT}/scripts/tangle-org.el" \
               2>/dev/null
@@ -48,6 +113,8 @@ sass.mk ${SASS} templates/main.html \
   &: ${CLEODIR}/Theme.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLEARGS}
+
+.PHONY: clean build force default
 #+END_SRC
 
 # Local Variables:
