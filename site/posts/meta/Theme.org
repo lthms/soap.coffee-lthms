@@ -1,0 +1,238 @@
+#+BEGIN_EXPORT html
+<h1>Theming and Templating</h1>
+#+END_EXPORT
+
+* Main HTML Template
+
+#+NAME: js_lazyloading
+#+BEGIN_SRC js
+let noscript = document.getElementById('lazyloading');
+let resources = noscript.innerText.split('\n');
+
+for (var ix in resources) {
+    noscript.insertAdjacentHTML('beforebegin', resources[ix]);
+}
+#+END_SRC
+
+#+NAME: html_lazyloading
+#+BEGIN_SRC html
+<noscript id="lazyloading">
+  <link rel="stylesheet" href="/vendors/katex.0.11.1/katex.css">
+  <link rel="stylesheet"
+        href="/vendors/fork-awesome.1.1.7/css/fork-awesome.min.css">
+  <link rel="stylesheet" href="/vendors/fira-code.2/font.css">
+  <link rel="stylesheet" href="/vendors/et-book/font.css">
+</nolink>
+#+END_SRC
+
+#+BEGIN_SRC html  :tangle templates/main.html :noweb tangle
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title> <!-- set automatically, see soupault.conf --> </title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style/main.css">
+    <link rel="icon" type="image/ico"  href="/img/merida.webp">
+    <<html_lazyloading>>
+  </head>
+  <body id="default">
+    <nav>
+      <ul>
+        <li> <a href="/news">News</a></li>
+        <li> <a href="/posts">Write-ups</a></li>
+        <li> <a href="/">About</a></li>
+      </ul>
+    </nav>
+    <header>
+      <img src="/img/merida.webp"
+           alt="This picture is Merida in Ralph 2.0, and is my main avatar" />
+    </header>
+    <main>
+    <!-- your page content will be inserted here,
+         see the content_selector option in soupault.conf -->
+    </main>
+    <script>
+      <<js_lazyloading>>
+    </script>
+  </body>
+</html>
+#+END_SRC
+
+* Main SASS File
+
+#+BEGIN_SRC sass :tangle site/style/main.sass
+$bg-color: #fcfcfc
+$fg-color: #333
+$primary-color: black
+
+*
+  box-sizing: border-box
+
+body, html
+    width: 100%
+    height: 100%
+    padding: 0
+    margin: 0
+    font-size: 100%
+    background: $bg-color
+    color: $fg-color
+    font-family: 'et-book', serif
+
+h1, h2, h3, h4, h5, a[href]
+    color: $primary-color
+
+h1, h2, h3, h4, h5
+    font-family: sans-serif
+
+h1
+    text-align: center
+
+a[href] .url-mark
+    font-size: smaller;
+    padding-left: 0.2em
+
+/* default */
+
+body#default
+    overflow-x: hidden
+
+    nav
+        padding-top: 1em
+        padding-bottom: 1em
+        width: 100%
+
+        ul
+            padding: 0
+            margin: 0
+            width: 100%
+            display: flex
+            flex-direction: row
+            justify-content: center
+            list-style-type: none
+
+        li
+            padding-left: .5em
+            padding-right: .5em
+            text-transform: uppercase
+            font-family: sans-serif
+            font-size: 130%
+            font-weight: bold
+
+            a
+                text-decoration: none
+
+    header
+        text-align: center
+
+        img
+            text-align: center
+            border-radius: 50%
+            width: 125px
+
+    main
+        max-width: 550px
+        margin: auto
+        padding: 0em 1em 1em 1em
+        font-size: 130%
+
+body#default main .code, code, pre, .inlinecode, tt
+    font-family: 'Fira Code', monospace
+    font-size: 75%
+
+
+body#default
+    main
+        @import coq, org
+
+        .TODO
+            background: #fae7c5
+            padding: 1em 1em 1em 1em
+
+            p
+                margin: 0
+            p:not(:list-child)
+                margin-bottom: 1em
+
+/* VCARD (index.html) */
+body#vcard
+    display: flex
+    align-items: center
+    flex-direction: column
+    font-size: 125%
+
+    article
+        max-width: 400px
+        width: 80%
+        margin: auto
+
+        img
+            display: block
+            border-radius: 50%
+            width: 175px
+            margin: auto
+            margin-bottom: 3em
+
+    h1
+        color: $primary-color
+        font-size: 300%
+        text-align: center
+
+    nav dt
+        font-weight: bold
+
+        a
+            color: $primary-color
+
+/* indexes */
+
+.index
+    dt
+        font-weight: bold
+        color: $primary-color
+
+    dd
+        margin-left: 0
+        margin-bottom: 1em
+
+        ol
+            margin-top: 0.3em
+
+#history
+  summary
+    color: $primary-color
+    font-weight: bold
+
+  table
+    border-top: 2px solid $primary-color
+    border-bottom: 2px solid $primary-color
+    border-collapse: collapse;
+
+  td
+    border-bottom: 1px solid $primary-color
+    padding: .5em
+    vertical-align: top
+
+  td.commit
+    font-size: smaller
+
+  td.commit
+    font-family: 'Fira Code', monospace
+    font-size: 80%
+    white-space: nowrap;
+
+.imath
+  font-size: smaller
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle theme.mk
+SASS := site/style/main.sass
+CSS := $(SASS:.sass=.css)
+
+GENFILES += ${CLEO_THEME_TANGLE} ${SASS}
+CONTENTS += ${CSS}
+
+${CSS} : ${SASS} ${GENSASS}
+	@echo " compile  $<"
+	@sassc --style=compressed --sass $< $@
+#+END_SRC

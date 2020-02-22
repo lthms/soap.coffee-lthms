@@ -2,10 +2,10 @@
 <h1>Bootstrapping an Extensible Toolchain</h1>
 #+END_EXPORT
 
-A literate program is a particular type of software program where the sentence
-/“the code is the documentation”/ is actually the expected result, rather than
-an admission of failure. That is, the same source files are used to generate the
-program *and* the documentation.
+A literate program is a particular type of software program where code is not
+directly written in source files, but rather in text document as code
+snippets. In some sense, literate programming allows for writing in the same
+place both the software program and its technical documentation.
 
 That being said, *~cleopatra~* is a toolchain to build a website before being a
 literate program, and one of its objective is to be /part of this very website
@@ -16,6 +16,8 @@ files.
 
 The page you are currently reading is *~cleopatra~* entry point. Its primilarly
 purpose is to introduce two Makefiles: ~Makefile~ and ~bootstrap.mk~.
+
+#+TOC: headlines 2
 
 * The Root of Generation
 
@@ -33,27 +35,101 @@ clean~.
 This is similar to your computer: it requires a firmware to boot, whose purpose
 —in a nutshell— is to find and load an operating system.
 
+Here, the generation process proceeds as follows:
+
 Modifying the content of ~Makefile~ in this document /will/ modify
 ~Makefile~. This means one can easily put *~cleopatra~* into an inconsistent
 state, which would prevent further generation. This is why the generated
-~Makefile~ should be versioned, so that you can use
+~Makefile~ should be versioned, so that you can restore it using ~git~ if you
+made a mistake when you modified it.
 
-#+BEGIN_SRC shell
-git restore Makefile
-#+END_SRC
+We now detail the rules introduce by ~Makefile~, and why they effectively
+bootstrap a generation process. For readers interested in using *~cleopatra~*
+for their own websites, we highlight the potential modifications they would have
+to make.
 
-before fixing your error.
+** Global Constants and Variables
 
-#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/Makefile") :noweb tangle
+First, ~Makefile~ defines several global “constants” (although as far as I know
+~make~ does not support true constant values, it is expected further generation
+“components” will not modify them).
+
+In a nutshell,
+
+- ~ROOT~ ::
+  Tell Emacs where the root of your website sources is, so that tangled output
+  filenames can be given relative to it rather than the org files.  So for
+  instance, the ~BLOCK_SRC~ headers for ~Makefile~ looks like
+
+  #+BEGIN_SRC org
+  #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+  #+END_SRC
+
+  instead of, /e.g./,
+
+  #+BEGIN_SRC org
+  #+BEGIN_SRC makefile :tangle ../../../Makefile :noweb tangle
+  #+END_SRC
+
+- ~CLEODIR~ ::
+  Tell *~cleopatra~* where its sources live. If you place it inside the ~site/~
+  directory (as it is intended), and you enable the use of ~org~ files to author
+  your contents, then *~cleopatra~* documents will be part of your website. If
+  you don’t want that, just move the directory outside the ~site/~ directory,
+  and update the ~CLEODIR~ variable accordingly.
+
+- ~EMACS~ ::
+  Tell *~cleopatra~* the command to use to call Emacs. You can modify it to use
+  a custom Emacs you build yourself if you so desire. Note that the command *has
+  to be prefixed by ~ROOT=${ROOT}~, otherwise the source defined in
+  *~cleopatra~* documents will not be tangled in the right places.
+
+For this website, these constants are defined as follows.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
-GENFILES := scripts/tangle-org.el bootstrap.mk
 EMACS := ROOT="${ROOT}" emacs
 #+END_SRC
 
-#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/Makefile") :noweb tangle
-default: build
+We then introduce a variable that “generation” components will populate with
+their output files (using ~+=~).
 
+- ~GENFILES~ ::
+  List *~cleopatra~* Makefiles and scripts tangled throughout the generation
+  process (with the notable exception of ~Makefile~ itself).
+
+~GENFILES~ is initiated with files obtained after tangling this very document.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+GENFILES := scripts/tangle-org.el bootstrap.mk
+#+END_SRC
+
+#+BEGIN_TODO
+One desired feature for *~cleopatra~* would be to let it populate ~GENFILES~
+automatically, by looking for relevant ~:tangle~ directives. The challenge lies
+in the “relevant” part: the risk exists that we have false posivite. Whether or
+not it is an issue remains an open question.
+#+END_TODO
+
+** Bootstrapping
+
+The core purpose of ~Makefile~ remains *(1)* to bootstrap the generation process
+by generating ~bootstrap.mk~, and *(2)* to enforce the ~build~ rules hopefully
+defined by the latter is called.
+
+For *(2)*, we introduce a ~default~ rule with ~build~ as a
+dependency.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+default: build
+#+END_SRC
+
+For *(1)*, we rely on a particular behavior of ~make~ regarding the ~include~
+directive. If an operand of ~include~ does not yet exists, ~make~ will search
+for a rule to generate it.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 include bootstrap.mk
 
 Makefile bootstrap.mk scripts/tangle-org.el \
@@ -61,60 +137,124 @@ Makefile bootstrap.mk scripts/tangle-org.el \
 	@echo "  tangle  $<"
 	@${EMACS} $< --batch \
 	   --eval "(require 'org)" \
+	   --eval "(cd (getenv \"ROOT\"))" \
 	   --eval "(setq org-src-preserve-indentation t)" \
-	   --eval "(org-babel-tangle)" 2>/dev/null
+           --eval "(org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))" \
+           --eval "(setq org-confirm-babel-evaluate nil)" \
+	   --eval "(org-babel-tangle)"
 #+END_SRC
 
-* Bootstrapping
+~&:~ is used in place of ~:~ to separate the target from its dependencies in
+this rule to tell to ~make~ that the commands run will generate all these files.
 
-#+NAME: tangle-org
-#+BEGIN_SRC emacs-lisp :tangle (concat (getenv "ROOT") "/scripts/tangle-org.el")
+From now on, the bootstrap process is completed: further generation processes
+will fully be defined using literate programming, with no special treatment for
+its output. For instance, you may not want to use ~soupault~? You can! Just
+modify ~bootstrap.mk~ accordingly.
+
+* Generation Processes
+
+*~cleopatra~* has been designed with extensibility in mind. In particular, it
+should be fairly easy to extend it to support additional input format. In this
+section, we explain how this is achieved.
+
+** Initialization
+
+First, additional global variables are introduced, since ~GENFILES~ is specific
+to *~cleopatra~*. These variables are
+
+- ~GENSASS~ ::
+  List auxiliary ~sass~ files which can be imported by the main ~sass~ files
+  (see [[/posts/meta/Theme/][“Theming and Templating”]]).
+- ~CONTENTS~ ::
+  List generated files which are part of the target website, and acts as inputs
+  for ~soupault~.
+
+and they are initially empty
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk
+GENSASS :=
+CONTENTS :=
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle scripts/tangle-org.el
 (require 'org)
+(cd (getenv "ROOT"))
+(setq org-confirm-babel-evaluate nil)
 (setq org-src-preserve-indentation t)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
 (org-babel-tangle)
 #+END_SRC
 
-#+BEGIN_SRC makefile :tangle (concat (getenv "ROOT") "/bootstrap.mk")
-GENSASS :=
-CONTENTS :=
-GENFILES += org.mk scripts/export-org.el coq.mk \
-            sass.mk ${SASS} templates/main.html \
-            soupault.conf
-
-include org.mk coq.mk sass.mk
-
+#+BEGIN_SRC makefile :tangle bootstrap.mk
 TANGLEARGS := --batch \
-              --load="${ROOT}/scripts/tangle-org.el" \
-              2>/dev/null
+              --load="${ROOT}/scripts/tangle-org.el"
+#+END_SRC
 
+#+NAME: extends
+#+BEGIN_SRC bash :var MK="" :var IN="" :var GF="" :var GS="" :results output :exports none
+cat <<EOF
+include ${MK}
+
+${MK} ${GF} ${GS} \\
+  &: \${CLEODIR}/${IN}
+	@echo "  tangle  \$<"
+	@\${EMACS} $< \${TANGLEARGS}
+
+GENFILES += ${MK} ${GF}
+GENSASS += ${GS}
+EOF
+#+END_SRC
+
+#+BEGIN_SRC makefile :noweb yes
+<<extends(MK="${MK}", MF="${MF}", IN="${IN}", GF="${GF}", GS="${GS}")>>
+#+END_SRC
+
+** Authoring Contents
+
+- Using Coq :: [[/posts/meta/Contents/Coq/][Learn more]]
+- Using Org :: [[/posts/meta/Contents/Org/][Learn more]]
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(MK="coq.mk", IN="Contents/Coq.org", GS="site/style/coq.sass")>>
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
+#+END_SRC
+
+** Theming and Templating
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(MK="theme.mk", IN="Theme.org", GS="site/style/main.sass")>>
+#+END_SRC
+
+** Postprocessing HTML using ~soupault~
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(IN="Soupault.org", GF="soupault.conf")>>
+#+END_SRC
+
+** Wrapping-up
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk
 build : ${CONTENTS} ${GENFILES}
 	@echo "     run  soupault"
 	@soupault
 	@echo "  update  .gitignore"
 	@scripts/update-gitignore.sh ${CONTENTS} ${GENFILES} ${GENSASS}
 
+serve :
+	@echo "   start  a python server"
+	@cd build; python -m http.server 2>/dev/null
+
 clean :
 	@echo "  remove  generated files"
 	@rm -rf ${CONTENTS} ${GENFILES} build/
 
 force : clean build
-
-soupault.conf : ${CLEODIR}/Soupault.org
-	@echo "  tangle  $<"
-	@${EMACS} $< ${TANGLEARGS}
-
-org.mk scripts/export-org.el site/style/org.sass \
-coq.mk site/style/coq.sass \
-  &: ${CLEODIR}/Contents.org
-	@echo "  tangle  $<"
-	@${EMACS} $< ${TANGLEARGS}
-
-sass.mk ${SASS} templates/main.html \
-  &: ${CLEODIR}/Theme.org
-	@echo "  tangle  $<"
-	@${EMACS} $< ${TANGLEARGS}
-
-.PHONY: clean build force default
 #+END_SRC
 
 # Local Variables:
