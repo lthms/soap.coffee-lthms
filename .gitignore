@@ -31,6 +31,7 @@ site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
 site/style/main.css
 bootstrap.mk
+scripts/update-gitignore.sh
 coq.mk
 org.mk
 scripts/export-org.el

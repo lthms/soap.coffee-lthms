@@ -14,12 +14,12 @@ init-log:
 
 .PHONY: init-log default build
 
-GENFILES += bootstrap.mk 
+GENFILES += bootstrap.mk scripts/update-gitignore.sh
 GENSASS += 
 
 include bootstrap.mk
 
-bootstrap.mk   \
+bootstrap.mk scripts/update-gitignore.sh  \
   &: ${CLEODIR}/Bootstrap.org
 	@echo "  tangle  $<"
 	@${EMACS} $< ${TANGLE}
