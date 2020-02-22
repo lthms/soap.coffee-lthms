@@ -10,7 +10,8 @@ GENSASS :=
 default: init-log build
 
 init-log:
-	@echo "==========[CLEOPATRA BUILD LOG]==========" > build.log
+	@echo "==============[CLEOPATRA BUILD LOG]==============" \
+	    > build.log
 
 .PHONY: init-log default build
 
