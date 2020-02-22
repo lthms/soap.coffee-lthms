@@ -30,14 +30,13 @@ site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
 site/style/main.css
-scripts/tangle-org.el
 bootstrap.mk
 coq.mk
 org.mk
 scripts/export-org.el
 emacs.d
-site/style/main.sass
 theme.mk
+site/style/main.sass
 soupault.conf
 site/style/coq.sass
 site/style/coq.sass

@@ -147,6 +147,10 @@ body#default
 
         .TODO
             background: #fae7c5
+        .REMARK
+            background: #d4f2fc
+
+        .TODO, .REMARK
             padding: 1em 1em 1em 1em
 
             p

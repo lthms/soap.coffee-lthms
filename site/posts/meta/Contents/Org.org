@@ -1,0 +1,74 @@
+* Author Guidelines
+
+* Under the Hood
+
+#+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
+(require 'package)
+
+(setq user-emacs-directory (concat (getenv "ROOT") "/emacs.d"))
+(setq package-user-dir (concat (getenv "ROOT") "/emacs.d"))
+(setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
+
+(package-initialize)
+
+(or (file-exists-p package-user-dir)
+    (package-refresh-contents))
+
+(defun ensure-package-installed (&rest packages)
+  "Ensure every PACKAGES is installed.
+
+Ask for installation if it’s
+not.  Return a list of installed packages or nil for every skipped
+package."
+  (mapcar
+   (lambda (package)
+     (if (package-installed-p package)
+         nil
+       (package-install package))
+     package)
+   packages))
+
+(ensure-package-installed 'use-package)
+(eval-when-compile (require 'use-package))
+
+(use-package org :ensure t)
+(use-package htmlize :ensure t)
+(use-package sass-mode :ensure t :defer t)
+(use-package haskell-mode :ensure t :defer t)
+(use-package github-modern-theme :ensure t :defer t
+  :init
+  (load-theme 'github-modern t))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
+(org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))
+(setq org-src-preserve-indentation t)
+(setq org-confirm-babel-evaluate nil)
+(setq org-export-with-toc nil)
+(org-html-export-to-html nil nil nil t)
+#+END_SRC
+
+#+BEGIN_SRC makefile :tangle org.mk
+ORG_POSTS := $(shell find site/ -name "*.org")
+
+CONTENTS += $(ORG_POSTS:.org=.html)
+
+EXPORT := --batch  --load="${ROOT}/scripts/export-org.el" 2>> build.log
+
+%.html : %.org scripts/export-org.el
+	@echo "  export  $*.org"
+	@${EMACS} $< ${EXPORT}
+#+END_SRC
+
+#+BEGIN_SRC sass :tangle site/style/org.sass
+.footpara
+    display: inline
+    margin-left: .2em
+
+.section-number-2:after, .section-number-3:after, .section-number-4:after
+    content: ". "
+
+dl dd p
+    margin-top: 0
+#+END_SRC

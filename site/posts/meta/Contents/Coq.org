@@ -1,0 +1,42 @@
+* Author Guidelines
+
+* Under the Hood
+
+#+BEGIN_SRC makefile :tangle coq.mk
+COQ_POSTS := $(shell find site/ -name "*.v")
+CONTENTS += $(COQ_POSTS:.v=.html)
+GENSASS += site/style/coq.sass
+
+COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
+COQCARG := -async-proofs-cache force \
+           -w -custom-entry-overriden
+COQDOCARG := --no-index --charset utf8 --short \
+             --body-only --coqlib "${COQLIB}"
+
+%.html : %.v
+	@echo "  export  $*.v"
+	@coqc ${COQCARG} $<
+	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
+	@sed -i -e 's/href="$(shell basename $@)\#/href="\#/g' $@
+	@rm -f $(shell dirname $<)/coqdoc.css
+#+END_SRC
+
+#+BEGIN_SRC sass :tangle site/style/coq.sass
+div.code
+    white-space: nowrap
+    overflow-x: visible
+
+.code a[href]
+    text-decoration: none
+
+    .fa-external-link
+      display: none
+
+.paragraph
+    margin-top: 1em
+    margin-bottom: 1em
+#+END_SRC
+
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:

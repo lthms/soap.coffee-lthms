@@ -1,21 +1,25 @@
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
 EMACS := ROOT="${ROOT}" emacs
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
 
-GENFILES := scripts/tangle-org.el bootstrap.mk
+GENFILES :=
+CONTENTS :=
+GENSASS :=
 
-default:
-	@make build
+default: init-log build
+
+init-log:
+	@echo "==========[CLEOPATRA BUILD LOG]==========" > build.log
+
+.PHONY: init-log default build
+
+GENFILES += bootstrap.mk 
+GENSASS += 
 
 include bootstrap.mk
 
-Makefile bootstrap.mk scripts/tangle-org.el \
+bootstrap.mk   \
   &: ${CLEODIR}/Bootstrap.org
 	@echo "  tangle  $<"
-	@${EMACS} $< --batch \
-	   --eval "(require 'org)" \
-	   --eval "(cd (getenv \"ROOT\"))" \
-	   --eval "(setq org-src-preserve-indentation t)" \
-           --eval "(org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))" \
-           --eval "(setq org-confirm-babel-evaluate nil)" \
-	   --eval "(org-babel-tangle)"
+	@${EMACS} $< ${TANGLE}

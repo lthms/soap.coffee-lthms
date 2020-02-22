@@ -90,92 +90,7 @@ For this website, these constants are defined as follows.
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
 EMACS := ROOT="${ROOT}" emacs
-#+END_SRC
-
-We then introduce a variable that “generation” components will populate with
-their output files (using ~+=~).
-
-- ~GENFILES~ ::
-  List *~cleopatra~* Makefiles and scripts tangled throughout the generation
-  process (with the notable exception of ~Makefile~ itself).
-
-~GENFILES~ is initiated with files obtained after tangling this very document.
-
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
-GENFILES := scripts/tangle-org.el bootstrap.mk
-#+END_SRC
-
-#+BEGIN_TODO
-One desired feature for *~cleopatra~* would be to let it populate ~GENFILES~
-automatically, by looking for relevant ~:tangle~ directives. The challenge lies
-in the “relevant” part: the risk exists that we have false posivite. Whether or
-not it is an issue remains an open question.
-#+END_TODO
-
-** Bootstrapping
-
-The core purpose of ~Makefile~ remains *(1)* to bootstrap the generation process
-by generating ~bootstrap.mk~, and *(2)* to enforce the ~build~ rules hopefully
-defined by the latter is called.
-
-For *(2)*, we introduce a ~default~ rule with ~build~ as a
-dependency.
-
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
-default:
-	@make build
-#+END_SRC
-
-For *(1)*, we rely on a particular behavior of ~make~ regarding the ~include~
-directive. If an operand of ~include~ does not yet exists, ~make~ will search
-for a rule to generate it.
-
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
-include bootstrap.mk
-
-Makefile bootstrap.mk scripts/tangle-org.el \
-  &: ${CLEODIR}/Bootstrap.org
-	@echo "  tangle  $<"
-	@${EMACS} $< --batch \
-	   --eval "(require 'org)" \
-	   --eval "(cd (getenv \"ROOT\"))" \
-	   --eval "(setq org-src-preserve-indentation t)" \
-           --eval "(org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))" \
-           --eval "(setq org-confirm-babel-evaluate nil)" \
-	   --eval "(org-babel-tangle)"
-#+END_SRC
-
-~&:~ is used in place of ~:~ to separate the target from its dependencies in
-this rule to tell to ~make~ that the commands run will generate all these files.
-
-From now on, the bootstrap process is completed: further generation processes
-will fully be defined using literate programming, with no special treatment for
-its output. For instance, you may not want to use ~soupault~? You can! Just
-modify ~bootstrap.mk~ accordingly.
-
-* Generation Processes
-
-*~cleopatra~* has been designed with extensibility in mind. In particular, it
-should be fairly easy to extend it to support additional input format. In this
-section, we explain how this is achieved.
-
-** Initialization
-
-First, additional global variables are introduced, since ~GENFILES~ is specific
-to *~cleopatra~*. These variables are
-
-- ~GENSASS~ ::
-  List auxiliary ~sass~ files which can be imported by the main ~sass~ files
-  (see [[/posts/meta/Theme/][“Theming and Templating”]]).
-- ~CONTENTS~ ::
-  List generated files which are part of the target website, and acts as inputs
-  for ~soupault~.
-
-and they are initially empty
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk
-GENSASS :=
-CONTENTS :=
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/tangle-org.el
@@ -189,29 +104,110 @@ CONTENTS :=
 (org-babel-tangle)
 #+END_SRC
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk
-TANGLEARGS := --batch \
-              --load="${ROOT}/scripts/tangle-org.el"
+We then introduce a variable that “generation” components will populate with
+their output files (using ~+=~).
+
+- ~GENFILES~ ::
+  List *~cleopatra~* Makefiles and scripts tangled throughout the generation
+  process (with the notable exception of ~Makefile~ itself).
+- ~GENSASS~ ::
+  List auxiliary ~sass~ files which can be imported by the main ~sass~ files
+  (see [[/posts/meta/Theme/][“Theming and Templating”]]).
+- ~CONTENTS~ ::
+  List generated files which are part of the target website, and acts as inputs
+  for ~soupault~.
+
+~GENFILES~ is initiated with files obtained after tangling this very document.
+
+#+BEGIN_SRC makefile :tangle Makefile
+GENFILES :=
+CONTENTS :=
+GENSASS :=
 #+END_SRC
 
+#+BEGIN_REMARK
+One desired feature for *~cleopatra~* would be to let it populate ~GENFILES~ and
+~GENSASS~ automatically, by looking for relevant ~:tangle~ directives. The
+challenge lies in the “relevant” part: the risk exists that we have false
+posivite. Whether or not it is an issue remains an open question.
+#+END_REMARK
+
+** Bootstrapping
+
+The core purpose of ~Makefile~ remains *(1)* to bootstrap the generation process
+by generating and loading ~bootstrap.mk~, and *(2)* to enforce the ~build~ rules
+hopefully defined by the latter is called.
+
+For *(2)*, we introduce a ~default~ rule with ~build~ as a
+dependency.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+default: init-log build
+
+init-log:
+	@echo "==========[CLEOPATRA BUILD LOG]==========" > build.log
+
+.PHONY: init-log default build
+#+END_SRC
+
+For *(1)*, we rely on a particular behavior of ~make~ regarding the ~include~
+directive. If an operand of ~include~ does not yet exists, ~make~ will search
+for a rule to generate it.
+
+#+BEGIN_SRC makefile :noweb yes
+<<extends(MK="${MK}", MF="${MF}", IN="${IN}", GF="${GF}", GS="${GS}")>>
+#+END_SRC
+
+~&:~ is used in place of ~:~ to separate the target from its dependencies in
+this rule to tell to ~make~ that the commands run will generate all these files.
+
+#+BEGIN_TODO
+Introduce ~noweb~ and ~extends~.
+#+END_TODO
+
 #+NAME: extends
-#+BEGIN_SRC bash :var MK="" :var IN="" :var GF="" :var GS="" :results output :exports none
+#+BEGIN_SRC bash :var MK="" :var IN="" :var GF="" :var GS="" :results output
 cat <<EOF
+GENFILES += ${MK} ${GF}
+GENSASS += ${GS}
+
 include ${MK}
 
 ${MK} ${GF} ${GS} \\
   &: \${CLEODIR}/${IN}
 	@echo "  tangle  \$<"
-	@\${EMACS} $< \${TANGLEARGS}
-
-GENFILES += ${MK} ${GF}
-GENSASS += ${GS}
+	@\${EMACS} $< \${TANGLE}
 EOF
 #+END_SRC
 
-#+BEGIN_SRC makefile :noweb yes
-<<extends(MK="${MK}", MF="${MF}", IN="${IN}", GF="${GF}", GS="${GS}")>>
+The twist is, we derive the rule to tangle ~bootstrap.mk~ using
+~<<extends>>~.
+
+#+BEGIN_SRC verbatim
+<<extends(IN="Bootstrap.org", MK="bootstrap.mk")>>
 #+END_SRC
+
+This means that modifying code block of ~<<extends>>~ is as “dangerous” as
+modifying ~Makefile~ itself. Keep that in mind if you start hacking
+*~cleopatra~*!
+
+For purpose of illustrations, here is the snippet generated by Babel from the
+previous source block.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb yes
+<<extends(IN="Bootstrap.org", MK="bootstrap.mk")>>
+#+END_SRC
+
+From now on, the bootstrap process is completed: further generation processes
+will fully be defined using literate programming, with no special treatment for
+its output. For instance, you may not want to use ~soupault~? You can! Just
+modify ~bootstrap.mk~ accordingly.
+
+* Generation Processes
+
+*~cleopatra~* has been designed with extensibility in mind. In particular, it
+should be fairly easy to extend it to support additional input format. In this
+section, we explain how this is achieved.
 
 ** Authoring Contents
 
@@ -256,6 +252,8 @@ clean :
 	@rm -rf ${CONTENTS} ${GENFILES} build/
 
 force : clean build
+
+.PHONY : serve clean force build
 #+END_SRC
 
 # Local Variables:
