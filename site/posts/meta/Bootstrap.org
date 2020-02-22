@@ -122,7 +122,8 @@ For *(2)*, we introduce a ~default~ rule with ~build~ as a
 dependency.
 
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
-default: build
+default:
+	@make build
 #+END_SRC
 
 For *(1)*, we rely on a particular behavior of ~make~ regarding the ~include~

@@ -4,7 +4,8 @@ EMACS := ROOT="${ROOT}" emacs
 
 GENFILES := scripts/tangle-org.el bootstrap.mk
 
-default: build
+default:
+	@make build
 
 include bootstrap.mk
 
