@@ -87,19 +87,6 @@ For this website, these constants are defined as follows.
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
-EMACS := ROOT="${ROOT}" emacs
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle scripts/tangle-org.el
-(require 'org)
-(cd (getenv "ROOT"))
-(setq org-confirm-babel-evaluate nil)
-(setq org-src-preserve-indentation t)
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((shell . t)))
-(org-babel-tangle)
 #+END_SRC
 
 We then introduce a variable that “generation” components will populate with
@@ -115,9 +102,7 @@ their output files (using ~+=~).
   List generated files which are part of the target website, and acts as inputs
   for ~soupault~.
 
-~GENFILES~ is initiated with files obtained after tangling this very document.
-
-#+BEGIN_SRC makefile :tangle Makefile
+#+BEGIN_SRC makefile :tangle Makefile :exports none
 GENFILES :=
 CONTENTS :=
 GENSASS :=
@@ -129,6 +114,36 @@ One desired feature for *~cleopatra~* would be to let it populate ~GENFILES~ and
 challenge lies in the “relevant” part: the risk exists that we have false
 posivite. Whether or not it is an issue remains an open question.
 #+END_REMARK
+
+** Easy Tangling of Org Documents
+
+We provide the necessary bits to easily tangle Org documents.
+
+The configuration of Babel is done using an emacs lisp script called
+~tangle-org.el~ whose status is similar to ~Makefile~. It is part of the
+bootstrap process, and therefore lives “outside” of *~cleopatra~* (it is not
+deleted with ~make clean~ for instance).  However, it is overwritten. If you try
+to modify it and find that *~cleopatra~* does not work properly, you should
+restore it using ~git~.
+
+#+BEGIN_SRC emacs-lisp :tangle scripts/tangle-org.el
+(require 'org)
+(cd (getenv "ROOT"))
+(setq org-confirm-babel-evaluate nil)
+(setq org-src-preserve-indentation t)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+(org-babel-tangle)
+#+END_SRC
+
+We define variables that ensure that the ~ROOT~ environment variable is set and
+~tangle-org.el~ is loaded when using Emacs.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+EMACS := ROOT="${ROOT}" emacs
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
+#+END_SRC
 
 ** Bootstrapping
 

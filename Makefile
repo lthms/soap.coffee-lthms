@@ -1,11 +1,12 @@
 ROOT := $(shell pwd)
 CLEODIR := site/posts/meta
-EMACS := ROOT="${ROOT}" emacs
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
 
 GENFILES :=
 CONTENTS :=
 GENSASS :=
+
+EMACS := ROOT="${ROOT}" emacs
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
 
 default: init-log build
 
