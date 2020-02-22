@@ -234,10 +234,14 @@ section, we explain how this is achieved.
 <<extends(IN="Soupault.org", GF="soupault.conf")>>
 #+END_SRC
 
+#+BEGIN_SRC makefile :tangle bootstrap.mk
+CONTENTS += soupault.conf
+#+END_SRC
+
 ** Wrapping-up
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk
-build : ${CONTENTS} ${GENFILES}
+build : ${CONTENTS}
 	@echo "     run  soupault"
 	@soupault
 	@echo "  update  .gitignore"

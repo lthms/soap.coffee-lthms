@@ -30,6 +30,7 @@ site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
 site/style/main.css
+soupault.conf
 bootstrap.mk
 scripts/update-gitignore.sh
 coq.mk
