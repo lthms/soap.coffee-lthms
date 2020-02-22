@@ -160,7 +160,8 @@ for a rule to generate it.
 #+END_SRC
 
 ~&:~ is used in place of ~:~ to separate the target from its dependencies in
-this rule to tell to ~make~ that the commands run will generate all these files.
+this rule to tell to ~make~ that the runned commands will generate all these
+files.
 
 #+BEGIN_TODO
 Introduce ~noweb~ and ~extends~.
@@ -206,20 +207,36 @@ modify ~bootstrap.mk~ accordingly.
 
 * Generation Processes
 
-*~cleopatra~* has been designed with extensibility in mind. In particular, it
-should be fairly easy to extend it to support additional input format. In this
-section, we explain how this is achieved.
+Thanks to ~<<extends>>~, *~cleopatra~* is easily extensible. In this section, we
+enumerate the generation processes that are currently used to generate the
+website you are reading.
 
 ** Authoring Contents
 
-- Using Coq :: [[/posts/meta/Contents/Coq/][Learn more]]
-- Using Org :: [[/posts/meta/Contents/Org/][Learn more]]
+The fact that *~cleopatra~* is a literate program which gradually generates
+itself was not intended: it is a consequence of my desire to be able to easily
+use whatever format I so desire for writing my contents, and Org documents in
+particular.
+
+In the present website, contents can be written in the following format:
+
+- Regular Coq files ::
+  Coq is a system which allows to write machine-checked proofs, and it comes
+  with a source “prettifier” called ~coqdoc~.
+  [[/posts/meta/Contents/Coq/][Learn more about the generation process for Coq files​]]
+- Org documents ::
+  Emacs comes with a powerful editing mode called [[https://orgmode.org/][Org mode]], and Org documents
+  are really pleasant to work with.
+  [[/posts/meta/Contents/Org/][Learn more about the generation process for Org documents]]
+
+If you want *~cleopatra~* to support more input formats, you have to
+
+1. Create a org file which, once tangled, provide a dedicated makefile
+2. Edit this file (~Bootstrap.org~) here, and use ~<<extends>>~ to make sure it
+   is actually tangled when necessary
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(MK="coq.mk", IN="Contents/Coq.org", GS="site/style/coq.sass")>>
-#+END_SRC
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
 #+END_SRC
 

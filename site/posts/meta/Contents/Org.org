@@ -69,6 +69,8 @@ EXPORT := --batch  --load="${ROOT}/scripts/export-org.el" 2>> build.log
 .section-number-2:after, .section-number-3:after, .section-number-4:after
     content: ". "
 
+dl dt
+    font-weight: bold
 dl dd p
     margin-top: 0
 #+END_SRC
