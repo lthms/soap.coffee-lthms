@@ -35,8 +35,6 @@ clean~.
 This is similar to your computer: it requires a firmware to boot, whose purpose
 —in a nutshell— is to find and load an operating system.
 
-Here, the generation process proceeds as follows:
-
 Modifying the content of ~Makefile~ in this document /will/ modify
 ~Makefile~. This means one can easily put *~cleopatra~* into an inconsistent
 state, which would prevent further generation. This is why the generated
