@@ -91,11 +91,12 @@ GENAUX += .emacs emacs.d/
 
 .org-src-container
     width: 100%
-    x-overflow: auto
+    overflow-x: auto
     scrollbar-width: thin
 
-dl dt
+dl
+  dt
     font-weight: bold
-dl dd p
+  dd p
     margin-top: 0
 #+END_SRC
