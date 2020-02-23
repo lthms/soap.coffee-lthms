@@ -1,5 +1,5 @@
 ROOT := $(shell pwd)
-CLEODIR := site/posts/meta
+CLEODIR := site/cleopatra
 
 GENFILES :=
 CONTENTS :=

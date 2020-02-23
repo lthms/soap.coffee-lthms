@@ -1,0 +1,42 @@
+#+BEGIN_EXPORT html
+<h1><code>cleopatra</code></h1>
+#+END_EXPORT
+
+The generation of [[https://soap.coffee/~lthms][my personal website]] is far from being trivial, and requires a
+combination of —probably too— many tools. It turned out that some choices I have
+made early on gave to the build toolchain I ended up writing a pretty nice
+property: I could easily integrate its code to the very website it was conceived
+to build, by means of [[http://www.literateprogramming.com/][literate programming]]!
+
+The document you are reading is just that: the literate program of my home-grown
+build toolchain ---called *~cleopatra~*---. The motivations behind this name are
+twofold.
+
+- I wanted to follow the example of [[https://soupault.neocities.org/][~soupault~]], named after [[https://fr.wikipedia.org/wiki/Philippe_Soupault][a famous personality]].
+- My main objective when I started working on this “project” was to be able to
+  easily use whatever format I wanted to author my contents. Did you know that
+  Cleopatra was a reputed polyglot (at least according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
+
+#+BEGIN_EXPORT html
+<article class="index">
+#+END_EXPORT
+
+#+BEGIN_TODO
+*~cleopatra~* is a literate program whose “program” part is working as
+expected. Its “literate” part still requires some work, though.
+#+END_TODO
+
+- [[./Bootstrap.org][Bootstrapping an Extensible Toolchain]] ::
+  *~cleopatra~* is an extensible toolchain that builds a static website /and/ it
+  is part of this very website. This means *~cleopatra~* is bootstrapped: it
+  generates iteself.
+
+- [[./Contents.org][Authoring Content and HTML Generation ~(WIP)~]] ::
+
+- [[./Soupault.org][Soupault Configuration ~(WIP)~]] ::
+
+- [[./Theme.org][Theming and Templating ~(WIP)~]] ::
+
+#+BEGIN_EXPORT html
+</article>
+#+END_EXPORT

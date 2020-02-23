@@ -67,16 +67,15 @@ One of my goal with this website is for it to /feel/ simple, but the truth is
 under the hood it is generated from a bunch of files using a not-that-simple
 process.
 
-- [[./meta/][A Series on Generating this Static Website]] ::
+- [[/cleopatra/][A Series on Generating this Static Website]] ::
   The toolchain behind the generation of this website ---called *~cleopatra~*---
-  is a literate programming document which build itself in addition to the HTML
-  files composing this corner of the Internet.
+  is a literate program which build itself in addition to the HTML files
+  composing this corner of the Internet. This series /is/ *~cleopatra~*.
 
-  1. [[./meta/Bootstrap.html][Bootstrapping an Extensible Toolchain]]
-  2. [[./meta/Contents.html][Authoring Contents and HTML Generation ~(WIP)~]]
-  3. [[./meta/Soupault.html][Configuring ~soupault~ ~(WIP)~]]
-  4. [[./meta/Theme.html][Theming and Templating ~(WIP)~]]
-
+  1. [[/cleopatra/Bootstrap.html][Bootstrapping an Extensible Toolchain]]
+  2. [[/cleopatra/Contents.html][Authoring Contents and HTML Generation ~(WIP)~]]
+  3. [[/cleopatra/Soupault.html][Configuring ~soupault~ ~(WIP)~]]
+  4. [[/cleopatra/Theme.html][Theming and Templating ~(WIP)~]]
 
 - [[./Thanks.html][Thanks!]] ::
   If it were not for many awesome FOSS projects, this corner of the Internet

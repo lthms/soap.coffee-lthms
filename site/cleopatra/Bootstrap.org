@@ -79,7 +79,7 @@ For this website, these constants are defined as follows.
 
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 ROOT := $(shell pwd)
-CLEODIR := site/posts/meta
+CLEODIR := site/cleopatra
 #+END_SRC
 
 We then introduce a variable that “generation” components will populate with
