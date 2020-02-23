@@ -7,8 +7,9 @@
 
 (setq user-emacs-directory (concat (getenv "ROOT") "/emacs.d"))
 (setq package-user-dir (concat (getenv "ROOT") "/emacs.d"))
-(setq package-archives '(("gnu"   . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
+(setq package-archives
+      '(("gnu"   . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
 
 (package-initialize)
 
@@ -43,11 +44,14 @@
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
 (require 'packages)
 
-(org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
 (setq org-src-preserve-indentation t)
 (setq org-src-fontify-natively t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-toc nil)
+
 (org-html-export-to-html nil nil nil t)
 #+END_SRC
 
@@ -66,7 +70,8 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 	@${EMACS} ${INIT}
 	@touch .emacs
 
-%.html : %.org scripts/packages.el scripts/export-org.el .emacs org.mk
+%.html : %.org scripts/packages.el scripts/export-org.el \
+         .emacs org.mk
 	@echo "  export  $*.org"
 	@${EMACS} $< ${EXPORT}
 
@@ -79,7 +84,9 @@ GENAUX += .emacs emacs.d/
     display: inline
     margin-left: .2em
 
-.section-number-2:after, .section-number-3:after, .section-number-4:after
+.section-number-2:after,
+.section-number-3:after,
+.section-number-4:after
     content: ". "
 
 .org-src-container

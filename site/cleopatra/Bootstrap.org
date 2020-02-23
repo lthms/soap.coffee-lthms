@@ -133,7 +133,8 @@ custom Emacs that you build yourself if you so desire.
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" \
+          2>> build.log
 #+END_SRC
 
 ** Bootstrapping
@@ -149,7 +150,7 @@ dependency.
 default: init-log build
 
 init-log:
-	@echo "==============[CLEOPATRA BUILD LOG]==============" \
+	@echo "===========[CLEOPATRA BUILD LOG]===========" \
 	    > build.log
 
 .PHONY: init-log default build

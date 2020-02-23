@@ -121,6 +121,11 @@ prefix_urls(HTML.select(page, "script"), "src", prefix_url)
 ** Marking External Links
 
 #+BEGIN_SRC lua :tangle plugins/external-urls.lua
+function mark(name)
+  return '<i class="url-mark fa fa-' .. name ..
+         '" aria-hidden="true"></i>'
+end
+
 links = HTML.select(page, "a")
 
 index, link = next(links)
@@ -130,10 +135,10 @@ while index do
 
   if href then
     if Regex.match(href, "^https?://github.com") then
-      icon = HTML.parse("<i class=\"url-mark fa fa-github\" aria-hidden=\"true\"></i>")
+      icon = HTML.parse(mark('github'))
       HTML.append_child(link, icon)
     elseif Regex.match(href, "^https?://") then
-      icon = HTML.parse("<i class=\"url-mark fa fa-external-link\" aria-hidden=\"true\"></i>")
+      icon = HTML.parse(mark('external-link'))
       HTML.append_child(link, icon)
     end
   end

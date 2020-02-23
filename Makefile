@@ -8,12 +8,13 @@ GENSASS :=
 
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
+TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" \
+          2>> build.log
 
 default: init-log build
 
 init-log:
-	@echo "==============[CLEOPATRA BUILD LOG]==============" \
+	@echo "===========[CLEOPATRA BUILD LOG]===========" \
 	    > build.log
 
 .PHONY: init-log default build
