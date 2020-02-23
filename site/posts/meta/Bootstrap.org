@@ -90,8 +90,8 @@ their output files (using ~+=~).
   List *~cleopatra~* Makefiles and scripts tangled throughout the generation
   process (with the notable exception of ~Makefile~ itself).
 - ~GENSASS~ ::
-  List auxiliary ~sass~ files which can be imported by the main ~sass~ files
-  (see [[/posts/meta/Theme/][“Theming and Templating”]]).
+  List auxiliary ~sass~ files which can later be imported by the main ~sass~
+  files (see [[./Theme.org][“Theming and Templating”]]).
 - ~CONTENTS~ ::
   List generated files which are part of the target website, and acts as inputs
   for ~soupault~.
@@ -207,7 +207,7 @@ can insert the result of the evaluation of =extends= inside another source block
 when the latter is tangled.
 
 The twist is, we derive the rule to tangle ~bootstrap.mk~ using
-~<<extends>>~. The syntax is the following:
+=extends=. The syntax is the following:
 
 #+BEGIN_SRC verbatim
 <<extends(IN="Bootstrap.org", MK="bootstrap.mk", GF="scripts/update-gitignore.sh")>>
@@ -220,7 +220,7 @@ previous source block.
 <<extends(IN="Bootstrap.org", MK="bootstrap.mk", GF="scripts/update-gitignore.sh")>>
 #+END_SRC
 
-Beware that, as a consequence, modifying code block of ~<<extends>>~ is as
+Beware that, as a consequence, modifying code block of =extends= is as
 “dangerous” as modifying ~Makefile~ itself. Keep that in mind if you start
 hacking *~cleopatra~*!
 
@@ -231,7 +231,7 @@ modify ~bootstrap.mk~ accordingly.
 
 * Generation Processes
 
-Thanks to ~<<extends>>~, *~cleopatra~* is easily extensible. In this section, we
+Thanks to =extends=, *~cleopatra~* is easily extensible. In this section, we
 enumerate the generation processes that are currently used to generate the
 website you are reading.
 
@@ -247,16 +247,16 @@ In the present website, contents can be written in the following format:
 - Regular Coq files ::
   Coq is a system which allows to write machine-checked proofs, and it comes
   with a source “prettifier” called ~coqdoc~.
-  [[/posts/meta/Contents/Coq/][Learn more about the generation process for Coq files​]]
+  [[./Contents/Coq.org][Learn more about the generation process for Coq files​]]
 - Org documents ::
   Emacs comes with a powerful editing mode called [[https://orgmode.org/][Org mode]], and Org documents
   are really pleasant to work with.
-  [[/posts/meta/Contents/Org/][Learn more about the generation process for Org documents]]
+  [[./Contents/Org.org][Learn more about the generation process for Org documents]]
 
 If you want *~cleopatra~* to support more input formats, you have to
 
 1. Create a org file which, once tangled, provide a dedicated makefile
-2. Edit this file (~Bootstrap.org~) here, and use ~<<extends>>~ to make sure it
+2. Edit this file (~Bootstrap.org~) here, and use =extends= to make sure it
    is actually tangled when necessary
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none

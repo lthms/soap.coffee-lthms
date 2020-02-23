@@ -3,7 +3,7 @@
     This is the second article (initially published on #<span
     class="time">January 01, 2017</span>#) of a series of two on how to write
     strongly-specified functions in Coq. You can read the previous part #<a
-    href="/posts/StronglySpecifiedFunctions">here</a>#. # *)
+    href="./StronglySpecifiedFunctions.html">here</a>#. # *)
 
 (** #<div id="generate-toc"></div>#
 

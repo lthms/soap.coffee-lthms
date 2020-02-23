@@ -23,7 +23,7 @@
   default_template = "templates/main.html"
   content_selector = "main"
   doctype = "<!DOCTYPE html>"
-  clean_urls = true
+  clean_urls = false
 
 [widgets.page-title]
   widget = "title"

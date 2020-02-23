@@ -3,7 +3,7 @@
     This is the first article (initially published on #<span
     class="time">January 11, 2015</span>#) of a series of two on how to write
     strongly-specified functions in Coq. You can read the next part #<a
-    href="/posts/StronglySpecifiedFunctionsProgram">here</a>#. *)
+    href="./StronglySpecifiedFunctionsProgram.html">here</a>#. *)
 
 (** I started to play with Coq, the interactive theorem prover
     developed by Inria, a few weeks ago. It is a very powerful tool,

@@ -17,19 +17,19 @@ my contents. Did you know that Cleopatra was a reputed polyglot (at least
 according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
 
 #+BEGIN_EXPORT html
-<div id="history">site/posts/meta.org</div>
+<div id="history">site/posts/meta/index.org</div>
 <article class="index">
 #+END_EXPORT
 
 *Beware* this series is far from being complete.
 
-- [[/posts/meta/Bootstrap][Bootstrapping an Extensible Toolchain ~(WIP)~]] ::
+- [[./Bootstrap.org][Bootstrapping an Extensible Toolchain]] ::
 
-- [[/posts/meta/Contents][Authoring Content and HTML Generation ~(WIP)~]] ::
+- [[./Contents.org][Authoring Content and HTML Generation ~(WIP)~]] ::
 
-- [[/posts/meta/Theme][Theming and Templating ~(WIP)~]] ::
+- [[./Soupault.org][Soupault Configuration ~(WIP)~]] ::
 
-- [[/posts/meta/Soupault/][Soupault Configuration ~(WIP)~]] ::
+- [[./Theme.org][Theming and Templating ~(WIP)~]] ::
 
 #+BEGIN_EXPORT html
 </article>
