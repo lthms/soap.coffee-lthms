@@ -68,8 +68,8 @@ $text-fg-color: #505050
 $primary-color: black
 $todo-bg: #e4d3b3
 $todo-fg: #494130
-$remark-bg: #d4f2fc
-$remark-fg: $text-fg-color
+$remark-bg: #c5dbe2
+$remark-fg: #4d575e
 
 *
   box-sizing: border-box
@@ -152,7 +152,7 @@ body#default
             color: $todo-fg
         .REMARK
             background: $remark-bg
-            background: $remark-fg
+            color: $remark-fg
 
         .TODO, .REMARK
             padding: 1em 1em 1em 1em

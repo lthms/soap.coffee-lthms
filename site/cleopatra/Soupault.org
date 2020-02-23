@@ -2,6 +2,8 @@
 <h1><code>soupault</code> Configuration</h1>
 #+END_EXPORT
 
+#+TOC: headlines 2
+
 * General Settings
 
 #+NAME: prefix
@@ -289,7 +291,67 @@ https://code.soap.coffee/writing/lthms.git
   action = "replace_content"
 #+END_SRC
 
-** Preprocessing Mathematics
+** Rendering Equations Offline
+
+*** User instructions
+
+Inline equations written using the @@html:<span class="imath">\LaTeX</span>@@
+syntax can be rendered once and for all by ~soupault~. For instance,
+
+#+BEGIN_SRC html
+<span class="imath">\LaTeX</span>
+#+END_SRC
+
+This needs that you need to be able to use raw HTML in your input files.
+
+*** Implementation details
+
+We will use [[https://katex.org][@@html:<span class="imath">\KaTeX</span>@@]] to render equations
+offline. @@html:<span class="imath">\KaTeX</span>@@ availability on most systems
+is unlikely, but it is part of [[https://www.npmjs.com/package/katex][npm]], so we can define a minimal ~package.json~
+file to fetch it automatically.
+
+#+BEGIN_SRC json :tangle package.json
+{
+  "private": true,
+  "devDependencies": {
+    "katex": "^0.11.1"
+  }
+}
+#+END_SRC
+
+We introduce a Makefile recipe to call ~npm install~. This command produces a
+file called ~package-lock.json~ that we add to ~GENFILES~ to ensure @@html:<span
+class="imath">\KaTeX</span>@@ will be available when ~soupault~ is called.
+
+#+BEGIN_REMARK
+If ~Soupault.org~ has been modified since the last generation, Babel will
+generate ~package.json~ again. However, if the modifications of ~Soupault.org~
+do not concern ~package.json~, then ~npm install~ will not modify
+~package-lock.json~ and its “last modified” time will not be updated. This means
+that the next time ~make~ will be used, it will replay this recipe again. As a
+consequence, we systematically ~touch~ ~packase-lock.json~ to satisfy ~make~.
+#+END_REMARK
+
+#+BEGIN_SRC makefile :tangle soupault.mk
+package-lock.json : package.json
+	@echo "    init  npm packages"
+	@npm install
+	@touch $@
+
+GENFILES += package-lock.json
+GENAUX += node_modules/
+#+END_SRC
+
+Once installed and available, @@html:<span class="imath">\KaTeX</span>@@ is
+really simple to use. The following script reads (synchronously!) the standard
+input, renders it using @@html:<span class="imath">\KaTeX</span>@@ and outputs
+the resut to the standard output.
+
+#+BEGIN_TODO
+This script should be generalized to handle both display and inline
+mode. Currently, only inline mode is supported.
+#+END_TODO
 
 #+BEGIN_SRC js :tangle scripts/katex.js
 var katex = require("katex");
@@ -303,33 +365,22 @@ var html = katex.renderToString(String.raw`${input}`, {
 console.log(html)
 #+END_SRC
 
-#+BEGIN_SRC json :tangle package.json
-{
-  "private": true,
-  "devDependencies": {
-    "katex": "^0.11.1"
-  }
-}
-#+END_SRC
-
-#+BEGIN_SRC makefile :tangle soupault.mk
-package-lock.json : package.json
-	@echo "    init  npm packages"
-	@npm install
-
-GENFILES += package-lock.json
-GENAUX += node_modules/
-#+END_SRC
-
-#+BEGIN_SRC sass :tangle site/style/plugins.sass
-.imath
-  font-size: smaller
-#+END_SRC
+We reuse once again the =preprocess_element= widget. The selector is ~.imath~
+(~i~ stands for inline in this context), and we replace the previous content
+with the result of our script.
 
 #+BEGIN_SRC toml :tangle soupault.conf
-[widgets.math]
+[widgets.inline-math]
   widget = "preprocess_element"
   selector = ".imath"
   command = "node scripts/katex.js"
   action = "replace_content"
+#+END_SRC
+
+The @@html:<span class="imath">\KaTeX</span>@@ font is bigger than the serif
+font used for this website, so we reduce it a bit with a dedicated SASS rule.
+
+#+BEGIN_SRC sass :tangle site/style/plugins.sass
+.imath
+  font-size: smaller
 #+END_SRC
