@@ -13,9 +13,8 @@ build toolchain, called *~cleopatra~*. The motivations behind this name are
 twofold. First, I wanted to follow the example of [[https://soupault.neocities.org/][~soupault~]], named after [[https://fr.wikipedia.org/wiki/Philippe_Soupault][a
 famous personality]]. Secondly, one of my main objective when I started working on
 this “project” was to be able to easily use whatever format I wanted to author
-my content. Did you know that Cleopatra was a reputed polyglot (at least
+my contents. Did you know that Cleopatra was a reputed polyglot (at least
 according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
-
 
 #+BEGIN_EXPORT html
 <div id="history">site/posts/meta.org</div>

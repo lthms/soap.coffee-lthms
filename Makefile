@@ -5,7 +5,8 @@ GENFILES :=
 CONTENTS :=
 GENSASS :=
 
-EMACS := ROOT="${ROOT}" emacs
+EMACSBIN := emacs
+EMACS := ROOT="${ROOT}" ${EMACSBIN}
 TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" 2>> build.log
 
 default: init-log build
