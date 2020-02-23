@@ -298,7 +298,8 @@ build : ${CONTENTS} ${GENFILES}
 	@scripts/update-gitignore.sh \
 	     ${CONTENTS} \
 	     ${GENFILES} \
-	     ${GENSASS}
+	     ${GENSASS} \
+	     build.log
 #+END_SRC
 
 #+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :tangle-mode (identity #o755)
