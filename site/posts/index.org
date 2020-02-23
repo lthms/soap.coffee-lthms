@@ -10,7 +10,7 @@ Over the past years, I have tried to capitalize on my findings. What I have
 lacked in regularity I made up for in subject exoticism.
 
 If you like what you read, have a question or for any other reasons really, you
-can shoot an email to [[mailto:~lthms/lthms.xyz@lists.sr.ht][the dedicated mailing list]] (see the [[https://lists.sr.ht/~lthms/lthms.xyz/%3C20190127111504.n27ttkvtl7l3lzwb%40ideepad.localdomain%3E][annoucement]] for a
+can shoot an email to [[mailto:~lthms/lthms.xyz@lists.sr.ht][the dedicated mailing list]] (see the [[https://lists.sr.ht/~lthms/lthms.xyz/%3C20190127111504.n27ttkvtl7l3lzwb%40ideepad.localdomain%3E][announcement]] for a
 guide on how to subscribe).
 
 * About Coq
@@ -49,7 +49,7 @@ type system.
   error handling, the result is nice, type-safe API for Haskell, with a lot of
   GHC magic under the hood.
 
-- [[/posts/MonadTransformers/][Monad Transformers are a Great Abstraction]] ::
+- [[./MonadTransformers.org][Monad Transformers are a Great Abstraction]] ::
   Monads are hard to get right, monad transformers are harder. Yet, they remain
   a very powerful abstraction.
 
@@ -67,7 +67,7 @@ One of my goal with this website is for it to /feel/ simple, but the truth is
 under the hood it is generated from a bunch of files using a not-that-simple
 process.
 
-- [[./meta.html][A Series on Generating this Static Website]] ::
+- [[./meta/][A Series on Generating this Static Website]] ::
   The toolchain behind the generation of this website ---called *~cleopatra~*---
   is a literate programming document which build itself in addition to the HTML
   files composing this corner of the Internet.
@@ -80,7 +80,7 @@ process.
 
 - [[./Thanks.html][Thanks!]] ::
   If it were not for many awesome FOSS projects, this corner of the Internet
-  would not exists. This is my attempt to give well-deserved credit to them and
+  would not exist. This is my attempt to give well-deserved credit to them and
   their creators.
 
 #+BEGIN_EXPORT html
