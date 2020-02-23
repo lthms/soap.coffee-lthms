@@ -1,16 +1,21 @@
 #+BEGIN_EXPORT html
 <h1><code>soupault</code> Configuration</h1>
-
-<div id="history">site/posts/meta/Soupault.org</div>
 #+END_EXPORT
 
-#+BEGIN_SRC toml :tangle (concat (getenv "ROOT") "/soupault.conf")
+* General Settings
+
+#+NAME: prefix
+#+BEGIN_SRC text
+~lthms
+#+END_SRC
+
+#+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [settings]
   strict = true
   verbose = false
   debug = false
   site_dir = "site"
-  build_dir = "build"
+  build_dir = "build/<<prefix>>"
 
   page_file_extensions = ["html"]
   ignore_extensions = [
@@ -24,45 +29,214 @@
   content_selector = "main"
   doctype = "<!DOCTYPE html>"
   clean_urls = false
+#+END_SRC
 
+* Widgets
+
+** Setting Page Title
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [widgets.page-title]
   widget = "title"
   selector = "h1"
   default = "~lthms"
   prepend = "~lthms: "
+#+END_SRC
 
+** Acknowledging ~soupault~
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generator-meta]
   widget = "insert_html"
   html = '<meta name="generator" content="soupault 1.5">'
   selector = "head"
+#+END_SRC
 
+** Generating Table of Contents
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [widgets.table-of-contents]
   widget = "toc"
   selector = "div#generate-toc"
   action = "replace_element"
   min_level = 2
   numbered_list = true
+#+END_SRC
 
-[plugins.fix_urls]
-  file = "plugins/fix_urls.lua"
+** Rewriting URLs
 
+#+BEGIN_SRC lua :tangle plugins/urls-rewriting.lua
+function prefix_urls (links, attr, prefix_url)
+  index, link = next(links)
+
+  while index do
+    href = HTML.get_attribute(link, attr)
+
+    if href then
+      -- remove prefix sometimes introduced by org
+      href = Regex.replace(href, "^file://", "")
+
+      -- Check if URL starts with a leading "/"
+      if Regex.match(href, "^/") then
+        href = Regex.replace(href, "^/*", "")
+        href = prefix_url .. href
+        HTML.set_attribute(link, attr, href)
+      end
+    end
+    index, link = next(links, index)
+  end
+end
+
+prefix_url = config["prefix_url"]
+
+if not prefix_url then
+  prefix_url = ""
+end
+
+if not Regex.match(prefix_url, "^/(.*)") then
+  prefix_url = "/" .. prefix_url
+end
+
+if not Regex.match(prefix_url, "(.*)/$") then
+  prefix_url = prefix_url .. "/"
+end
+
+prefix_urls(HTML.select(page, "a"), "href", prefix_url)
+prefix_urls(HTML.select(page, "link"), "href", prefix_url)
+prefix_urls(HTML.select(page, "img"), "src", prefix_url)
+prefix_urls(HTML.select(page, "script"), "src", prefix_url)
+#+END_SRC
+
+#+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
+[plugins.urls-rewriting]
+  file = "plugins/urls-rewriting.lua"
+
+[widgets.urls-rewriting]
+  widget = "urls-rewriting"
+  prefix_url = "<<prefix>>"
+#+END_SRC
+
+** Marking External Links
+
+#+BEGIN_SRC lua :tangle plugins/external-urls.lua
+links = HTML.select(page, "a")
+
+index, link = next(links)
+
+while index do
+  href = HTML.get_attribute(link, "href")
+
+  if href then
+    if Regex.match(href, "^https?://github.com") then
+      icon = HTML.parse("<i class=\"url-mark fa fa-github\" aria-hidden=\"true\"></i>")
+      HTML.append_child(link, icon)
+    elseif Regex.match(href, "^https?://") then
+      icon = HTML.parse("<i class=\"url-mark fa fa-external-link\" aria-hidden=\"true\"></i>")
+      HTML.append_child(link, icon)
+    end
+  end
+
+  index, link = next(links, index)
+end
+#+END_SRC
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [plugins.external_links]
-  file = "plugins/external_links.lua"
-
-[widgets.fix-urls]
-  widget = "fix_urls"
-  prefix_url = "/~lthms"
+  file = "plugins/external-urls.lua"
 
 [widgets.mark-external-urls]
   after = "generate-history"
   widget = "external_links"
+#+END_SRC
 
+** Generating Per-Page History
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
+#!/usr/bin/bash
+
+FORMAT="{\"subject\":\"%s\",\"abbr_hash\":\"%h\",\"hash\":\"%H\",\"date\":\"%cs\""
+
+function generate_history_json () {
+    local file="${1}"
+
+    local logs=$(git --no-pager log --follow --pretty=format:"${FORMAT}" "${file}")
+
+    if [ ! $? -eq 0 ]; then
+        exit 1
+    fi
+
+    local count=0
+    local name="${file}"
+
+    while read -r line; do
+        local hash=$(echo "${line}}" | jq -j '.hash')
+
+        local pre_name="$(git --no-pager show --stat=10000 ${hash} | sed -e 's/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'  | grep "=> ${name}" | xargs | cut -d' ' -f1)"
+
+        if [[ ${count} -eq 0 ]]; then
+            echo -n "[ "
+        else
+            echo -n ", "
+        fi
+
+        echo "${line}, \"filename\":\"${name}\"}"
+
+        if [[ ! -z "${pre_name}" ]]; then
+            name="$(echo ${pre_name})"
+        fi
+
+        count=$(( ${count} + 1 ))
+    done < <(echo "${logs}")
+
+    echo -n "]"
+}
+
+function generate_json () {
+  local file="${1}"
+
+  echo "{"
+  echo "  \"file\" : \"${file}\","
+  echo "  \"history\" : $(generate_history_json "${file}")"
+  echo "}"
+}
+
+FILE=`cat`
+
+tmp_file=$(mktemp)
+generate_json ${FILE} > ${tmp_file}
+haskell-mustache ${1} ${tmp_file}
+rm ${tmp_file}
+#+END_SRC
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generate-history]
   widget = "preprocess_element"
   selector = "#history"
-  command = "./scripts/generate_history.sh \"templates/history.html\""
+  command = "./scripts/history.sh \"templates/history.html\""
   action = "replace_content"
+#+END_SRC
 
+** Preprocessing Mathematics
+
+#+BEGIN_TODO
+The bootstrap of this plugin is not complete. We need to integrate the
+~package.json~ file and the ~npm install~ call into it. This means we probably
+need a ~soupault.mk~ after all.
+#+END_TODO
+
+#+BEGIN_SRC js :tangle scripts/katex.js
+var katex = require("katex");
+var fs = require("fs");
+var input = fs.readFileSync(0);
+
+var html = katex.renderToString(String.raw`${input}`, {
+    throwOnError: false
+});
+
+console.log(html)
+#+END_SRC
+
+#+BEGIN_SRC toml :tangle soupault.conf
 [widgets.math]
   widget = "preprocess_element"
   selector = ".imath"

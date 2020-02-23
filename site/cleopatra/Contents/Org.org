@@ -34,6 +34,7 @@ package."
 
 (use-package org :ensure t)
 (use-package htmlize :ensure t)
+(use-package lua-mode :ensure t :defer t)
 (use-package sass-mode :ensure t :defer t)
 (use-package haskell-mode :ensure t :defer t)
 (use-package github-modern-theme :ensure t :defer t

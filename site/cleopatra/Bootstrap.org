@@ -274,7 +274,7 @@ started using ~soupault~. You can read more about [[./Soupault.org][how the ~sou
 configuration of the present website in the dedicated document]].
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
-<<extends(IN="Soupault.org", GF="soupault.conf")>>
+<<extends(IN="Soupault.org", GF="soupault.conf plugins/external-urls.lua plugins/urls-rewriting.lua scripts/katex.js scripts/history.sh")>>
 #+END_SRC
 
 Since ~soupault.conf~ is an input for ~soupault~, we explicitely add it to the

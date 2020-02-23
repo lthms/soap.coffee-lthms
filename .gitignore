@@ -39,6 +39,10 @@ org.mk
 scripts/export-org.el
 emacs.d
 soupault.conf
+plugins/external-urls.lua
+plugins/urls-rewriting.lua
+scripts/katex.js
+scripts/history.sh
 theme.mk
 templates/main.html
 site/style/main.sass
