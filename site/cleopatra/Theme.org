@@ -206,43 +206,7 @@ body#vcard
         ol
             margin-top: 0.3em
 
-.url-mark.fa
-    display: inline
-    font-size: 90%
-    width: 1em
-
-.url-mark.fa-github::before
-    content: "\00a0\f09b"
-
-.url-mark.fa-external-link::before
-    content: "\00a0\f08e"
-
-#history
-  summary
-    color: $primary-color
-    font-weight: bold
-
-  table
-    border-top: 2px solid $primary-color
-    border-bottom: 2px solid $primary-color
-    border-collapse: collapse;
-
-  td
-    border-bottom: 1px solid $primary-color
-    padding: .5em
-    vertical-align: top
-
-  td.commit
-    font-size: smaller
-
-  td.commit
-    font-family: 'Fira Code', monospace
-    color: $code-fg-color
-    font-size: 80%
-    white-space: nowrap;
-
-.imath
-  font-size: smaller
+@import plugins
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle theme.mk

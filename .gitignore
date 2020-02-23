@@ -51,6 +51,7 @@ node_modules/
 site/style/coq.sass
 site/style/coq.sass
 site/style/org.sass
+site/style/plugins.sass
 site/style/main.sass
 build.log
 # begin generated files

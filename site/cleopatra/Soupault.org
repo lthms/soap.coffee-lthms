@@ -140,28 +140,17 @@ while index do
 end
 #+END_SRC
 
-#+BEGIN_SRC html :tangle templates/history.html
-<details class="history">
-  <summary>Revisions</summary>
-  <p>
-    This revisions table has been automatically generated from
-    <a href="https://code.soap.coffee/writing/lthms.git">the <code>git</code>
-    history of this website repository</a>, and the change descriptions may not
-    always be as useful as they should. You can consult the source of this file
-    in its current
-    version <a href="https://code.soap.coffee/writing/lthms.git/tree/{{file}}">here</a>.
-  </p>
+#+BEGIN_SRC sass :tangle site/style/plugins.sass
+.url-mark.fa
+    display: inline
+    font-size: 90%
+    width: 1em
 
-  <table>
-  {{#history}}
-  <tr>
-    <td class="date">{{date}}</a></td>
-    <td class="subject">{{subject}}</a></td>
-    <td class="commit"><a href="https://code.soap.coffee/writing/lthms.git/commit/{{filename}}/?id={{hash}}">{{abbr_hash}}</a></td>
-  </tr>
-  {{/history}}
-  </table>
-</details>
+.url-mark.fa-github::before
+    content: "\00a0\f09b"
+
+.url-mark.fa-external-link::before
+    content: "\00a0\f08e"
 #+END_SRC
 
 #+BEGIN_SRC toml :tangle soupault.conf
@@ -232,6 +221,66 @@ haskell-mustache ${1} ${tmp_file}
 rm ${tmp_file}
 #+END_SRC
 
+#+NAME: repo
+#+BEGIN_SRC text
+https://code.soap.coffee/writing/lthms.git
+#+END_SRC
+
+#+BEGIN_SRC html :tangle templates/history.html :noweb tangle
+<details class="history">
+  <summary>Revisions</summary>
+  <p>
+    This revisions table has been automatically generated from
+    <a href="<<repo>>">the
+    <code>git</code> history of this website repository</a>,
+    and the change descriptions may not always be as useful as
+    they should. You can consult the source of this file
+    in its current version
+    <a href="<<repo>>/tree/{{file}}">here</a>.
+  </p>
+
+  <table>
+  {{#history}}
+  <tr>
+    <td class="date">{{date}}</a></td>
+    <td class="subject">{{subject}}</a></td>
+    <td class="commit">
+      <a href="<<repo>>/commit/{{filename}}/?id={{hash}}">
+        {{abbr_hash}}
+      </a>
+    </td>
+  </tr>
+  {{/history}}
+  </table>
+</details>
+#+END_SRC
+
+#+BEGIN_SRC sass :tangle site/style/plugins.sass
+#history
+  summary
+    color: $primary-color
+    font-weight: bold
+
+  table
+    border-top: 2px solid $primary-color
+    border-bottom: 2px solid $primary-color
+    border-collapse: collapse;
+
+  td
+    border-bottom: 1px solid $primary-color
+    padding: .5em
+    vertical-align: top
+
+  td.commit
+    font-size: smaller
+
+  td.commit
+    font-family: 'Fira Code', monospace
+    color: $code-fg-color
+    font-size: 80%
+    white-space: nowrap;
+#+END_SRC
+
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generate-history]
   widget = "preprocess_element"
@@ -270,6 +319,11 @@ package-lock.json : package.json
 
 GENFILES += package-lock.json
 GENAUX += node_modules/
+#+END_SRC
+
+#+BEGIN_SRC sass :tangle site/style/plugins.sass
+.imath
+  font-size: smaller
 #+END_SRC
 
 #+BEGIN_SRC toml :tangle soupault.conf
