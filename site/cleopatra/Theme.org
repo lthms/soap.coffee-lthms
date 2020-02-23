@@ -62,9 +62,14 @@ for (var ix in resources) {
 * Main SASS File
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
-$bg-color: #fcfcfc
-$fg-color: #333
+$bg-color: #efece3
+$code-fg-color: black
+$text-fg-color: #505050
 $primary-color: black
+$todo-bg: #e4d3b3
+$todo-fg: #494130
+$remark-bg: #d4f2fc
+$remark-fg: $text-fg-color
 
 *
   box-sizing: border-box
@@ -76,7 +81,7 @@ body, html
     margin: 0
     font-size: 100%
     background: $bg-color
-    color: $fg-color
+    color: $text-fg-color
     font-family: 'et-book', serif
 
 h1, h2, h3, h4, h5, a[href]
@@ -138,6 +143,7 @@ body#default
 
 body#default main .code, code, pre, .inlinecode, tt
     font-family: 'Fira Code', monospace
+    color: $code-fg-color
     font-size: 75%
 
 
@@ -146,9 +152,11 @@ body#default
         @import coq, org
 
         .TODO
-            background: #fae7c5
+            background: $todo-bg
+            color: $todo-fg
         .REMARK
-            background: #d4f2fc
+            background: $remark-bg
+            background: $remark-fg
 
         .TODO, .REMARK
             padding: 1em 1em 1em 1em
@@ -222,6 +230,7 @@ body#vcard
 
   td.commit
     font-family: 'Fira Code', monospace
+    color: $code-fg-color
     font-size: 80%
     white-space: nowrap;
 

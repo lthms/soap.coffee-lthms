@@ -33,9 +33,9 @@
 (use-package lua-mode :ensure t :defer t)
 (use-package sass-mode :ensure t :defer t)
 (use-package haskell-mode :ensure t :defer t)
-(use-package github-modern-theme :ensure t :defer t
+(use-package soft-stone-theme :ensure t :defer t
   :init
-  (load-theme 'github-modern t))
+  (load-theme 'soft-stone t))
 
 (provide 'packages)
 #+END_SRC
@@ -45,6 +45,7 @@
 
 (org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))
 (setq org-src-preserve-indentation t)
+(setq org-src-fontify-natively t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-toc nil)
 (org-html-export-to-html nil nil nil t)
