@@ -34,8 +34,8 @@ pre
 .code a[href]
     text-decoration: none
 
-    .fa-external-link
-      display: none
+    .url-mark
+        display: none
 
 .paragraph
     margin-top: 1em

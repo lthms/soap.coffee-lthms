@@ -17,11 +17,11 @@ for (var ix in resources) {
 #+NAME: html_lazyloading
 #+BEGIN_SRC html
 <noscript id="lazyloading">
-  <link rel="stylesheet" href="/vendors/katex.0.11.1/katex.css">
+  <link rel="stylesheet" href="/vendors/fira-code.2+swap/font.css">
+  <link rel="stylesheet" href="/vendors/et-book+swap/font.css">
+  <link rel="stylesheet" href="/vendors/katex.0.11.1+swap/katex.css">
   <link rel="stylesheet"
-        href="/vendors/fork-awesome.1.1.7/css/fork-awesome.min.css">
-  <link rel="stylesheet" href="/vendors/fira-code.2/font.css">
-  <link rel="stylesheet" href="/vendors/et-book/font.css">
+        href="/vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css">
 </nolink>
 #+END_SRC
 
@@ -92,10 +92,6 @@ h1, h2, h3, h4, h5
 
 h1
     text-align: center
-
-a[href] .url-mark
-    font-size: smaller;
-    padding-left: 0.2em
 
 /* default */
 
@@ -209,6 +205,17 @@ body#vcard
 
         ol
             margin-top: 0.3em
+
+.url-mark.fa
+    display: inline
+    font-size: 90%
+    width: 1em
+
+.url-mark.fa-github::before
+    content: "\00a0\f09b"
+
+.url-mark.fa-external-link::before
+    content: "\00a0\f08e"
 
 #history
   summary
