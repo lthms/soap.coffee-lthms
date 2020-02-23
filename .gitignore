@@ -7,8 +7,6 @@ build/
 *.glob
 *.html~
 soupault.conf
-node_modules/
-package-lock.json
 
 # begin generated files
 site/posts/StronglySpecifiedFunctionsProgram.html
@@ -37,12 +35,17 @@ org.mk
 scripts/packages.el
 scripts/export-org.el
 .emacs
-emacs.d
+emacs.d/
+soupault.mk
 soupault.conf
+package.json
+templates/history.html
 plugins/external-urls.lua
 plugins/urls-rewriting.lua
 scripts/katex.js
 scripts/history.sh
+package-lock.json
+node_modules/
 theme.mk
 templates/main.html
 site/style/coq.sass

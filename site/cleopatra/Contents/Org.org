@@ -60,17 +60,17 @@ EXPORT := --directory="${ROOT}/scripts/" --batch \
 INIT := --batch --load="${ROOT}/scripts/packages.el" \
         2>> build.log
 
-.emacs : scripts/packages.el
+.emacs emacs.d/ &: scripts/packages.el
 	@echo "    init  emacs configuration"
 	@${EMACS} ${INIT}
-	@touch $@
+	@touch .emacs
 
 %.html : %.org scripts/packages.el scripts/export-org.el .emacs org.mk
 	@echo "  export  $*.org"
 	@${EMACS} $< ${EXPORT}
 
 CONTENTS += $(ORG_POSTS:.org=.html)
-GENFILES += .emacs emacs.d
+GENFILES += .emacs emacs.d/
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/org.sass
