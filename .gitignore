@@ -34,8 +34,6 @@ coq.mk
 org.mk
 scripts/packages.el
 scripts/export-org.el
-.emacs
-emacs.d/
 soupault.mk
 soupault.conf
 package.json
@@ -45,9 +43,11 @@ plugins/urls-rewriting.lua
 scripts/katex.js
 scripts/history.sh
 package-lock.json
-node_modules/
 theme.mk
 templates/main.html
+.emacs
+emacs.d/
+node_modules/
 site/style/coq.sass
 site/style/coq.sass
 site/style/org.sass

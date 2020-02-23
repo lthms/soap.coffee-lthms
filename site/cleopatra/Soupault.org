@@ -264,16 +264,12 @@ console.log(html)
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle soupault.mk
-package-lock.json node_modules/ &:: package.json
+package-lock.json : package.json
 	@echo "    init  npm packages"
 	@npm install
-#+END_SRC
 
-The use of ~::~ in place of ~:~ tells ~make~ to use this receipes
-unconditionally.
-
-#+BEGIN_SRC makefile :tangle soupault.mk
-GENFILES += package-lock.json node_modules/
+GENFILES += package-lock.json
+GENAUX += node_modules/
 #+END_SRC
 
 #+BEGIN_SRC toml :tangle soupault.conf

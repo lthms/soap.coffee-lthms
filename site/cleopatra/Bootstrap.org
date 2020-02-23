@@ -87,7 +87,9 @@ their output files (using ~+=~).
 
 - ~GENFILES~ ::
   List *~cleopatra~* Makefiles and scripts tangled throughout the generation
-  process (with the notable exception of ~Makefile~ itself).
+  process.
+- ~GENAUX~ ::
+  List auxiliary files and directories used by the generation processes.
 - ~GENSASS~ ::
   List auxiliary ~sass~ files which can later be imported by the main ~sass~
   files (see [[./Theme.org][“Theming and Templating”]]).
@@ -97,6 +99,7 @@ their output files (using ~+=~).
 
 #+BEGIN_SRC makefile :tangle Makefile :exports none
 GENFILES :=
+GENAUX :=
 CONTENTS :=
 GENSASS :=
 #+END_SRC
@@ -298,6 +301,7 @@ build : ${CONTENTS} ${GENFILES}
 	@scripts/update-gitignore.sh \
 	     ${CONTENTS} \
 	     ${GENFILES} \
+	     ${GENAUX} \
 	     ${GENSASS} \
 	     build.log
 #+END_SRC
@@ -333,7 +337,7 @@ clean :
 
 cleanall : clean
 	@echo "  remove  everything else"
-	@rm -rf ${GENSASS} ${GENFILES}
+	@rm -rf ${GENSASS} ${GENFILES} ${GENAUX}
 
 force : clean build
 

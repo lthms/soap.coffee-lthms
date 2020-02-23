@@ -2,6 +2,7 @@ ROOT := $(shell pwd)
 CLEODIR := site/cleopatra
 
 GENFILES :=
+GENAUX :=
 CONTENTS :=
 GENSASS :=
 
