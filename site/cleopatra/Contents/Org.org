@@ -2,7 +2,7 @@
 
 * Under the Hood
 
-#+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
+#+BEGIN_SRC emacs-lisp :tangle scripts/packages.el
 (require 'package)
 
 (setq user-emacs-directory (concat (getenv "ROOT") "/emacs.d"))
@@ -16,11 +16,7 @@
     (package-refresh-contents))
 
 (defun ensure-package-installed (&rest packages)
-  "Ensure every PACKAGES is installed.
-
-Ask for installation if it’s
-not.  Return a list of installed packages or nil for every skipped
-package."
+  "Ensure every PACKAGES is installed."
   (mapcar
    (lambda (package)
      (if (package-installed-p package)
@@ -40,9 +36,13 @@ package."
 (use-package github-modern-theme :ensure t :defer t
   :init
   (load-theme 'github-modern t))
+
+(provide 'packages)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
+(require 'packages)
+
 (org-babel-do-load-languages 'org-babel-load-languages'((shell . t)))
 (setq org-src-preserve-indentation t)
 (setq org-confirm-babel-evaluate nil)
@@ -53,13 +53,24 @@ package."
 #+BEGIN_SRC makefile :tangle org.mk
 ORG_POSTS := $(shell find site/ -name "*.org")
 
-CONTENTS += $(ORG_POSTS:.org=.html)
+EXPORT := --directory="${ROOT}/scripts/" --batch \
+          --load="${ROOT}/scripts/export-org.el" \
+          2>> build.log
 
-EXPORT := --batch  --load="${ROOT}/scripts/export-org.el" 2>> build.log
+INIT := --batch --load="${ROOT}/scripts/packages.el" \
+        2>> build.log
 
-%.html : %.org scripts/export-org.el
+.emacs : scripts/packages.el
+	@echo "    init  emacs configuration"
+	@${EMACS} ${INIT}
+	@touch $@
+
+%.html : %.org scripts/packages.el scripts/export-org.el .emacs
 	@echo "  export  $*.org"
 	@${EMACS} $< ${EXPORT}
+
+CONTENTS += $(ORG_POSTS:.org=.html)
+GENFILES += .emacs emacs.d
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/org.sass

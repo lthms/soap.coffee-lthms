@@ -36,7 +36,10 @@ bootstrap.mk
 scripts/update-gitignore.sh
 coq.mk
 org.mk
+scripts/packages.el
 scripts/export-org.el
+emacs.d
+.emacs
 emacs.d
 soupault.conf
 plugins/external-urls.lua

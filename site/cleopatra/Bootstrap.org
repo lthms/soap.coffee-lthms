@@ -263,7 +263,7 @@ If you want *~cleopatra~* to support more input formats, you have to
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(MK="coq.mk", IN="Contents/Coq.org", GS="site/style/coq.sass")>>
-<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
+<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/packages.el scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
 #+END_SRC
 
 ** Postprocessing HTML using ~soupault~
