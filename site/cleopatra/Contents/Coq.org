@@ -23,7 +23,13 @@ COQDOCARG := --no-index --charset utf8 --short \
 #+BEGIN_SRC sass :tangle site/style/coq.sass
 div.code
     white-space: nowrap
-    overflow-x: visible
+    overflow-x: auto
+    scrollbar-width: thin
+
+pre
+    padding: .3em 0 .3em 0
+    overflow-x: auto
+    scrollbar-width: thin
 
 .code a[href]
     text-decoration: none

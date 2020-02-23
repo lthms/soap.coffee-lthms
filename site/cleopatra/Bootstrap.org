@@ -65,7 +65,7 @@ In a nutshell,
   instead of, /e.g./,
 
   #+BEGIN_SRC org
-  #+BEGIN_SRC makefile :tangle ../../../Makefile :noweb tangle
+  #+BEGIN_SRC makefile :tangle ../../Makefile :noweb tangle
   #+END_SRC
 
 - ~CLEODIR~ ::

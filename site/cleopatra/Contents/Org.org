@@ -82,6 +82,11 @@ GENAUX += .emacs emacs.d/
 .section-number-2:after, .section-number-3:after, .section-number-4:after
     content: ". "
 
+.org-src-container
+    width: 100%
+    x-overflow: auto
+    scrollbar-width: thin
+
 dl dt
     font-weight: bold
 dl dd p
