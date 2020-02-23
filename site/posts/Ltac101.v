@@ -20,8 +20,7 @@
     To take a concrete example, the very first tactic I wrote was for a project
     called SpecCert where _many_ lemmas are basically about proving a given
     property [P] is a state invariant of a given transition system. As a
-    consequence, they have the very same “shape:”
-
+    consequence, they have the very same “shape”:
     #<span class="imath">#\forall s\ l\ s', P(s) \wedge s \overset{l\ }{\mapsto}
     s' \rightarrow P(s')#</span>#, that is, if [P] is satisfied for [s], and there
     exists a transition from [s] to [s'], then [P] is satisfied for [s'].
