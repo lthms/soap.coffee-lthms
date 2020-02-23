@@ -233,10 +233,9 @@ body#vcard
 SASS := site/style/main.sass
 CSS := $(SASS:.sass=.css)
 
-GENFILES += ${CLEO_THEME_TANGLE} ${SASS}
-CONTENTS += ${CSS} templates/main.html
-
 ${CSS} : ${SASS} ${GENSASS}
 	@echo " compile  $<"
 	@sassc --style=compressed --sass $< $@
+
+CONTENTS += ${CSS}
 #+END_SRC

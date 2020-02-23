@@ -29,16 +29,13 @@ site/posts/index.html
 site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
-soupault.conf
 site/style/main.css
-templates/main.html
 bootstrap.mk
 scripts/update-gitignore.sh
 coq.mk
 org.mk
 scripts/packages.el
 scripts/export-org.el
-emacs.d
 .emacs
 emacs.d
 soupault.conf
@@ -48,7 +45,6 @@ scripts/katex.js
 scripts/history.sh
 theme.mk
 templates/main.html
-site/style/main.sass
 site/style/coq.sass
 site/style/coq.sass
 site/style/org.sass

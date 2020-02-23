@@ -263,7 +263,7 @@ If you want *~cleopatra~* to support more input formats, you have to
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(MK="coq.mk", IN="Contents/Coq.org", GS="site/style/coq.sass")>>
-<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/packages.el scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
+<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/packages.el scripts/export-org.el", GS="site/style/org.sass")>>
 #+END_SRC
 
 ** Postprocessing HTML using ~soupault~
@@ -275,13 +275,6 @@ configuration of the present website in the dedicated document]].
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(IN="Soupault.org", GF="soupault.conf plugins/external-urls.lua plugins/urls-rewriting.lua scripts/katex.js scripts/history.sh")>>
-#+END_SRC
-
-Since ~soupault.conf~ is an input for ~soupault~, we explicitely add it to the
-~CONTENTS~ variables.
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk
-CONTENTS += soupault.conf
 #+END_SRC
 
 ** Theming and Templating
@@ -298,11 +291,14 @@ generated in the appropriate document]].
 ** Wrapping-up
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk
-build : ${CONTENTS}
+build : ${CONTENTS} ${GENFILES}
 	@echo "     run  soupault"
 	@soupault
 	@echo "  update  .gitignore"
-	@scripts/update-gitignore.sh ${CONTENTS} ${GENFILES} ${GENSASS}
+	@scripts/update-gitignore.sh \
+	     ${CONTENTS} \
+	     ${GENFILES} \
+	     ${GENSASS}
 #+END_SRC
 
 #+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :tangle-mode (identity #o755)
@@ -331,12 +327,16 @@ serve :
 	@cd build; python -m http.server 2>/dev/null
 
 clean :
-	@echo "  remove  generated files"
-	@rm -rf ${CONTENTS} ${GENFILES} build/
+	@echo "  remove  generated website"
+	@rm -rf ${CONTENTS} build/
+
+cleanall : clean
+	@echo "  remove  everything else"
+	@rm -rf ${GENSASS} ${GENFILES}
 
 force : clean build
 
-.PHONY : serve clean force build
+.PHONY : serve cleanall clean force build
 #+END_SRC
 
 # Local Variables:
