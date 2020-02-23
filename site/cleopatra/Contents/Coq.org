@@ -17,7 +17,6 @@ COQDOCARG := --no-index --charset utf8 --short \
 	@echo "  export  $*.v"
 	@coqc ${COQCARG} $<
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
-	@sed -i -e 's/href="$(shell basename $@)\#/href="\#/g' $@
 	@rm -f $(shell dirname $<)/coqdoc.css
 #+END_SRC
 
