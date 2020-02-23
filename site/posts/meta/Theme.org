@@ -234,7 +234,7 @@ SASS := site/style/main.sass
 CSS := $(SASS:.sass=.css)
 
 GENFILES += ${CLEO_THEME_TANGLE} ${SASS}
-CONTENTS += ${CSS}
+CONTENTS += ${CSS} templates/main.html
 
 ${CSS} : ${SASS} ${GENSASS}
 	@echo " compile  $<"

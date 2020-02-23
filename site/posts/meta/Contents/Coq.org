@@ -13,7 +13,7 @@ COQCARG := -async-proofs-cache force \
 COQDOCARG := --no-index --charset utf8 --short \
              --body-only --coqlib "${COQLIB}"
 
-%.html : %.v
+%.html : %.v coq.mk
 	@echo "  export  $*.v"
 	@coqc ${COQCARG} $<
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<

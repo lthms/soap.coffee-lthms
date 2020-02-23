@@ -41,16 +41,15 @@ state, which would prevent further generation. This is why the generated
 ~Makefile~ should be versioned, so that you can restore it using ~git~ if you
 made a mistake when you modified it.
 
-We now detail the rules introduce by ~Makefile~, and why they effectively
-bootstrap a generation process. For readers interested in using *~cleopatra~*
-for their own websites, we highlight the potential modifications they would have
-to make.
+For readers interested in using *~cleopatra~* for their own websites, this
+documents tries to highlight the potential modifications they would have to
+make.
 
 ** Global Constants and Variables
 
 First, ~Makefile~ defines several global “constants” (although as far as I know
 ~make~ does not support true constant values, it is expected further generation
-“components” will not modify them).
+process will not modify them).
 
 In a nutshell,
 
@@ -244,6 +243,9 @@ particular.
 
 In the present website, contents can be written in the following format:
 
+- HTML Files ::
+  This requires no particular set-up, since HTML is the /lingua franca/ of
+  ~soupault~.
 - Regular Coq files ::
   Coq is a system which allows to write machine-checked proofs, and it comes
   with a source “prettifier” called ~coqdoc~.
@@ -255,7 +257,7 @@ In the present website, contents can be written in the following format:
 
 If you want *~cleopatra~* to support more input formats, you have to
 
-1. Create a org file which, once tangled, provide a dedicated makefile
+1. Create an Org document which, once tangled, provides a dedicated makefile
 2. Edit this file (~Bootstrap.org~) here, and use =extends= to make sure it
    is actually tangled when necessary
 
@@ -264,20 +266,33 @@ If you want *~cleopatra~* to support more input formats, you have to
 <<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/export-org.el emacs.d", GS="site/style/org.sass")>>
 #+END_SRC
 
-** Theming and Templating
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
-<<extends(MK="theme.mk", IN="Theme.org", GS="site/style/main.sass")>>
-#+END_SRC
-
 ** Postprocessing HTML using ~soupault~
+
+The drawback of using different input formats and generators (~coqdoc~, Org,
+etc.) is the heterogeneity of the outputted HTML. This is why *~cleopatra~*
+started using ~soupault~. You can read more about [[./Soupault.org][how the ~soupault~
+configuration of the present website in the dedicated document]].
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
 <<extends(IN="Soupault.org", GF="soupault.conf")>>
 #+END_SRC
 
+Since ~soupault.conf~ is an input for ~soupault~, we explicitely add it to the
+~CONTENTS~ variables.
+
 #+BEGIN_SRC makefile :tangle bootstrap.mk
 CONTENTS += soupault.conf
+#+END_SRC
+
+** Theming and Templating
+
+The last missing piece is the appearance of the website. By default, ~soupault~
+assumes there exists a template available (~templates/main.html~). You can read
+more about [[./Theme.org][the structure of this template and how its companion CSS file is
+generated in the appropriate document]].
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(MK="theme.mk", IN="Theme.org", GF="templates/main.html", GS="site/style/main.sass")>>
 #+END_SRC
 
 ** Wrapping-up

@@ -17,11 +17,12 @@ my contents. Did you know that Cleopatra was a reputed polyglot (at least
 according to [[https://fr.wikipedia.org/wiki/Polyglotte][Wikipedia France]])?
 
 #+BEGIN_EXPORT html
-<div id="history">site/posts/meta/index.org</div>
 <article class="index">
 #+END_EXPORT
 
-*Beware* this series is far from being complete.
+#+BEGIN_TODO
+This series is work in progress.
+#+END_TODO
 
 - [[./Bootstrap.org][Bootstrapping an Extensible Toolchain]] ::
 
