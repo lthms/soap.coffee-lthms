@@ -34,6 +34,7 @@
 (use-package lua-mode :ensure t :defer t)
 (use-package sass-mode :ensure t :defer t)
 (use-package haskell-mode :ensure t :defer t)
+(use-package json-mode :ensure t :defer t)
 (use-package soft-stone-theme :ensure t :defer t
   :init
   (load-theme 'soft-stone t))
