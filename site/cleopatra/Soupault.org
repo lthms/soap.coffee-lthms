@@ -334,16 +334,14 @@ rm ${tmp_file}
 
 ** Rendering Equations Offline
 
-*** User instructions
+*** Users instructions
 
-Inline equations written using the @@html:<span class="imath">\LaTeX</span>@@
-syntax can be rendered once and for all by ~soupault~. For instance,
+Inline equations written in the DOM under the class src_css{.imath} and using
+the @@html:<span class="imath">\LaTeX</span>@@ syntax can be rendered once and
+for all by ~soupault~. User For instance, ~<span class="imath">\LaTeX</span>~ is
+rendered @@html:<span class="imath">\LaTeX</span>@@.
 
-#+BEGIN_SRC html
-<span class="imath">\LaTeX</span>
-#+END_SRC
-
-This needs that you need to be able to use raw HTML in your input files.
+Using this widgets requires being able to inject raw HTML in input files.
 
 *** Implementation details
 
