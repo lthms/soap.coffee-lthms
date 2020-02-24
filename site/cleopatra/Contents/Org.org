@@ -86,9 +86,13 @@ GENAUX += .emacs emacs.d/
     margin-left: .2em
 
 .section-number-2:after,
-.section-number-3:after,
-.section-number-4:after
+.section-number-3:after
     content: ". "
+
+.section-number-4,
+.section-number-5,
+.section-number-6
+    display: none
 
 .org-src-container
     width: 100%
