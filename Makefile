@@ -14,8 +14,7 @@ TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" \
 default: init-log build
 
 init-log:
-	@echo "===========[CLEOPATRA BUILD LOG]===========" \
-	    > build.log
+	@rm -f build.log
 
 .PHONY: init-log default build
 

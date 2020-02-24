@@ -59,13 +59,13 @@ In a nutshell,
   instance, the ~BLOCK_SRC~ headers for ~Makefile~ looks like
 
   #+BEGIN_SRC org
-  #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile :noweb yes
   #+END_SRC
 
   instead of, /e.g./,
 
   #+BEGIN_SRC org
-  #+BEGIN_SRC makefile :tangle ../../Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle ../../Makefile :noweb yes
   #+END_SRC
 
 - ~CLEODIR~ ::
@@ -150,8 +150,7 @@ dependency.
 default: init-log build
 
 init-log:
-	@echo "===========[CLEOPATRA BUILD LOG]===========" \
-	    > build.log
+	@rm -f build.log
 
 .PHONY: init-log default build
 #+END_SRC

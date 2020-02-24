@@ -257,7 +257,8 @@ function generate_json () {
 
   echo "{"
   echo "  \"file\" : \"${file}\","
-  echo "  \"history\" : $(generate_history_json "${file}")"
+  echo "  \"history\" :"
+  echo "      $(generate_history_json "${file}")"
   echo "}"
 }
 
@@ -273,13 +274,16 @@ rm ${tmp_file}
 <details class="history">
   <summary>Revisions</summary>
   <p>
-    This revisions table has been automatically generated from
-    <a href="<<repo>>">the
-    <code>git</code> history of this website repository</a>,
-    and the change descriptions may not always be as useful as
-    they should. You can consult the source of this file
-    in its current version
-    <a href="<<repo>>/tree/{{file}}">here</a>.
+    This revisions table has been automatically generated
+    from <a href="<<repo>>">the <code>git</code> history
+    of this website repository</a>, and the change
+    descriptions may not always be as useful as they
+    should.
+  </p>
+
+  <p>
+    You can consult the source of this file in its current
+    version <a href="<<repo>>/tree/{{file}}">here</a>.
   </p>
 
   <table>
@@ -328,7 +332,7 @@ rm ${tmp_file}
 [widgets.generate-history]
   widget = "preprocess_element"
   selector = "#history"
-  command = "./scripts/history.sh \"templates/history.html\""
+  command = 'scripts/history.sh templates/history.html'
   action = "replace_content"
 #+END_SRC
 
