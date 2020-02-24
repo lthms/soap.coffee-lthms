@@ -169,7 +169,48 @@ end
   widget = "external_links"
 #+END_SRC
 
-** Generating Per-Page History
+** Generating Per-File Revisions Tables
+
+*** Users Instructions
+
+This widgets allows to generate a so-called “revisions table” of the filename
+contained in a DOM element of id ~history~, based on its history. Paths should
+be relative to the directory from which you start the build process (typically,
+the root of your repository). The revisions table notably provides hyperlinks to
+a ~git~ webview for each commit.
+
+For instance, considering the following HTML snippet
+
+#+BEGIN_SRC html
+<div id="history">site/posts/FooBar.org</div>
+#+END_SRC
+
+will replace the content of this ~<div>~ with the revisions table of
+~site/posts/FooBar.org~.
+
+*** Implementations Details
+
+#+BEGIN_TODO
+This plugin fails silently.
+#+END_TODO
+
+The base of the URL webview for the document you are currently reading
+—afterwards abstracted with the ~<<repo>>~ noweb reference— is
+
+#+NAME: repo
+#+BEGIN_SRC text
+https://code.soap.coffee/writing/lthms.git
+#+END_SRC
+
+This plugin proceeds as follows:
+
+1. Using an ad-hoc script, it generates a JSON containing for each revision
+   - The subject, date, hash, and abbreviated hash of the related commit
+   - The name of the file at the time of this commit
+2. This JSON is passed to a mustache engine (~haskell-mustache~) with a
+   proper template
+3. The content of the selected DOM element is replaced with the output of
+   ~haskell-mustache~
 
 #+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
 #!/usr/bin/bash
@@ -226,11 +267,6 @@ tmp_file=$(mktemp)
 generate_json ${FILE} > ${tmp_file}
 haskell-mustache ${1} ${tmp_file}
 rm ${tmp_file}
-#+END_SRC
-
-#+NAME: repo
-#+BEGIN_SRC text
-https://code.soap.coffee/writing/lthms.git
 #+END_SRC
 
 #+BEGIN_SRC html :tangle templates/history.html :noweb tangle
