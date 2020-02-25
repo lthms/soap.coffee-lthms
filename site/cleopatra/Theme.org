@@ -145,7 +145,7 @@ body#default
             width: 125px
 
     main
-        max-width: 600px
+        max-width: 30em
         margin: auto
         padding: 0em 1em 1em 1em
         font-size: 130%
