@@ -182,7 +182,9 @@ a ~git~ webview for each commit.
 For instance, considering the following HTML snippet
 
 #+BEGIN_SRC html
-<div id="history">site/posts/FooBar.org</div>
+<div id="history">
+  site/posts/FooBar.org
+</div>
 #+END_SRC
 
 will replace the content of this ~<div>~ with the revisions table of
@@ -213,11 +215,40 @@ This plugin proceeds as follows:
 3. The content of the selected DOM element is replaced with the output of
    ~haskell-mustache~
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755) :exports none
-#!/usr/bin/bash
+This translates in Bash as follows:
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :shebang "#!/usr/bin/bash"
+function main () {
+  local file="${1}"
+  local template="${2}"
+
+  tmp_file=$(mktemp)
+  generate_json ${file} > ${tmp_file}
+  haskell-mustache ${template} ${tmp_file}
+  rm ${tmp_file}
+}
 #+END_SRC
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
+The difficult part of this script is the definition of the =generate_json=
+function. We define the three operations our revisions history script uses:
+
+- =jget OBJECT FIELD= ::
+  In an =OBJECT=, get the value of a given =FIELD=
+- =jset OBJECT FIELD VALIE= ::
+  In an =OBJECT=, set the =VALUE= of a given =FIELD=
+- =jappend ARRAY VALUE= ::
+  Append a =VALUE= at the end of an =ARRAY=
+
+#+BEGIN_EXPORT html
+<details>
+  <summary>JSON manipulation operators definition</summary>
+#+END_EXPORT
+
+We use [[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since
+~jq~ processes JSON from its standard input, we first define a helper =_jq=
+to deal with JSON from variables seamlessly.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
 function _jq () {
   local input="${1}"
   local filter="${2}"
@@ -226,15 +257,14 @@ function _jq () {
 }
 #+END_SRC
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755) :export none
-function jset () {
-  local obj="${1}"
-  local field="${2}"
-  local val="${3}"
+- *-j* tells ~jq~ not to print a new line at the end of its outputs
+- *-c* tells ~jq~ to print JSON in a compact format (rather than prettified)
+- *-M* tells ~jq~ to output monochrome outputs
 
-  _jq "${obj}" "setpath([\"${field}\"]; ${val})"
-}
+Internally, =jget=, =jset=, and =jappend= are implemented with ~jq~
+[[https://stedolan.github.io/jq/manual/#Basicfilters][basic filters]].
 
+#+BEGIN_SRC bash :tangle scripts/history.sh
 function jget () {
   local obj="${1}"
   local field="${2}"
@@ -242,6 +272,13 @@ function jget () {
   _jq "${obj}" ".${field}"
 }
 
+function jset () {
+  local obj="${1}"
+  local field="${2}"
+  local val="${3}"
+
+  _jq "${obj}" "setpath([\"${field}\"]; ${val})"
+}
 function jappend () {
   local arr="${1}"
   local val="${2}"
@@ -250,7 +287,15 @@ function jappend () {
 }
 #+END_SRC
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
+#+BEGIN_EXPORT html
+</details>
+#+END_EXPORT
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function _git () {
+  git --no-pager "$@"
+}
+
 FORMAT='{'\
 '  "subject" : "%s",'\
 '  "abbr_hash" : "%h",'\
@@ -258,29 +303,12 @@ FORMAT='{'\
 '  "date" : "%cs"'\
 '}'
 
-GIT="git --no-pager"
-
-function previous_name () {
-  local name=${1}
-  local hash=${2}
-
-  local unfold=\
-    's/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
-
-  ${GIT} show --stat=10000 ${hash} \
-      | sed -e "${unfold}" \
-      | grep "=> ${name}" \
-      | xargs \
-      | cut -d' ' -f1
-}
-
-function generate_history_json () {
+function generate_json () {
   local file="${1}"
-
-  local logs=$(${GIT} log \
-                    --follow \
-                    --pretty=format:"${FORMAT}" \
-                    "${file}")
+  local logs=$(_git log \
+      --follow \
+      --pretty=format:"${FORMAT}" \
+      "${file}")
 
   if [ ! $? -eq 0 ]; then
       exit 1
@@ -301,29 +329,31 @@ function generate_history_json () {
     fi
   done < <(echo "${logs}")
 
-  echo "${revisions}"
+  jset "$(jset "{}" "file" "\"${file}\"")" \
+       "history" \
+       "${revisions}"
 }
 #+END_SRC
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
-function generate_json () {
-  local file="${1}"
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function previous_name () {
+  local name=${1}
+  local hash=${2}
 
-  echo "{"
-  echo "  \"file\" : \"${file}\","
-  echo "  \"history\" :"
-  echo "      $(generate_history_json "${file}")"
-  echo "}"
+  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
+
+  _git show --stat=10000 ${hash} \
+      | sed -e "${unfold}" \
+      | grep "=> ${name}" \
+      | xargs \
+      | cut -d' ' -f1
 }
 #+END_SRC
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :tangle-mode (identity #o755)
-FILE=`cat`
+Everything is defined. We can call =main= now.
 
-tmp_file=$(mktemp)
-generate_json ${FILE} > ${tmp_file}
-haskell-mustache ${1} ${tmp_file}
-rm ${tmp_file}
+#+BEGIN_SRC bash :tangle scripts/history.sh
+main "$(cat)" "${1}"
 #+END_SRC
 
 #+BEGIN_SRC html :tangle templates/history.html :noweb tangle
@@ -360,10 +390,6 @@ rm ${tmp_file}
 
 #+BEGIN_SRC sass :tangle site/style/plugins.sass
 #history
-  summary
-    color: $primary-color
-    font-weight: bold
-
   table
     border-top: 2px solid $primary-color
     border-bottom: 2px solid $primary-color

@@ -145,6 +145,10 @@ body#default main .code, code, pre, .inlinecode, tt
 
 body#default
     main
+        summary
+          color: $primary-color
+          font-weight: bold
+
         @import coq, org
 
         .TODO
