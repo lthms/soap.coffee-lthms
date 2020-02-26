@@ -63,7 +63,7 @@ ORG_HTML := $(ORG_POSTS:.org=.html)
 org-prebuild : .emacs
 org-build : ${ORG_HTML}
 
-theme-prebuild : site/style/org.sass
+theme-build : site/style/org.sass
 soupault-build : org-build
 
 ARTIFACTS += ${ORG_HTML} "*.html~"

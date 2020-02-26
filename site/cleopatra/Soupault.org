@@ -13,7 +13,7 @@ serve : build
 	@echo "   start  a python server"
 	@cd build; python -m http.server 2>/dev/null
 
-theme-prebuild : site/style/plugins.sass
+theme-build : site/style/plugins.sass
 
 ARTIFACTS += build/
 #+END_SRC

@@ -73,9 +73,10 @@ process.
   composing this corner of the Internet. This series /is/ *~cleopatra~*.
 
   1. [[/cleopatra/Bootstrap.html][Bootstrapping an Extensible Toolchain]]
-  2. [[/cleopatra/Contents.html][Authoring Contents and HTML Generation ~(WIP)~]]
-  3. [[/cleopatra/Soupault.html][Configuring ~soupault~ ~(WIP)~]]
-  4. [[/cleopatra/Theme.html][Theming and Templating ~(WIP)~]]
+  2. [[/cleopatra/Contents/Org.org][Generating Contents from Org Documents ~(TODO)~]]
+  3. [[/cleopatra/Contents/Coq.org][Generating Contents from Coq Documents ~(TODO)~]]
+  4. [[/cleopatra/Soupault.html][Configuring ~soupault~ ~(WIP)~]]
+  5. [[/cleopatra/Theme.html][Theming and Templating ~(TODO)~]]
 
 - [[./Thanks.html][Thanks!]] ::
   If it were not for many awesome FOSS projects, this corner of the Internet

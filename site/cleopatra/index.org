@@ -31,11 +31,13 @@ expected. Its “literate” part still requires some work, though.
   is part of this very website. This means *~cleopatra~* is bootstrapped: it
   generates iteself.
 
-- [[./Contents.org][Authoring Content and HTML Generation ~(WIP)~]] ::
+- [[./Contents/Org.org][Generating Contents from Org Documents ~(TODO)~]] ::
+
+- [[./Contents/Coq.org][Generating Contents from Coq Documents ~(TODO)~]] ::
 
 - [[./Soupault.org][Soupault Configuration ~(WIP)~]] ::
 
-- [[./Theme.org][Theming and Templating ~(WIP)~]] ::
+- [[./Theme.org][Theming and Templating ~(TODO)~]] ::
 
 #+BEGIN_EXPORT html
 </article>

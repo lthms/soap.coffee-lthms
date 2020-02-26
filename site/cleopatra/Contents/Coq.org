@@ -8,7 +8,7 @@ COQ_HTML := $(COQ_POSTS:.v=.html)
 
 coq-build : ${COQ_HTML}
 
-themepre-build : site/style/coq.sass
+theme-build : site/style/coq.sass
 soupault-build : coq-build
 
 ARTIFACTS += *.vo *.vok *.vos .*.aux *.glob .lia.cache
