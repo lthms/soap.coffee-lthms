@@ -61,10 +61,22 @@ ARTIFACTS += build/
 
 ** Acknowledging ~soupault~
 
-#+BEGIN_SRC toml :tangle soupault.conf
+When creating a new ~soupault~ project (using ~soupault --init~), the default
+configuration file suggests advertising the use of ~soupault~. Rather than
+hard-coding the used version of ~soupault~ (which is error-prone), we rather
+determine the version of ~soupault~ with the following script.
+
+#+NAME: soupault-version
+#+BEGIN_SRC bash :results verbatim output :exports both
+soupault --version | head -n 1 | tr -d '\n'
+#+END_SRC
+
+The configuration of the widget becomes
+
+#+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [widgets.generator-meta]
   widget = "insert_html"
-  html = '<meta name="generator" content="soupault 1.5">'
+  html = '<meta name="generator" content="<<soupault-version()>>">'
   selector = "head"
 #+END_SRC
 
