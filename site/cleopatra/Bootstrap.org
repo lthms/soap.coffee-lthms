@@ -82,31 +82,29 @@ ROOT := $(shell pwd)
 CLEODIR := site/cleopatra
 #+END_SRC
 
-We then introduce a variable that “generation” components will populate with
-their output files (using ~+=~).
+We then introduce two variables to list the output of the generation processes,
+with two purposes in mind: keeping the ~.gitignore~ up-to-date automatically,
+and providing rules to remove them.
 
-- ~GENFILES~ ::
-  List *~cleopatra~* Makefiles and scripts tangled throughout the generation
-  process.
-- ~GENAUX~ ::
-  List auxiliary files and directories used by the generation processes.
-- ~GENSASS~ ::
-  List auxiliary ~sass~ files which can later be imported by the main ~sass~
-  files (see [[./Theme.org][“Theming and Templating”]]).
-- ~CONTENTS~ ::
-  List generated files which are part of the target website, and acts as inputs
-  for ~soupault~.
+- ~ARTIFACTS~ ::
+  Short-term artifacts which can be removed frequently without too much
+  hassle. They will be removed by ~make clean~.
+- ~CONFIGURE~ ::
+  Long-term artifacts whose generation can be time consuming. They will only be
+  removed by ~make cleanall~.
 
-#+BEGIN_SRC makefile :tangle Makefile :exports none
-GENFILES :=
-GENAUX :=
-CONTENTS :=
-GENSASS :=
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+ARTIFACTS := build.log
+CONFIGURE :=
 #+END_SRC
+
+Generation processes shall declare new build outputs using the ~+=~ assignement
+operators. Using another operator will likely provent an underisable result.
 
 ** Easy Tangling of Org Documents
 
-We provide the necessary bits to easily tangle Org documents.
+*~cleopatra~* is a literate program implemented with Org mode, an Emacs major
+editing mode. We provide the necessary bits to easily tangle Org documents.
 
 The configuration of Babel is done using an emacs lisp script called
 ~tangle-org.el~ whose status is similar to ~Makefile~. It is part of the
@@ -129,54 +127,92 @@ restore it using ~git~.
 #+END_SRC
 
 We define variables that ensure that the ~ROOT~ environment variable is set and
-~tangle-org.el~ is loaded when using Emacs. You can modify ~EMACS~ to use a
-custom Emacs that you build yourself if you so desire.
+~tangle-org.el~ is loaded when using Emacs.
 
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" \
+TANGLE := --batch \
+          --load="${ROOT}/scripts/tangle-org.el" \
           2>> build.log
+#+END_SRC
+
+Finally, we introduce a
+[[https://www.gnu.org/software/make/manual/html_node/Canned-Recipes.html#Canned-Recipes][canned
+recipe]] to seamlessly tangle a given file.
+
+#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+define emacs-tangle =
+echo "  tangle  $<"
+${EMACS} $< ${TANGLE}
+endef
 #+END_SRC
 
 ** Bootstrapping
 
-The core purpose of ~Makefile~ remains *(1)* to bootstrap the generation process
-by generating and loading ~bootstrap.mk~, and *(2)* to enforce the ~build~ rules
-hopefully defined by the latter is called.
+The core purpose of ~Makefile~ remains to bootstrap the chain of generation
+processes. This chain is divided into three stages: ~prebuild~, ~build~, and
+~postbuild~.
 
-For *(2)*, we introduce a ~default~ rule with ~build~ as a
-dependency.
+This translates as follows in ~Makefile~.
 
 #+BEGIN_SRC makefile :tangle Makefile :noweb tangle
-default: init-log build
+default : postbuild ignore
 
-init-log:
+init :
 	@rm -f build.log
 
-.PHONY: init-log default build
+prebuild : init
+
+build : prebuild
+
+postbuild : build
+
+.PHONY : init prebuild build postbuild ignore
 #+END_SRC
 
-For *(1)*, we rely on a particular behavior of ~make~ regarding the ~include~
-directive. If an operand of ~include~ does not yet exists, ~make~ will search
-for a rule to generate it.
+A *generation process* in *~cleopatra~* is a Makefile which provides rules for
+these three stages, along with the utilities used by these rules. More
+precisely, a generation process ~proc~ is defined in ~proc.mk~. The rules of
+~proc.mk~ for each stage are expected to be prefixed by ~proc-~, /e.g./,
+~proc-prebuild~ for the ~prebuild~ stage.
 
-Basically, we are looking for recipes of the following form:
+Eventually, the following dependencies are expected between within the chain of
+generation processes.
+
+#+BEGIN_SRC makefile
+prebuild : proc-prebuild
+build : proc-build
+postbuild : proc-postbuild
+
+proc-build : proc-prebuild
+proc-postbuild : proc build
+#+END_SRC
+
+Because *~cleopatra~* is a literate program, generation processes are defined in
+Org documents –which may contains additional utilities like scripts or
+templates—, and therefore need to be tangled prior to be effectively
+useful. *~cleopatra~ relies on a particular behavior of ~make~ regarding the
+~include~ directive. If there exists a rule to generate a Makefile used as an
+operand of ~include~, ~make~ will use this rule to update (if necessary) said
+Makefile before actually including it.
+
+Therefore, rules of the following form achieve our ambition of extensibility.
 
 #+BEGIN_SRC makefile :noweb yes
-<<extends(MK="${MK}", MF="${MF}", IN="${IN}", GF="${GF}", GS="${GS}")>>
+<<extends(PROC="${PROC}", IN="${IN}", AUX="${AUX}")>>
 #+END_SRC
 
 where
 
-- ~${IN}~ is the input Org document
-- ~${MK}~ lists the tangled Makefiles (typically one, but it could be more)
-- ~${GF}~ lists the tangled scripts
-- ~${GS}~ lists the tangled SASS scripts
+- ~${IN}~ is the Org document which contains the generation process code
+- ~${PROC}~ is the name of the generation process
+- ~${AUX}~ lists the utilities of the generation process tangled from ~${IN}~
+  with ~${PROC}.mk~
 
-~&:~ is used in place of ~:~ to separate the target from its dependencies in
-this rule to tell to ~make~ that the runned commands will generate all these
-files.
+We use ~&:~ is used in place of ~:~ to separate the target from its dependencies
+in the “tangle rule.” This tells ~make~ that the recipe of this rule generates
+all these files.
 
 Writing these rules manually —has yours truly had to do in the early days of his
 website— has proven to be error-prone.
@@ -191,55 +227,77 @@ Here is a bash script which, given the proper variables, would generate the
 expected Makefile rule.
 
 #+NAME: extends
-#+BEGIN_SRC bash :var MK="" :var IN="" :var GF="" :var GS="" :results output
+#+BEGIN_SRC bash :var PROC="" :var AUX="" :var IN="" :results output
 cat <<EOF
-GENFILES += ${MK} ${GF}
-GENSASS += ${GS}
+include ${PROC}.mk
 
-include ${MK}
+prebuild : ${PROC}-prebuild
+build : ${PROC}-build
+postbuild : ${PROC}-postbuild
 
-${MK} ${GF} ${GS} \\
-  &: \${CLEODIR}/${IN}
-	@echo "  tangle  \$<"
-	@\${EMACS} $< \${TANGLE}
+${PROC}-build : ${PROC}-prebuild
+${PROC}-postbuild : ${PROC}-build
+
+${PROC}.mk ${AUX} &:\\
+   \${CLEODIR}/${IN}
+	@\$(emacs-tangle)
+
+CONFIGURE += ${PROC}.mk ${AUX}
+
+.PHONY : ${PROC}-prebuild ${PROC}-build ${PROC}-postbuild
 EOF
 #+END_SRC
 
 The previous source block is given a name (=extends=), and an explicit lists of
-variables (~IN~, ~MK~, ~GF~, and ~GS~). Thanks to the [[https://orgmode.org/worg/org-tutorials/org-latex-export.html][noweb syntax of Babel]], we
-can insert the result of the evaluation of =extends= inside another source block
-when the latter is tangled.
+variables (~IN~, ~PROC~, and ~AUX~). Thanks to the
+[[https://orgmode.org/worg/org-tutorials/org-latex-export.html][noweb syntax of
+Babel]], we can insert the result of the evaluation of =extends= inside another
+source block when the latter is tangled.
 
-The twist is, we derive the rule to tangle ~bootstrap.mk~ using
-=extends=. The syntax is the following:
-
-#+BEGIN_SRC verbatim
-<<extends(IN="Bootstrap.org", MK="bootstrap.mk", GF="scripts/update-gitignore.sh")>>
-#+END_SRC
-
-For purpose of illustrations, here is the snippet generated by Babel from the
-previous source block.
+We derive the rule to tangle ~bootstrap.mk~ using =extends=, which gives us the
+following Makefile snippet.
 
 #+BEGIN_SRC makefile :tangle Makefile :noweb yes
-<<extends(IN="Bootstrap.org", MK="bootstrap.mk", GF="scripts/update-gitignore.sh")>>
+<<extends(IN="Bootstrap.org", PROC="bootstrap", AUX="scripts/update-gitignore.sh")>>
 #+END_SRC
 
 Beware that, as a consequence, modifying code block of =extends= is as
 “dangerous” as modifying ~Makefile~ itself. Keep that in mind if you start
 hacking *~cleopatra~*!
 
-From now on, the bootstrap process is completed: further generation processes
-will fully be defined using literate programming, with no special treatment for
-its output. For instance, you may not want to use ~soupault~? You can! Just
-modify ~bootstrap.mk~ accordingly.
+Additional customizations of *~cleopatra~* will be parth ~bootstrap.mk~, rather
+than ~Makefile~.
 
 * Generation Processes
 
-Thanks to =extends=, *~cleopatra~* is easily extensible. In this section, we
-enumerate the generation processes that are currently used to generate the
-website you are reading.
+Using the =extends= noweb reference, *~cleopatra~* is easily extensible. In
+this section, we first detail the structure of a typical generation process.
+Then, we construct ~bootstrap.mk~ by enumerating the generation processes that
+are currently used to generate the website you are reading.
 
-** Authoring Contents
+** Getting Started
+
+#+BEGIN_TODO
+1. Defining ~proc-prebuild~, ~proc-build~, and ~proc-postbuild~
+2. Declaring dependencies between stages of generation processes
+3. Declaring build outputs (see ~ARTIFACTS~ and ~CONFIGURE~)
+#+END_TODO
+
+** Active Generation Processes
+
+*** Theming and Templating
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(IN="Theme.org", PROC="theme", AUX="templates/main.html site/style/main.sass")>>
+#+END_SRC
+
+*** Configuring Soupault
+
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+<<extends(IN="Soupault.org", PROC="soupault", AUX="soupault.conf plugins/urls-rewriting.lua plugins/external-urls.lua site/style/plugins.sass scripts/history.sh templates/history.html package.json scripts/katex.js")>>
+#+END_SRC
+
+*** Authoring Contents
 
 The fact that *~cleopatra~* is a literate program which gradually generates
 itself was not intended: it is a consequence of my desire to be able to easily
@@ -253,60 +311,25 @@ In the present website, contents can be written in the following format:
   ~soupault~.
 - Regular Coq files ::
   Coq is a system which allows to write machine-checked proofs, and it comes
-  with a source “prettifier” called ~coqdoc~.
-  [[./Contents/Coq.org][Learn more about the generation process for Coq files​]]
+  with a source “prettifier” called ~coqdoc~.  [[./Contents/Coq.org][Learn more
+  about the generation process for Coq files​]]
 - Org documents ::
-  Emacs comes with a powerful editing mode called [[https://orgmode.org/][Org mode]], and Org documents
-  are really pleasant to work with.
-  [[./Contents/Org.org][Learn more about the generation process for Org documents]]
-
-If you want *~cleopatra~* to support more input formats, you have to
-
-1. Create an Org document which, once tangled, provides a dedicated makefile
-2. Edit this file (~Bootstrap.org~) here, and use =extends= to make sure it
-   is actually tangled when necessary
+  Emacs comes with a powerful editing mode called [[https://orgmode.org/][Org
+  mode]], and Org documents are really pleasant to work with.
+  [[./Contents/Org.org][Learn more about the generation process for Org
+  documents]]
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
-<<extends(MK="coq.mk", IN="Contents/Coq.org", GS="site/style/coq.sass")>>
-<<extends(MK="org.mk", IN="Contents/Org.org", GF="scripts/packages.el scripts/export-org.el", GS="site/style/org.sass")>>
-#+END_SRC
-
-** Postprocessing HTML using ~soupault~
-
-The drawback of using different input formats and generators (~coqdoc~, Org,
-etc.) is the heterogeneity of the outputted HTML. This is why *~cleopatra~*
-started using ~soupault~. You can read more about [[./Soupault.org][how the ~soupault~
-configuration of the present website in the dedicated document]].
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
-<<extends(MK="soupault.mk", IN="Soupault.org", GF="soupault.conf package.json templates/history.html plugins/external-urls.lua plugins/urls-rewriting.lua scripts/katex.js scripts/history.sh", GS="site/style/plugins.sass")>>
-#+END_SRC
-
-** Theming and Templating
-
-The last missing piece is the appearance of the website. By default, ~soupault~
-assumes there exists a template available (~templates/main.html~). You can read
-more about [[./Theme.org][the structure of this template and how its companion CSS file is
-generated in the appropriate document]].
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
-<<extends(MK="theme.mk", IN="Theme.org", GF="templates/main.html", GS="site/style/main.sass")>>
+<<extends(IN="Contents/Coq.org", PROC="coq", AUX="site/style/coq.sass")>>
+<<extends(IN="Contents/Org.org", PROC="org", AUX="scripts/packages.el scripts/export-org.el site/style/org.sass")>>
 #+END_SRC
 
 ** Wrapping-up
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk
-build : ${CONTENTS} ${GENFILES}
-	@echo "     run  soupault"
-	@soupault
-	@echo "  update  .gitignore"
-	@scripts/update-gitignore.sh \
-	     ${CONTENTS} \
-	     ${GENFILES} \
-	     ${GENAUX} \
-	     ${GENSASS} \
-	     build.log
-#+END_SRC
+#+BEGIN_TODO
+~clean~ and ~cleanall~ should probably follow a similar approach than the build
+stages.
+#+END_TODO
 
 #+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :tangle-mode (identity #o755)
 #!/bin/bash
@@ -329,21 +352,15 @@ echo ${END_MARKER} >> .gitignore
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk
-serve :
-	@echo "   start  a python server"
-	@cd build; python -m http.server 2>/dev/null
+ignore :
+	@echo "  update  gitignore"
+	@scripts/update-gitignore.sh  ${ARTIFACTS} ${CONFIGURE}
 
 clean :
-	@echo "  remove  generated website"
-	@rm -rf ${CONTENTS} build/
+	@rm -rf ${ARTIFACTS}
 
 cleanall : clean
-	@echo "  remove  everything else"
-	@rm -rf ${GENSASS} ${GENFILES} ${GENAUX}
-
-force : clean build
-
-.PHONY : serve cleanall clean force build
+	@rm -rf ${CONFIGURE}
 #+END_SRC
 
 # Local Variables:

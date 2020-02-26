@@ -4,6 +4,20 @@
 
 #+TOC: headlines 2
 
+#+BEGIN_SRC makefile :tangle soupault.mk
+soupault-build :
+	@echo "     run  soupault"
+	@soupault
+
+serve : build
+	@echo "   start  a python server"
+	@cd build; python -m http.server 2>/dev/null
+
+theme-prebuild : site/style/plugins.sass
+
+ARTIFACTS += build/
+#+END_SRC
+
 * General Settings
 
 #+NAME: prefix
@@ -459,13 +473,14 @@ consequence, we systematically ~touch~ ~packase-lock.json~ to satisfy ~make~.
 #+END_REMARK
 
 #+BEGIN_SRC makefile :tangle soupault.mk
+soupault-prebuild : package-lock.json
+
 package-lock.json : package.json
 	@echo "    init  npm packages"
-	@npm install
+	@npm install &>> build.log
 	@touch $@
 
-GENFILES += package-lock.json
-GENAUX += node_modules/
+CONFIGURE += package-lock.json node_modules/
 #+END_SRC
 
 Once installed and available, @@html:<span class="imath">\KaTeX</span>@@ is

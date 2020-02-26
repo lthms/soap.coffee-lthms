@@ -1,29 +1,46 @@
 ROOT := $(shell pwd)
 CLEODIR := site/cleopatra
 
-GENFILES :=
-GENAUX :=
-CONTENTS :=
-GENSASS :=
+ARTIFACTS := build.log
+CONFIGURE :=
 
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
-TANGLE := --batch --load="${ROOT}/scripts/tangle-org.el" \
+TANGLE := --batch \
+          --load="${ROOT}/scripts/tangle-org.el" \
           2>> build.log
 
-default: init-log build
+define emacs-tangle =
+echo "  tangle  $<"
+${EMACS} $< ${TANGLE}
+endef
 
-init-log:
+default : postbuild ignore
+
+init :
 	@rm -f build.log
 
-.PHONY: init-log default build
+prebuild : init
 
-GENFILES += bootstrap.mk scripts/update-gitignore.sh
-GENSASS += 
+build : prebuild
+
+postbuild : build
+
+.PHONY : init prebuild build postbuild ignore
 
 include bootstrap.mk
 
-bootstrap.mk scripts/update-gitignore.sh  \
-  &: ${CLEODIR}/Bootstrap.org
-	@echo "  tangle  $<"
-	@${EMACS} $< ${TANGLE}
+prebuild : bootstrap-prebuild
+build : bootstrap-build
+postbuild : bootstrap-postbuild
+
+bootstrap-build : bootstrap-prebuild
+bootstrap-postbuild : bootstrap-build
+
+bootstrap.mk scripts/update-gitignore.sh &:\
+   ${CLEODIR}/Bootstrap.org
+	@$(emacs-tangle)
+
+CONFIGURE += bootstrap.mk scripts/update-gitignore.sh
+
+.PHONY : bootstrap-prebuild bootstrap-build bootstrap-postbuild

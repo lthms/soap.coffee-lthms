@@ -4,8 +4,15 @@
 
 #+BEGIN_SRC makefile :tangle coq.mk
 COQ_POSTS := $(shell find site/ -name "*.v")
-CONTENTS += $(COQ_POSTS:.v=.html)
-GENSASS += site/style/coq.sass
+COQ_HTML := $(COQ_POSTS:.v=.html)
+
+coq-build : ${COQ_HTML}
+
+themepre-build : site/style/coq.sass
+soupault-build : coq-build
+
+ARTIFACTS += *.vo *.vok *.vos .*.aux *.glob .lia.cache
+ARTIFACTS += ${COQ_HTML}
 
 COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
 COQCARG := -async-proofs-cache force \

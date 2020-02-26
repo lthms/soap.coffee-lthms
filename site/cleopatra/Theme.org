@@ -2,6 +2,19 @@
 <h1>Theming and Templating</h1>
 #+END_EXPORT
 
+#+BEGIN_SRC makefile :tangle theme.mk
+SASS := site/style/main.sass
+CSS := $(SASS:.sass=.css)
+
+theme-build : ${SASS}
+	@echo " compile  ${CSS}"
+	@sassc --style=compressed --sass ${SASS} ${CSS}
+
+soupault-build : theme-build
+
+ARTIFACTS += ${CSS} ${SASS}
+#+END_SRC
+
 * Main HTML Template
 
 #+NAME: js_lazyloading
@@ -211,15 +224,4 @@ body#vcard
             margin-top: 0.3em
 
 @import plugins
-#+END_SRC
-
-#+BEGIN_SRC makefile :tangle theme.mk
-SASS := site/style/main.sass
-CSS := $(SASS:.sass=.css)
-
-${CSS} : ${SASS} ${GENSASS}
-	@echo " compile  $<"
-	@sassc --style=compressed --sass $< $@
-
-CONTENTS += ${CSS}
 #+END_SRC

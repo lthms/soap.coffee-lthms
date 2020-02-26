@@ -58,11 +58,20 @@
 
 #+BEGIN_SRC makefile :tangle org.mk
 ORG_POSTS := $(shell find site/ -name "*.org")
+ORG_HTML := $(ORG_POSTS:.org=.html)
+
+org-prebuild : .emacs
+org-build : ${ORG_HTML}
+
+theme-prebuild : site/style/org.sass
+soupault-build : org-build
+
+ARTIFACTS += ${ORG_HTML} "*.html~"
+CONFIGURE += .emacs emacs.d/
 
 EXPORT := --directory="${ROOT}/scripts/" --batch \
           --load="${ROOT}/scripts/export-org.el" \
           2>> build.log
-
 INIT := --batch --load="${ROOT}/scripts/packages.el" \
         2>> build.log
 
@@ -75,9 +84,6 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
          .emacs org.mk
 	@echo "  export  $*.org"
 	@${EMACS} $< ${EXPORT}
-
-CONTENTS += $(ORG_POSTS:.org=.html)
-GENAUX += .emacs emacs.d/
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/org.sass
