@@ -27,24 +27,24 @@ ARTIFACTS += build/
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [settings]
-  strict = true
-  verbose = false
-  debug = false
-  site_dir = "site"
-  build_dir = "build/<<prefix>>"
+strict = true
+verbose = false
+debug = false
+site_dir = "site"
+build_dir = "build/<<prefix>>"
 
-  page_file_extensions = ["html"]
-  ignore_extensions = [
-    "draft", "vo", "vok", "vos", "glob",
-    "html~", "org", "aux", "sass",
-  ]
+page_file_extensions = ["html"]
+ignore_extensions = [
+  "draft", "vo", "vok", "vos", "glob",
+  "html~", "org", "aux", "sass",
+]
 
-  generator_mode = true
-  complete_page_selector = "html"
-  default_template = "templates/main.html"
-  content_selector = "main"
-  doctype = "<!DOCTYPE html>"
-  clean_urls = false
+generator_mode = true
+complete_page_selector = "html"
+default_template = "templates/main.html"
+content_selector = "main"
+doctype = "<!DOCTYPE html>"
+clean_urls = false
 #+END_SRC
 
 * Widgets
@@ -53,10 +53,10 @@ ARTIFACTS += build/
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.page-title]
-  widget = "title"
-  selector = "h1"
-  default = "~lthms"
-  prepend = "~lthms: "
+widget = "title"
+selector = "h1"
+default = "~lthms"
+prepend = "~lthms: "
 #+END_SRC
 
 ** Acknowledging ~soupault~
@@ -75,20 +75,22 @@ The configuration of the widget becomes
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [widgets.generator-meta]
-  widget = "insert_html"
-  html = '<meta name="generator" content="<<soupault-version()>>">'
-  selector = "head"
+widget = "insert_html"
+html = """
+  <meta name="generator" content="<<soupault-version()>>">
+"""
+selector = "head"
 #+END_SRC
 
 ** Generating Table of Contents
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.table-of-contents]
-  widget = "toc"
-  selector = "div#generate-toc"
-  action = "replace_element"
-  min_level = 2
-  numbered_list = true
+widget = "toc"
+selector = "div#generate-toc"
+action = "replace_element"
+min_level = 2
+numbered_list = true
 #+END_SRC
 
 ** Rewriting URLs
@@ -137,11 +139,11 @@ prefix_urls(HTML.select(page, "script"), "src", prefix_url)
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [plugins.urls-rewriting]
-  file = "plugins/urls-rewriting.lua"
+file = "plugins/urls-rewriting.lua"
 
 [widgets.urls-rewriting]
-  widget = "urls-rewriting"
-  prefix_url = "<<prefix>>"
+widget = "urls-rewriting"
+prefix_url = "<<prefix>>"
 #+END_SRC
 
 ** Marking External Links
@@ -188,11 +190,11 @@ end
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [plugins.external_links]
-  file = "plugins/external-urls.lua"
+file = "plugins/external-urls.lua"
 
 [widgets.mark-external-urls]
-  after = "generate-history"
-  widget = "external_links"
+after = "generate-history"
+widget = "external_links"
 #+END_SRC
 
 ** Generating Per-File Revisions Tables
@@ -438,10 +440,10 @@ main "$(cat)" "${1}"
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generate-history]
-  widget = "preprocess_element"
-  selector = "#history"
-  command = 'scripts/history.sh templates/history.html'
-  action = "replace_content"
+widget = "preprocess_element"
+selector = "#history"
+command = 'scripts/history.sh templates/history.html'
+action = "replace_content"
 #+END_SRC
 
 ** Rendering Equations Offline
@@ -523,10 +525,10 @@ with the result of our script.
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.inline-math]
-  widget = "preprocess_element"
-  selector = ".imath"
-  command = "node scripts/katex.js"
-  action = "replace_content"
+widget = "preprocess_element"
+selector = ".imath"
+command = "node scripts/katex.js"
+action = "replace_content"
 #+END_SRC
 
 The @@html:<span class="imath">\KaTeX</span>@@ font is bigger than the serif
