@@ -34,6 +34,7 @@ prebuild : bootstrap-prebuild
 build : bootstrap-build
 postbuild : bootstrap-postbuild
 
+bootstrap-prebuild : bootstrap.mk scripts/update-gitignore.sh
 bootstrap-build : bootstrap-prebuild
 bootstrap-postbuild : bootstrap-build
 

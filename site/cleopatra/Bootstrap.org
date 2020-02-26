@@ -234,6 +234,7 @@ prebuild : ${PROC}-prebuild
 build : ${PROC}-build
 postbuild : ${PROC}-postbuild
 
+${PROC}-prebuild : ${PROC}.mk ${AUX}
 ${PROC}-build : ${PROC}-prebuild
 ${PROC}-postbuild : ${PROC}-build
 
