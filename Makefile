@@ -43,4 +43,6 @@ bootstrap.mk scripts/update-gitignore.sh &:\
 
 CONFIGURE += bootstrap.mk scripts/update-gitignore.sh
 
-.PHONY : bootstrap-prebuild bootstrap-build bootstrap-postbuild
+.PHONY : bootstrap-prebuild \
+         bootstrap-build \
+         bootstrap-postbuild

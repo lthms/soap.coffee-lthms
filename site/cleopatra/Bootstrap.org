@@ -67,7 +67,6 @@ In a nutshell,
   #+BEGIN_SRC org
 #+BEGIN_SRC makefile :tangle ../../Makefile :noweb yes
   #+END_SRC
-
 - ~CLEODIR~ ::
   Tell *~cleopatra~* where its sources live. If you place it inside the ~site/~
   directory (as it is intended), and you enable the use of ~org~ files to author
@@ -244,7 +243,9 @@ ${PROC}.mk ${AUX} &:\\
 
 CONFIGURE += ${PROC}.mk ${AUX}
 
-.PHONY : ${PROC}-prebuild ${PROC}-build ${PROC}-postbuild
+.PHONY : ${PROC}-prebuild \\
+         ${PROC}-build \\
+         ${PROC}-postbuild
 EOF
 #+END_SRC
 
@@ -388,7 +389,9 @@ echo ${END_MARKER} >> .gitignore
 #+BEGIN_SRC makefile :tangle bootstrap.mk
 ignore :
 	@echo "  update  gitignore"
-	@scripts/update-gitignore.sh  ${ARTIFACTS} ${CONFIGURE}
+	@scripts/update-gitignore.sh \
+	   ${ARTIFACTS} \
+	   ${CONFIGURE}
 
 clean :
 	@rm -rf ${ARTIFACTS}

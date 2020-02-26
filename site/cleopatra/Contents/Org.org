@@ -53,6 +53,37 @@
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-toc nil)
 
+(setq org-babel-exp-code-template
+      (concat "#+BEGIN_SRC %lang%switches%flags "
+              ":tangle %tangle :name %name\n"
+              "%body\n"
+              "#+END_SRC"))
+
+(defun cleopatra-html-src-block (oldfun src-block contents info)
+  (let*
+      ((old-ret (funcall oldfun src-block contents info))
+       (pars (org-babel-parse-header-arguments
+              (org-element-property :parameters src-block)))
+       (tangle (cdr (assoc :tangle pars)))
+       (name (cdr (assoc :name pars))))
+    (cond
+     (name
+      (concat
+       "<div class=\"org-literate-programming\">"
+       (format "<div class=\"org-src-name\">&lt;&lt%s&gt;&gt :=</div>" name)
+       old-ret
+       "</div>"))
+     ((not (string= tangle "no"))
+      (concat
+       "<div class=\"org-literate-programming\">"
+       old-ret
+       (format "<div class=\"org-src-tangled-to\">%s</div>" tangle)
+       "</div>"))
+     (t old-ret))))
+
+(advice-add 'org-html-src-block
+            :around #'cleopatra-html-src-block)
+
 (org-html-export-to-html nil nil nil t)
 #+END_SRC
 
@@ -110,4 +141,19 @@ dl
     font-weight: bold
   dd p
     margin-top: 0
+
+.org-literate-programming
+  .org-src-name
+    font-family: 'Fira Code', monospace
+    font-weight: bold
+    font-size: 80%
+
+  .org-src-tangled-to:before
+    content: "⮩"
+
+  .org-src-tangled-to
+    font-family: 'Fira Code', monospace
+    font-weight: bold
+    font-size: 80%
+    text-align: right
 #+END_SRC
