@@ -36,9 +36,9 @@
 (use-package haskell-mode :ensure t :defer t)
 (use-package toml-mode :ensure t :defer t)
 (use-package json-mode :ensure t :defer t)
-(use-package soft-stone-theme :ensure t :defer t
+(use-package monokai-pro-theme :ensure t :defer t
   :init
-  (load-theme 'soft-stone t))
+  (load-theme 'monokai-pro t))
 
 (provide 'packages)
 #+END_SRC

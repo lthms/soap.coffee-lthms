@@ -112,8 +112,9 @@ noscript.parentNode.removeChild(noscript);
 * Main SASS File
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
-$bg-color: #1B1D1E
-$code-fg-color: #F8F8F2
+$bg-color: #2d2a2e
+$bg-verbatim : #f4f4f4
+$code-fg-color: #fcfcfa
 $text-fg-color: #505050
 $primary-color: black
 $todo-bg: #e4d3b3
@@ -151,8 +152,10 @@ $document-width : 33rem
 @mixin code-block
     @include padding-centered
     @include code-font
-    background: $bg-color
-    color: $code-fg-color
+    background : $bg-color
+    color : $code-fg-color
+    overflow-x : auto
+    scrollbar-width : thin
 
 *
   box-sizing: border-box
@@ -164,6 +167,9 @@ html, body
     height : 100%
     font-size : 120%
     @include text-font
+
+body
+    overflow-x : hidden
 
 code, tt
     @include code-font
