@@ -112,12 +112,12 @@ noscript.parentNode.removeChild(noscript);
 * Main SASS File
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
-$bg-color: #efece3
-$code-fg-color: black
+$bg-color: #1B1D1E
+$code-fg-color: #F8F8F2
 $text-fg-color: #505050
 $primary-color: black
 $todo-bg: #e4d3b3
-$todo-fg: #494130
+$todo-fg: #2f2b24
 $remark-bg: #c5dbe2
 $remark-fg: #4d575e
 
@@ -126,12 +126,20 @@ $sans-serif : sans-serif
 $document-width : 33rem
 
 @mixin padding-centered($inc: 0rem)
-    padding-left : calc(50% - #{$document-width} / 2 - #{$inc})
-    padding-right : calc(50% - #{$document-width} / 2 - #{$inc})
+    @media screen and (min-width : $document-width)
+        padding-left : calc(50% - #{$document-width} / 2 - #{$inc})
+        padding-right : calc(50% - #{$document-width} / 2 - #{$inc})
+    @media screen and (max-width : $document-width)
+        padding-left : 1rem
+        padding-right : 1rem
 
 @mixin margin-centered($inc: 0rem)
-    margin-left : calc(50% - #{$document-width} / 2 - #{$inc})
-    margin-right : calc(50% - #{$document-width} / 2 - #{$inc})
+    @media screen and (min-width : $document-width)
+        margin-left : calc(50% - #{$document-width} / 2 - #{$inc})
+        margin-right : calc(50% - #{$document-width} / 2 - #{$inc})
+    @media screen and (max-width : $document-width)
+        margin-left : 1rem
+        margin-right : 1rem
 
 @mixin text-font
     font-family : et-book, serif
@@ -211,6 +219,14 @@ body#default
 
         dl, ul, ol
             @include margin-centered
+
+        .TODO
+            background : $todo-bg
+            color : $todo-fg
+            padding-top : .1rem
+            padding-bottom : .1rem
+            margin-top : 1rem
+            margin-bottom : 1rem
 
         @import coq, org
 

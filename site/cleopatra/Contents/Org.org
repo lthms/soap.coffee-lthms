@@ -157,7 +157,8 @@ dl
     font-weight: bold
 
   .org-src-tangled-to:before
-    content: "⮩"
+    content: "\f054"
+    font : normal normal normal 14px/1 ForkAwesome
 
   .org-src-tangled-to
     @include code-font
