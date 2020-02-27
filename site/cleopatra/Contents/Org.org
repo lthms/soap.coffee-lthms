@@ -159,6 +159,9 @@ dl
   dd p
     margin-top: 0
 
+.footnotes
+  font-size : 1rem
+
 .org-literate-programming
   padding-top : 1rem
   padding-bottom : 1rem

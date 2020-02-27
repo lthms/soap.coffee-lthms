@@ -69,6 +69,7 @@ h1, h2, h3, h4, h5, h6
         color : #ff6188
 
     .id[title="definition"],
+    .id[title="projection"],
     .id[title="theorem"],
     .id[title="lemma"]
         color : #a9dc76
