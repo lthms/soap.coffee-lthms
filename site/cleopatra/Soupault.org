@@ -452,18 +452,17 @@ action = "replace_content"
 *** Users instructions
 
 Inline equations written in the DOM under the class src_css{.imath} and using
-the @@html:<span class="imath">\LaTeX</span>@@ syntax can be rendered once and
+the \im \LaTeX \mi syntax can be rendered once and
 for all by ~soupault~. User For instance, ~<span class="imath">\LaTeX</span>~ is
-rendered @@html:<span class="imath">\LaTeX</span>@@.
+rendered \im \LaTeX \mi as expected.
 
 Using this widgets requires being able to inject raw HTML in input files.
 
 *** Implementation details
 
-We will use [[https://katex.org][@@html:<span class="imath">\KaTeX</span>@@]] to render equations
-offline. @@html:<span class="imath">\KaTeX</span>@@ availability on most systems
-is unlikely, but it is part of [[https://www.npmjs.com/package/katex][npm]], so we can define a minimal ~package.json~
-file to fetch it automatically.
+We will use [[https://katex.org][\im \KaTeX \mi]] to render equations offline. \im \KaTeX \mi
+availability on most systems is unlikely, but it is part of [[https://www.npmjs.com/package/katex][npm]], so we can
+define a minimal ~package.json~ file to fetch it automatically.
 
 #+BEGIN_SRC json :tangle package.json
 {
@@ -475,8 +474,8 @@ file to fetch it automatically.
 #+END_SRC
 
 We introduce a Makefile recipe to call ~npm install~. This command produces a
-file called ~package-lock.json~ that we add to ~GENFILES~ to ensure @@html:<span
-class="imath">\KaTeX</span>@@ will be available when ~soupault~ is called.
+file called ~package-lock.json~ that we add to ~GENFILES~ to ensure \im \KaTeX
+\mi will be available when ~soupault~ is called.
 
 #+BEGIN_REMARK
 If ~Soupault.org~ has been modified since the last generation, Babel will
@@ -498,10 +497,9 @@ package-lock.json : package.json
 CONFIGURE += package-lock.json node_modules/
 #+END_SRC
 
-Once installed and available, @@html:<span class="imath">\KaTeX</span>@@ is
-really simple to use. The following script reads (synchronously!) the standard
-input, renders it using @@html:<span class="imath">\KaTeX</span>@@ and outputs
-the resut to the standard output.
+Once installed and available, \im \KaTeX \mi is really simple to use. The
+following script reads (synchronously!) the standard input, renders it using \im
+\KaTeX \mi and outputs the resut to the standard output.
 
 #+BEGIN_TODO
 This script should be generalized to handle both display and inline
@@ -532,8 +530,8 @@ command = "node scripts/katex.js"
 action = "replace_content"
 #+END_SRC
 
-The @@html:<span class="imath">\KaTeX</span>@@ font is bigger than the serif
-font used for this website, so we reduce it a bit with a dedicated SASS rule.
+The \im\KaTeX\mi font is bigger than the serif font used for this
+website, so we reduce it a bit with a dedicated SASS rule.
 
 #+BEGIN_SRC sass :tangle site/style/plugins.sass
 .imath

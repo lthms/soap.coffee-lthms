@@ -54,6 +54,11 @@
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-toc nil)
 
+(add-to-list 'org-entities-user
+             '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
+(add-to-list 'org-entities-user
+             '("mi" "\\)" nil "</span>" "" "" ""))
+
 (setq org-babel-exp-code-template
       (concat "#+BEGIN_SRC %lang%switches%flags "
               ":tangle %tangle :name %name\n"
