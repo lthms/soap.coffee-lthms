@@ -127,6 +127,11 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 .org-src-tangled-to, .org-src-name
     @include padding-centered(4rem)
 
+.example
+    @include verbatim-block
+    // this is hacky, but it works: no need for a padding-bottom
+    padding-top : 1rem
+
 .footdef
     @include padding-centered
 

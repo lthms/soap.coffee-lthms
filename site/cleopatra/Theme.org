@@ -157,6 +157,13 @@ $document-width : 33rem
     overflow-x : auto
     scrollbar-width : thin
 
+@mixin verbatim-block
+    @include padding-centered
+    @include code-font
+    background : $bg-verbatim
+    overflow-x : auto
+    scrollbar-width : thin
+
 *
   box-sizing: border-box
 
