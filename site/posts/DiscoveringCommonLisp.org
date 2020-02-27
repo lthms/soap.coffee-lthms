@@ -59,7 +59,7 @@ Quicklisp is not a native feature of sbcl, and has to be loaded to be available.
 To do it automatically, you have to create a file ~${HOME}/.sbclrc~, with the
 following content:
 
-#+BEGIN_SRC
+#+BEGIN_SRC common-lisp
 (load "~/quicklisp/setup")
 #+END_SRC
 

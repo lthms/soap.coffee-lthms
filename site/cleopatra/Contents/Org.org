@@ -119,6 +119,17 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/org.sass
+.org-src-container
+    @include code-block
+    padding-top : .1rem
+    padding-bottom : .1rem
+
+.org-src-tangled-to, .org-src-name
+    @include padding-centered(4rem)
+
+.footdef
+    @include padding-centered
+
 .footpara
     display: inline
     margin-left: .2em
@@ -132,11 +143,6 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 .section-number-6
     display: none
 
-.org-src-container
-    width: 100%
-    overflow-x: auto
-    scrollbar-width: thin
-
 dl
   dt
     font-weight: bold
@@ -144,17 +150,17 @@ dl
     margin-top: 0
 
 .org-literate-programming
+  padding-top : 1rem
+  padding-bottom : 1rem
   .org-src-name
-    font-family: 'Fira Code', monospace
+    @include code-font
     font-weight: bold
-    font-size: 80%
 
   .org-src-tangled-to:before
     content: "⮩"
 
   .org-src-tangled-to
-    font-family: 'Fira Code', monospace
+    @include code-font
     font-weight: bold
-    font-size: 80%
     text-align: right
 #+END_SRC

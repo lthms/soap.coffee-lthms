@@ -9,7 +9,7 @@ soupault-build :
 	@echo "     run  soupault"
 	@soupault
 
-serve : build
+serve : soupault-prebuild
 	@echo "   start  a python server"
 	@cd build; python -m http.server 2>/dev/null
 
@@ -419,6 +419,7 @@ main "$(cat)" "${1}"
 #+BEGIN_SRC sass :tangle site/style/plugins.sass
 #history
   table
+    @include margin-centered(2rem)
     border-top: 2px solid $primary-color
     border-bottom: 2px solid $primary-color
     border-collapse: collapse;

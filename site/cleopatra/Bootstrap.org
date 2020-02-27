@@ -56,17 +56,8 @@ In a nutshell,
 - ~ROOT~ ::
   Tell Emacs where the root of your website sources is, so that tangled output
   filenames can be given relative to it rather than the org files.  So for
-  instance, the ~BLOCK_SRC~ headers for ~Makefile~ looks like
-
-  #+BEGIN_SRC org
-#+BEGIN_SRC makefile :tangle Makefile :noweb yes
-  #+END_SRC
-
-  instead of, /e.g./,
-
-  #+BEGIN_SRC org
-#+BEGIN_SRC makefile :tangle ../../Makefile :noweb yes
-  #+END_SRC
+  instance, the ~BLOCK_SRC~ tangle parameter for ~Makefile~ looks like ~:tangle
+  Makefile~, instead of ~:tangle ../../Makefile~.
 - ~CLEODIR~ ::
   Tell *~cleopatra~* where its sources live. If you place it inside the ~site/~
   directory (as it is intended), and you enable the use of ~org~ files to author
@@ -76,7 +67,7 @@ In a nutshell,
 
 For this website, these constants are defined as follows.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile :noweb no-export
 ROOT := $(shell pwd)
 CLEODIR := site/cleopatra
 #+END_SRC
@@ -92,7 +83,7 @@ and providing rules to remove them.
   Long-term artifacts whose generation can be time consuming. They will only be
   removed by ~make cleanall~.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile
 ARTIFACTS := build.log
 CONFIGURE :=
 #+END_SRC
@@ -128,7 +119,7 @@ restore it using ~git~.
 We define variables that ensure that the ~ROOT~ environment variable is set and
 ~tangle-org.el~ is loaded when using Emacs.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
 TANGLE := --batch \
@@ -140,7 +131,7 @@ Finally, we introduce a
 [[https://www.gnu.org/software/make/manual/html_node/Canned-Recipes.html#Canned-Recipes][canned
 recipe]] to seamlessly tangle a given file.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile
 define emacs-tangle =
 echo "  tangle  $<"
 ${EMACS} $< ${TANGLE}
@@ -155,7 +146,7 @@ processes. This chain is divided into three stages: ~prebuild~, ~build~, and
 
 This translates as follows in ~Makefile~.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb tangle
+#+BEGIN_SRC makefile :tangle Makefile
 default : postbuild ignore
 
 init :
@@ -306,7 +297,7 @@ Eventually, the second step will be automated, but in the meantime
 this customization is mandatory.
 #+END_TODO
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
 <<extends(IN="Theme.org", PROC="theme", AUX="templates/main.html site/style/main.sass")>>
 #+END_SRC
 
@@ -329,7 +320,7 @@ Eventually, generation processes shall be allowed to produce specific ~soupault~
 widgets to be integrated into ~soupault.conf~.
 #+END_TODO
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
 <<extends(IN="Soupault.org", PROC="soupault", AUX="soupault.conf plugins/urls-rewriting.lua plugins/external-urls.lua site/style/plugins.sass scripts/history.sh templates/history.html package.json scripts/katex.js")>>
 #+END_SRC
 
@@ -355,7 +346,7 @@ In the present website, contents can be written in the following format:
   [[./Contents/Org.org][Learn more about the generation process for Org
   documents]]
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb tangle :exports none
+#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
 <<extends(IN="Contents/Coq.org", PROC="coq", AUX="site/style/coq.sass")>>
 <<extends(IN="Contents/Org.org", PROC="org", AUX="scripts/packages.el scripts/export-org.el site/style/org.sass")>>
 #+END_SRC
@@ -367,8 +358,7 @@ In the present website, contents can be written in the following format:
 stages.
 #+END_TODO
 
-#+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :tangle-mode (identity #o755)
-#!/bin/bash
+#+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :shebang "#+/bin/bash"
 
 BEGIN_MARKER="# begin generated files"
 END_MARKER="# begin generated files"
