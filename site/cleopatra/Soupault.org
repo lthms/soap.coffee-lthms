@@ -60,6 +60,9 @@ clean_urls = false
 
 ** Setting Page Title
 
+We use the “page title” widget to set the title of the webpage based on the
+first (and hopefully the only) ~<h1>~ tag of the page.
+
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.page-title]
 widget = "title"
@@ -230,6 +233,14 @@ This plugin will replace the content of this ~<div>~ with the revisions table of
 
 *** Customization
 
+The base of the URL webview for the document you are currently reading
+—afterwards abstracted with the ~<<repo>>~ noweb reference— is
+
+#+NAME: repo
+#+BEGIN_SRC text
+https://code.soap.coffee/writing/lthms.git
+#+END_SRC
+
 #+BEGIN_SRC html :tangle templates/history.html :noweb tangle
 <details class="history">
   <summary>Revisions</summary>
@@ -285,7 +296,11 @@ This plugin will replace the content of this ~<div>~ with the revisions table of
     white-space: nowrap;
 #+END_SRC
 
-*** Implementations Details
+*** Implementation
+
+We use the built-in [[https://soupault.neocities.org/reference-manual/#widgets-preprocess-element][=preprocess_element=]] to implement, which means we need a
+script which gets its input from the standard input, and echoes its output to
+the standard input.
 
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generate-history]
@@ -300,14 +315,6 @@ This plugin should be reimplemented using ~libgit2~ or other ~git~ libraries, in
 a language more suitable than bash.
 #+END_TODO
 
-The base of the URL webview for the document you are currently reading
-—afterwards abstracted with the ~<<repo>>~ noweb reference— is
-
-#+NAME: repo
-#+BEGIN_SRC text
-https://code.soap.coffee/writing/lthms.git
-#+END_SRC
-
 This plugin proceeds as follows:
 
 1. Using an ad-hoc script, it generates a JSON containing for each revision
@@ -318,7 +325,7 @@ This plugin proceeds as follows:
 3. The content of the selected DOM element is replaced with the output of
    ~haskell-mustache~
 
-This translates in Bash as follows:
+This translates in Bash like this.
 
 #+BEGIN_SRC bash :tangle scripts/history.sh :shebang "#!/usr/bin/bash"
 function main () {
@@ -333,7 +340,62 @@ function main () {
 #+END_SRC
 
 The difficult part of this script is the definition of the =generate_json=
-function. We define the three operations our revisions history script uses:
+function. From a high-level perspective, this function is divided into three
+steps.
+
+1. We get an initial (but partial) set of data about the ~git~ commit of
+   ~${file}~, from the most recent to the oldest
+2. For each commit, we check whether or not ~${file}~ was renamed or not
+3. Finally, we output a result (because we are writing a bash script)
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :noweb no-export
+function generate_json () {
+  local file="${1}"
+  local logs=`<<git-log>>`
+
+  if [ ! $? -eq 0 ]; then
+      exit 1
+  fi
+
+  <<remane-tracking>>
+
+  <<result-echoing>>
+}
+#+END_SRC
+
+We will use ~git~ to get the information we need. By default, ~git~ subcommands
+use a pager when its output is likely to be long. This typically includes
+~git-log~. To disable this behavior, ~git~ exposes the ~--no-pager~ command.
+We introduce =_git=, a wrapper around ~git~ with the proper option.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function _git () {
+  git --no-pager "$@"
+}
+#+END_SRC
+
+Afterwards, we use =_git= in place of ~git~.
+
+Using the ~git-log~ ~--pretty~ command-line argument, we can generate
+one JSON object per commit which contains most of the information we need, using
+the following format string.
+
+#+NAME: pretty-format
+#+BEGIN_SRC json
+{ "subject" : "%s", "abbr_hash" : "%h", "hash" : "%H", "date" : "%cs" }
+#+END_SRC
+
+Besides, we also need ~--follow~ to deal with file renaming. Without this
+option, ~git-log~ stops when the file first appears in the repository, even if
+this “creation” is actually a renaming.  Therefore, the ~git~ command line we
+use to collect our initial history is
+
+#+NAME: git-log
+#+BEGIN_SRC bash :noweb no-export
+_git log --follow --pretty=format:'<<pretty-format>>' "${file}"
+#+END_SRC
+
+To manipulate JSON, we rely on three operators (yet to be defined):
 
 - =jget OBJECT FIELD= ::
   In an =OBJECT=, get the value of a given =FIELD=
@@ -342,9 +404,50 @@ function. We define the three operations our revisions history script uses:
 - =jappend ARRAY VALUE= ::
   Append a =VALUE= at the end of an =ARRAY=
 
-We use [[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since
-~jq~ processes JSON from its standard input, we first define a helper =_jq=
-to deal with JSON from variables seamlessly.
+#+NAME: remane-tracking
+#+BEGIN_SRC bash :noweb no-export
+local name="${file}"
+local revisions='[]'
+
+while read -r rev; do
+  rev=$(jset "${rev}" "filename" "\"${name}\"")
+  revisions=$(jappend "${revisions}" "${rev}")
+
+  local hash=$(jget "${rev}" "hash")
+  local rename=$(previous_name "${name}" "${hash}")
+
+  if [[ ! -z "${rename}" ]]; then
+      name=${rename}
+  fi
+done < <(echo "${logs}")
+#+END_SRC
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function previous_name () {
+  local name=${1}
+  local hash=${2}
+
+  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
+
+  _git show --stat=10000 ${hash} \
+      | sed -e "${unfold}" \
+      | grep "=> ${name}" \
+      | xargs \
+      | cut -d' ' -f1
+}
+#+END_SRC
+
+#+NAME: result-echoing
+#+BEGIN_SRC bash :noweb no-export
+jset "$(jset "{}" "file" "\"${file}\"")" \
+     "history" \
+     "${revisions}"
+#+END_SRC
+
+The last missing pieces are the definitions of the three JSON operators.  We use
+[[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since ~jq~ processes JSON from its standard input,
+we first define a helper (similar to =_git=) to deal with JSON from variables
+seamlessly.
 
 #+BEGIN_SRC bash :tangle scripts/history.sh
 function _jq () {
@@ -385,76 +488,6 @@ function jappend () {
 }
 #+END_SRC
 
-Besides JSON manipulation, we will use ~git~ to get the information we need. By
-default, ~git~ subcommands use a pager when its output is likely to be
-long. This typically includes ~git-log~. To disable this behavior, ~git~ exposes
-the ~--no-pager~ command.
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function _git () {
-  git --no-pager "$@"
-}
-#+END_SRC
-
-Afterwards, we use =_git= in place of ~git~.
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-FORMAT='{'\
-'  "subject" : "%s",'\
-'  "abbr_hash" : "%h",'\
-'  "hash" : "%H",'\
-'  "date" : "%cs"'\
-'}'
-#+END_SRC
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function generate_json () {
-  local file="${1}"
-  local logs=$(_git log \
-      --follow \
-      --pretty=format:"${FORMAT}" \
-      "${file}")
-
-  if [ ! $? -eq 0 ]; then
-      exit 1
-  fi
-
-  local name="${file}"
-  local revisions='[]'
-
-  while read -r rev; do
-    rev=$(jset "${rev}" "filename" "\"${name}\"")
-    revisions=$(jappend "${revisions}" "${rev}")
-
-    local hash=$(jget "${rev}" "hash")
-    local rename=$(previous_name "${name}" "${hash}")
-
-    if [[ ! -z "${rename}" ]]; then
-        name=${rename}
-    fi
-  done < <(echo "${logs}")
-
-  jset "$(jset "{}" "file" "\"${file}\"")" \
-       "history" \
-       "${revisions}"
-}
-#+END_SRC
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function previous_name () {
-  local name=${1}
-  local hash=${2}
-
-  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
-
-  _git show --stat=10000 ${hash} \
-      | sed -e "${unfold}" \
-      | grep "=> ${name}" \
-      | xargs \
-      | cut -d' ' -f1
-}
-#+END_SRC
-
 Everything is defined. We can call =main= now.
 
 #+BEGIN_SRC bash :tangle scripts/history.sh
@@ -472,7 +505,7 @@ rendered \im \LaTeX \mi as expected.
 
 Using this widgets requires being able to inject raw HTML in input files.
 
-*** Implementation details
+*** Implementation
 
 We will use [[https://katex.org][\im \KaTeX \mi]] to render equations offline. \im \KaTeX \mi
 availability on most systems is unlikely, but it is part of [[https://www.npmjs.com/package/katex][npm]], so we can
@@ -603,7 +636,7 @@ Finally, this generation process introduces a dedicated (~PHONY~) command to
 start a HTTP server in order to navigate the generated website from a browser.
 
 #+NAME: ad-hoc-cmds
-#+BEGIN_SRC makefile
+#+BEGIN_SRC makefile :noweb no-export
 serve :
 	@echo "   start  a python server"
 	@cd <<build-dir>>; python -m http.server 2>/dev/null
