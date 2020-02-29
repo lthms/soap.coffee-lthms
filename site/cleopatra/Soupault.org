@@ -2,28 +2,37 @@
 <h1><code>soupault</code> Configuration</h1>
 #+END_EXPORT
 
-#+TOC: headlines 2
+In a nutshell, the purpose of ~soupault~ is to post-process HTML files generated
+by the generation processes of *~cleopatra~*. It is parameterized by two
+settings, the ~<<build-dir>> directory where ~soupault~ generates its output,
+and an eventual ~<<subdir>>~ wherein the website contents lives. The latter
+allows to generate only a subpart of a larger website.
 
-#+BEGIN_SRC makefile :tangle soupault.mk
-soupault-build :
-	@echo "     run  soupault"
-	@soupault
+For the present website, these two settings are initialized as follows.
 
-serve : soupault-prebuild
-	@echo "   start  a python server"
-	@cd build; python -m http.server 2>/dev/null
-
-theme-build : site/style/plugins.sass
-
-ARTIFACTS += build/
+#+NAME: build-dir
+#+BEGIN_SRC text
+build
 #+END_SRC
-
-* General Settings
 
 #+NAME: prefix
 #+BEGIN_SRC text
 ~lthms
 #+END_SRC
+
+The rest of this document proceeds as follows. We first describe the general
+settings of ~soupault~. Then, we enumerate the widgets enabled for this website.
+Finally, we provide a proper definition for ~soupault~ the *~cleopatra~*
+generation process.
+
+#+TOC: headlines 2
+
+* ~soupault~ General Settings
+
+#+BEGIN_TODO
+The list of ignored extensions should be programmatically generated with the
+help of *~cleopatra~*.
+#+END_TODO
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [settings]
@@ -31,7 +40,7 @@ strict = true
 verbose = false
 debug = false
 site_dir = "site"
-build_dir = "build/<<prefix>>"
+build_dir = "<<build-dir>>/<<prefix>>"
 
 page_file_extensions = ["html"]
 ignore_extensions = [
@@ -71,7 +80,8 @@ determine the version of ~soupault~ with the following script.
 soupault --version | head -n 1 | tr -d '\n'
 #+END_SRC
 
-The configuration of the widget becomes
+The configuration of the widget ---initially provided by ~soupault~--- becomes
+less subject to the obsolescence.
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [widgets.generator-meta]
@@ -215,174 +225,10 @@ For instance, considering the following HTML snippet
 </div>
 #+END_SRC
 
-will replace the content of this ~<div>~ with the revisions table of
+This plugin will replace the content of this ~<div>~ with the revisions table of
 ~site/posts/FooBar.org~.
 
-*** Implementations Details
-
-#+BEGIN_TODO
-This plugin should be reimplemented using ~libgit2~ or other ~git~ libraries, in
-a language more suitable than bash.
-#+END_TODO
-
-The base of the URL webview for the document you are currently reading
-—afterwards abstracted with the ~<<repo>>~ noweb reference— is
-
-#+NAME: repo
-#+BEGIN_SRC text
-https://code.soap.coffee/writing/lthms.git
-#+END_SRC
-
-This plugin proceeds as follows:
-
-1. Using an ad-hoc script, it generates a JSON containing for each revision
-   - The subject, date, hash, and abbreviated hash of the related commit
-   - The name of the file at the time of this commit
-2. This JSON is passed to a mustache engine (~haskell-mustache~) with a
-   proper template
-3. The content of the selected DOM element is replaced with the output of
-   ~haskell-mustache~
-
-This translates in Bash as follows:
-
-#+BEGIN_SRC bash :tangle scripts/history.sh :shebang "#!/usr/bin/bash"
-function main () {
-  local file="${1}"
-  local template="${2}"
-
-  tmp_file=$(mktemp)
-  generate_json ${file} > ${tmp_file}
-  haskell-mustache ${template} ${tmp_file}
-  rm ${tmp_file}
-}
-#+END_SRC
-
-The difficult part of this script is the definition of the =generate_json=
-function. We define the three operations our revisions history script uses:
-
-- =jget OBJECT FIELD= ::
-  In an =OBJECT=, get the value of a given =FIELD=
-- =jset OBJECT FIELD VALIE= ::
-  In an =OBJECT=, set the =VALUE= of a given =FIELD=
-- =jappend ARRAY VALUE= ::
-  Append a =VALUE= at the end of an =ARRAY=
-
-#+BEGIN_EXPORT html
-<details>
-  <summary>JSON manipulation operators definition</summary>
-#+END_EXPORT
-
-We use [[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since
-~jq~ processes JSON from its standard input, we first define a helper =_jq=
-to deal with JSON from variables seamlessly.
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function _jq () {
-  local input="${1}"
-  local filter="${2}"
-
-  echo "${input}" | jq -jcM "${filter}"
-}
-#+END_SRC
-
-- *-j* tells ~jq~ not to print a new line at the end of its outputs
-- *-c* tells ~jq~ to print JSON in a compact format (rather than prettified)
-- *-M* tells ~jq~ to output monochrome outputs
-
-Internally, =jget=, =jset=, and =jappend= are implemented with ~jq~
-[[https://stedolan.github.io/jq/manual/#Basicfilters][basic filters]].
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function jget () {
-  local obj="${1}"
-  local field="${2}"
-
-  _jq "${obj}" ".${field}"
-}
-
-function jset () {
-  local obj="${1}"
-  local field="${2}"
-  local val="${3}"
-
-  _jq "${obj}" "setpath([\"${field}\"]; ${val})"
-}
-function jappend () {
-  local arr="${1}"
-  local val="${2}"
-
-  _jq "${arr}" ". + [ ${val} ]"
-}
-#+END_SRC
-
-#+BEGIN_EXPORT html
-</details>
-#+END_EXPORT
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function _git () {
-  git --no-pager "$@"
-}
-
-FORMAT='{'\
-'  "subject" : "%s",'\
-'  "abbr_hash" : "%h",'\
-'  "hash" : "%H",'\
-'  "date" : "%cs"'\
-'}'
-
-function generate_json () {
-  local file="${1}"
-  local logs=$(_git log \
-      --follow \
-      --pretty=format:"${FORMAT}" \
-      "${file}")
-
-  if [ ! $? -eq 0 ]; then
-      exit 1
-  fi
-
-  local name="${file}"
-  local revisions='[]'
-
-  while read -r rev; do
-    rev=$(jset "${rev}" "filename" "\"${name}\"")
-    revisions=$(jappend "${revisions}" "${rev}")
-
-    local hash=$(jget "${rev}" "hash")
-    local rename=$(previous_name "${name}" "${hash}")
-
-    if [[ ! -z "${rename}" ]]; then
-        name=${rename}
-    fi
-  done < <(echo "${logs}")
-
-  jset "$(jset "{}" "file" "\"${file}\"")" \
-       "history" \
-       "${revisions}"
-}
-#+END_SRC
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function previous_name () {
-  local name=${1}
-  local hash=${2}
-
-  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
-
-  _git show --stat=10000 ${hash} \
-      | sed -e "${unfold}" \
-      | grep "=> ${name}" \
-      | xargs \
-      | cut -d' ' -f1
-}
-#+END_SRC
-
-Everything is defined. We can call =main= now.
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-main "$(cat)" "${1}"
-#+END_SRC
+*** Customization
 
 #+BEGIN_SRC html :tangle templates/history.html :noweb tangle
 <details class="history">
@@ -439,12 +285,180 @@ main "$(cat)" "${1}"
     white-space: nowrap;
 #+END_SRC
 
+*** Implementations Details
+
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.generate-history]
 widget = "preprocess_element"
 selector = "#history"
 command = 'scripts/history.sh templates/history.html'
 action = "replace_content"
+#+END_SRC
+
+#+BEGIN_TODO
+This plugin should be reimplemented using ~libgit2~ or other ~git~ libraries, in
+a language more suitable than bash.
+#+END_TODO
+
+The base of the URL webview for the document you are currently reading
+—afterwards abstracted with the ~<<repo>>~ noweb reference— is
+
+#+NAME: repo
+#+BEGIN_SRC text
+https://code.soap.coffee/writing/lthms.git
+#+END_SRC
+
+This plugin proceeds as follows:
+
+1. Using an ad-hoc script, it generates a JSON containing for each revision
+   - The subject, date, hash, and abbreviated hash of the related commit
+   - The name of the file at the time of this commit
+2. This JSON is passed to a mustache engine (~haskell-mustache~) with a
+   proper template
+3. The content of the selected DOM element is replaced with the output of
+   ~haskell-mustache~
+
+This translates in Bash as follows:
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :shebang "#!/usr/bin/bash"
+function main () {
+  local file="${1}"
+  local template="${2}"
+
+  tmp_file=$(mktemp)
+  generate_json ${file} > ${tmp_file}
+  haskell-mustache ${template} ${tmp_file}
+  rm ${tmp_file}
+}
+#+END_SRC
+
+The difficult part of this script is the definition of the =generate_json=
+function. We define the three operations our revisions history script uses:
+
+- =jget OBJECT FIELD= ::
+  In an =OBJECT=, get the value of a given =FIELD=
+- =jset OBJECT FIELD VALIE= ::
+  In an =OBJECT=, set the =VALUE= of a given =FIELD=
+- =jappend ARRAY VALUE= ::
+  Append a =VALUE= at the end of an =ARRAY=
+
+We use [[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since
+~jq~ processes JSON from its standard input, we first define a helper =_jq=
+to deal with JSON from variables seamlessly.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function _jq () {
+  local input="${1}"
+  local filter="${2}"
+
+  echo "${input}" | jq -jcM "${filter}"
+}
+#+END_SRC
+
+- *-j* tells ~jq~ not to print a new line at the end of its outputs
+- *-c* tells ~jq~ to print JSON in a compact format (rather than prettified)
+- *-M* tells ~jq~ to output monochrome outputs
+
+Internally, =jget=, =jset=, and =jappend= are implemented with ~jq~
+[[https://stedolan.github.io/jq/manual/#Basicfilters][basic filters]].
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function jget () {
+  local obj="${1}"
+  local field="${2}"
+
+  _jq "${obj}" ".${field}"
+}
+
+function jset () {
+  local obj="${1}"
+  local field="${2}"
+  local val="${3}"
+
+  _jq "${obj}" "setpath([\"${field}\"]; ${val})"
+}
+function jappend () {
+  local arr="${1}"
+  local val="${2}"
+
+  _jq "${arr}" ". + [ ${val} ]"
+}
+#+END_SRC
+
+Besides JSON manipulation, we will use ~git~ to get the information we need. By
+default, ~git~ subcommands use a pager when its output is likely to be
+long. This typically includes ~git-log~. To disable this behavior, ~git~ exposes
+the ~--no-pager~ command.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function _git () {
+  git --no-pager "$@"
+}
+#+END_SRC
+
+Afterwards, we use =_git= in place of ~git~.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+FORMAT='{'\
+'  "subject" : "%s",'\
+'  "abbr_hash" : "%h",'\
+'  "hash" : "%H",'\
+'  "date" : "%cs"'\
+'}'
+#+END_SRC
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function generate_json () {
+  local file="${1}"
+  local logs=$(_git log \
+      --follow \
+      --pretty=format:"${FORMAT}" \
+      "${file}")
+
+  if [ ! $? -eq 0 ]; then
+      exit 1
+  fi
+
+  local name="${file}"
+  local revisions='[]'
+
+  while read -r rev; do
+    rev=$(jset "${rev}" "filename" "\"${name}\"")
+    revisions=$(jappend "${revisions}" "${rev}")
+
+    local hash=$(jget "${rev}" "hash")
+    local rename=$(previous_name "${name}" "${hash}")
+
+    if [[ ! -z "${rename}" ]]; then
+        name=${rename}
+    fi
+  done < <(echo "${logs}")
+
+  jset "$(jset "{}" "file" "\"${file}\"")" \
+       "history" \
+       "${revisions}"
+}
+#+END_SRC
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+function previous_name () {
+  local name=${1}
+  local hash=${2}
+
+  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
+
+  _git show --stat=10000 ${hash} \
+      | sed -e "${unfold}" \
+      | grep "=> ${name}" \
+      | xargs \
+      | cut -d' ' -f1
+}
+#+END_SRC
+
+Everything is defined. We can call =main= now.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh
+main "$(cat)" "${1}"
 #+END_SRC
 
 ** Rendering Equations Offline
@@ -477,18 +491,14 @@ We introduce a Makefile recipe to call ~npm install~. This command produces a
 file called ~package-lock.json~ that we add to ~GENFILES~ to ensure \im \KaTeX
 \mi will be available when ~soupault~ is called.
 
-#+BEGIN_REMARK
 If ~Soupault.org~ has been modified since the last generation, Babel will
 generate ~package.json~ again. However, if the modifications of ~Soupault.org~
 do not concern ~package.json~, then ~npm install~ will not modify
 ~package-lock.json~ and its “last modified” time will not be updated. This means
 that the next time ~make~ will be used, it will replay this recipe again. As a
 consequence, we systematically ~touch~ ~packase-lock.json~ to satisfy ~make~.
-#+END_REMARK
 
-#+BEGIN_SRC makefile :tangle soupault.mk
-soupault-prebuild : package-lock.json
-
+#+BEGIN_SRC makefile :tangle katex.mk
 package-lock.json : package.json
 	@echo "    init  npm packages"
 	@npm install &>> build.log
@@ -537,3 +547,71 @@ website, so we reduce it a bit with a dedicated SASS rule.
 .imath
   font-size: smaller
 #+END_SRC
+
+* *~cleopatra~* Generation Process Definition
+
+We introduce the ~soupault~ generation process, obviously based on the
+[[https://soupault.neocities.org/][~soupault~ HTML processor]]. The structure of
+a *~cleopatra~* generation process is always the same.
+
+#+BEGIN_SRC mkefile :tangle soupault.mk :noweb no-export
+<<stages>>
+<<dependencies>>
+<<ad-hoc-cmds>>
+#+END_SRC
+
+In the rest of this section, we define these three components.
+
+** Build Stages
+
+From the perspective of *~cleopatra~*, it is a rather simple component, since
+the ~build~ stage is simply a call to ~soupault~, whose outputs are located in a
+single (configurable) directory.
+
+#+NAME: stages
+#+BEGIN_SRC makefile :noweb no-export
+soupault-build :
+	@echo "     run  soupault"
+	@soupault
+ARTIFACTS += <<build-dir>>/
+#+END_SRC
+
+** Dependencies
+
+Most of the generation processes (if not all of them) need to declare themselves
+as a prerequisite for ~soupault-build~. If they do not, they will likely be
+executed after ~soupault~ is called.
+
+This file defines an auxiliary SASS sheet that needs to be declared as a
+dependency of the build stage of the [[./Theme.org][~theme~ generation
+process]].
+
+Finally, the offline rendering of equations requires \im \KaTeX \mi to be
+available, so we include the ~katex.mk~ file, and make ~package-lock.json~ (the
+proof that ~npm install~ has been executed) a prerequisite of ~soupault-build~.
+
+#+NAME: dependencies
+#+BEGIN_SRC makefile
+theme-build : site/style/plugins.sass
+include katex.mk
+soupault-build : package-lock.json
+#+END_SRC
+
+** Ad-hoc Commands
+
+Finally, this generation process introduces a dedicated (~PHONY~) command to
+start a HTTP server in order to navigate the generated website from a browser.
+
+#+NAME: ad-hoc-cmds
+#+BEGIN_SRC makefile
+serve :
+	@echo "   start  a python server"
+	@cd <<build-dir>>; python -m http.server 2>/dev/null
+
+.PHONY : serve
+#+END_SRC
+
+This command does not assume anything about the current state of generation of
+the project. In particular, it does not check whether or not the ~<<build-dir>>~
+directory exists. The responsibility to use ~make serve~ in a good setting lies
+with final users.

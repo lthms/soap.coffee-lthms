@@ -321,7 +321,7 @@ widgets to be integrated into ~soupault.conf~.
 #+END_TODO
 
 #+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
-<<extends(IN="Soupault.org", PROC="soupault", AUX="soupault.conf plugins/urls-rewriting.lua plugins/external-urls.lua site/style/plugins.sass scripts/history.sh templates/history.html package.json scripts/katex.js")>>
+<<extends(IN="Soupault.org", PROC="soupault", AUX="soupault.conf plugins/urls-rewriting.lua plugins/external-urls.lua site/style/plugins.sass scripts/history.sh templates/history.html package.json scripts/katex.js katex.mk")>>
 #+END_SRC
 
 *** Authoring Contents

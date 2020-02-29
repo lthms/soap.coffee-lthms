@@ -43,6 +43,7 @@ scripts/history.sh
 templates/history.html
 package.json
 scripts/katex.js
+katex.mk
 coq.mk
 site/style/coq.sass
 .emacs
