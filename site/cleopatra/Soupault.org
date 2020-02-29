@@ -29,10 +29,24 @@ generation process.
 
 * ~soupault~ General Settings
 
-#+BEGIN_TODO
-The list of ignored extensions should be programmatically generated with the
-help of *~cleopatra~*.
-#+END_TODO
+The general ~settings~ section of ~soupault.conf~ is fairly basic, and there is
+little to say that the
+[[https://soupault.neocities.org/reference-manual/#getting-started][“Getting
+Started”]] already discuss in length.
+
+We emphasize three things:
+
+- The ~build_dir~ is set to ~<<build-dir>>/<<prefix>>~ in place of simply
+  ~<<build-dir>>~.
+- The ~ignore_extensions~ shall be updated to take into account artifacts
+  produces by other *~cleopatra~* generation processes.
+- We disable the “clean URLs” feature of ~soupault. This option renames
+  a HTML files ~foo/bar.html~ into ~foo/bar/index.html~, which means when served
+  by a HTTP server, the ~foo/bar~ URL will work. The issue we have with this
+  feature is that the internal links within your websiste needs to take their
+  /final/ URL into account, rather than their actual name. If one day ~soupault~
+  starts rewriting internal URLs when ~clean_url~ is enabled, we might
+  reconsider using it.
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [settings]
@@ -55,6 +69,11 @@ content_selector = "main"
 doctype = "<!DOCTYPE html>"
 clean_urls = false
 #+END_SRC
+
+#+BEGIN_TODO
+The list of ignored extensions should be programmatically generated with the
+help of *~cleopatra~*.
+#+END_TODO
 
 * Widgets
 
@@ -97,10 +116,14 @@ selector = "head"
 
 ** Generating Table of Contents
 
+The ~toc~ widget allows for generating a table of contents for HTML files which
+contains a node matching a given ~selector~ (in the case of this document,
+~#generate-toc~).
+
 #+BEGIN_SRC toml :tangle soupault.conf
 [widgets.table-of-contents]
 widget = "toc"
-selector = "div#generate-toc"
+selector = "#generate-toc"
 action = "replace_element"
 min_level = 2
 numbered_list = true
@@ -445,9 +468,9 @@ jset "$(jset "{}" "file" "\"${file}\"")" \
 #+END_SRC
 
 The last missing pieces are the definitions of the three JSON operators.  We use
-[[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since ~jq~ processes JSON from its standard input,
-we first define a helper (similar to =_git=) to deal with JSON from variables
-seamlessly.
+[[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since ~jq~
+processes JSON from its standard input, we first define a helper (similar to
+=_git=) to deal with JSON from variables seamlessly.
 
 #+BEGIN_SRC bash :tangle scripts/history.sh
 function _jq () {
