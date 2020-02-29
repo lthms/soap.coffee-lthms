@@ -2,7 +2,7 @@
 <h1>Release of <code>colorless-themes-0.2</code>,
 <code>nordless-theme-0.2</code>, and <code>lavenderless-theme-0.2</code></h1>
 
-<span class="time">February 15, 2020</span></p>
+<p><span class="time">February 15, 2020</span></p>
 #+END_EXPORT
 
 [[https://code.soap.coffee/colorless-themes.git/tag/?h=0.2][I have tagged and released a new version of ~colorless-themes~]]. The motivation
