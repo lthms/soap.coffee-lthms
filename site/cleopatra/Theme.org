@@ -63,23 +63,21 @@ ARTIFACTS += ${CSS} ${SASS}
 #+NAME: asyncloading_js
 #+BEGIN_SRC js
 let noscript = document.getElementById('asyncloading');
-let resources = noscript.innerText.split('\n');
-
-for (var ix in resources) {
-    noscript.insertAdjacentHTML('beforebegin', resources[ix]);
-}
-
+noscript.insertAdjacentHTML('beforebegin', noscript.innerText);
 noscript.parentNode.removeChild(noscript);
 #+END_SRC
 
 #+NAME: asyncloading_html
 #+BEGIN_SRC html
 <noscript id="asyncloading">
-  <link rel="stylesheet" href="/vendors/fira-code.2+swap/font.css">
-  <link rel="stylesheet" href="/vendors/et-book+swap/font.css">
-  <link rel="stylesheet" href="/vendors/katex.0.11.1+swap/katex.css">
-  <link rel="stylesheet"
-        href="/vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css">
+  <link href="https://soap.coffee/+vendors/fira-code.2+swap/font.css"
+     rel="stylesheet">
+  <link href="https://soap.coffee/+vendors/et-book+swap/font.css"
+     rel="stylesheet">
+  <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css"
+     rel="stylesheet">
+  <link href="https://soap.coffee/+vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css"
+     rel="stylesheet">
 </nolink>
 #+END_SRC
 

@@ -129,34 +129,90 @@ min_level = 2
 numbered_list = true
 #+END_SRC
 
-** Rewriting URLs
+#+BEGIN_TODO
+Propose a patch to ~soupault~'s upstream to add numbering in titles.
+#+END_TODO
 
-#+BEGIN_SRC lua :tangle plugins/urls-rewriting.lua
-function prefix_urls (links, attr, prefix_url)
-  index, link = next(links)
+** Fixing Org Internal Links
+
+For some reason, Org prefix internal links to other Org documents with
+~file://~. To avoid that, we provide a simple plugin which removes ~file://~
+from the begining of a URL.
+
+#+BEGIN_TODO
+This file should be part of ~Org.org~, but that would require to aggregate
+“subconfig” into a larger one.
+#+END_TODO
+
+This plugin key component is the =fix_org_urls= function.
+
+- =fix_org_urls(LIST, ATTR)= ::
+  Enumerate the DOM elements of =LIST=, and check their =ATTR= attribute.
+
+#+BEGIN_SRC lua :tangle plugins/fix-org-urls.lua
+function fix_org_urls(list, attr)
+  index, link = next(list)
 
   while index do
     href = HTML.get_attribute(link, attr)
 
     if href then
-      -- remove prefix sometimes introduced by org
       href = Regex.replace(href, "^file://", "")
-
-      -- Check if URL starts with a leading "/"
-      if Regex.match(href, "^/") then
-        href = Regex.replace(href, "^/*", "")
-        href = prefix_url .. href
-        HTML.set_attribute(link, attr, href)
-      end
+      HTML.set_attribute(link, attr, href)
     end
-    index, link = next(links, index)
+
+    index, link = next(list, index)
   end
 end
+#+END_SRC
 
+We use this function to fix the URLs of tags known to be subject to Org strange
+behavior. For now, only ~<a>~ has been affected.
+
+#+BEGIN_SRC lua :tangle plugins/fix-org-urls.lua
+fix_org_urls(HTML.select(page, "a"), "href")
+#+END_SRC
+
+The configuration of this plugin, and the associated widget, is straightforward.
+
+#+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
+[plugins.fix-org-urls]
+file = "plugins/fix-org-urls.lua"
+
+[widgets.fix-org-urls]
+widget = "fix-org-urls"
+#+END_SRC
+
+** Prefixing Internal URLs
+
+On the one hand, internal links can be absolute, meaning they start with a
+leading ~/~, and therefore are relative to the website root. On the other hand,
+website (especially static website) can be placed in larger context. For
+instance, my personal website lives inside the ~~lthms~ directory of the
+~soap.coffee~ domain.
+
+The purpose of this plugin is to rewrite internal URLs which are relative to the
+root, in order to properly prefix them.
+
+From a high-level perspective, the plugin structure is the following.
+
+#+BEGIN_SRC lua  :tangle plugins/urls-rewriting.lua :noweb no-export
 prefix_url = config["prefix_url"]
+<<validate_prefix>>
 
+<<prefix_func>>
+<<prefix_calls>>
+#+END_SRC
+
+1. We validate the widget configuration.
+2. We propose a generic function to enumerate and rewrite tags which can have
+   internal URLs as attribute argument.
+3. We use this generic function for relevant tags.
+
+#+NAME: validate_prefix
+#+BEGIN_SRC lua
 if not prefix_url then
-  prefix_url = ""
+  Plugin.fail("Missing mandatory field: `prefix_url'")
 end
 
 if not Regex.match(prefix_url, "^/(.*)") then
@@ -166,12 +222,40 @@ end
 if not Regex.match(prefix_url, "(.*)/$") then
   prefix_url = prefix_url .. "/"
 end
+#+END_SRC
 
+#+NAME: prefix_func
+#+BEGIN_SRC lua
+function prefix_urls (links, attr, prefix_url)
+  index, link = next(links)
+
+  while index do
+    href = HTML.get_attribute(link, attr)
+
+    if href then
+      if Regex.match(href, "^/") then
+        href = Regex.replace(href, "^/*", "")
+        href = prefix_url .. href
+      end
+
+      HTML.set_attribute(link, attr, href)
+    end
+    index, link = next(links, index)
+  end
+end
+#+END_SRC
+
+#+NAME: prefix_calls
+#+BEGIN_SRC lua
 prefix_urls(HTML.select(page, "a"), "href", prefix_url)
 prefix_urls(HTML.select(page, "link"), "href", prefix_url)
 prefix_urls(HTML.select(page, "img"), "src", prefix_url)
 prefix_urls(HTML.select(page, "script"), "src", prefix_url)
 #+END_SRC
+
+Again, configuring soupault to use this plugin is relatively straightforward.
+The only important thing to notice is the use of the ~after~ field, to ensure
+this plugin is run /after/ the plugin responsible for fixing Org documents URLs.
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
 [plugins.urls-rewriting]
@@ -180,6 +264,7 @@ file = "plugins/urls-rewriting.lua"
 [widgets.urls-rewriting]
 widget = "urls-rewriting"
 prefix_url = "<<prefix>>"
+after = "fix-org-urls"
 #+END_SRC
 
 ** Marking External Links
@@ -610,7 +695,7 @@ We introduce the ~soupault~ generation process, obviously based on the
 [[https://soupault.neocities.org/][~soupault~ HTML processor]]. The structure of
 a *~cleopatra~* generation process is always the same.
 
-#+BEGIN_SRC mkefile :tangle soupault.mk :noweb no-export
+#+BEGIN_SRC makefile :tangle soupault.mk :noweb no-export
 <<stages>>
 <<dependencies>>
 <<ad-hoc-cmds>>
