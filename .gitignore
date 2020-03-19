@@ -12,6 +12,7 @@ build/
 .lia.cache
 site/posts/StronglySpecifiedFunctionsProgram.html
 site/posts/MiniHTTPServer.html
+site/posts/ClightIntroduction.html
 site/posts/StronglySpecifiedFunctions.html
 site/posts/RewritingInCoq.html
 site/posts/Ltac101.html

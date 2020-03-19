@@ -19,6 +19,11 @@ Coq is a formal proof management system which provides a pure functional
 language with nice dependent types together with an environment for writing
 machine-checked proofs.
 
+- [[./ClightIntroduction.html][A Study of Clight and its Semantics]] ::
+  Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
+  this write-up, we prove a straighforward functional property of a small C
+  function, as an exercise to discover the Clight semantics.
+
 - [[./MiniHTTPServer.html][Implementing and Certifying a Web Server in Coq]] ::
   An explanation on how to write an almost pure Coq, and working (albeit
   minimal) HTTP server.
