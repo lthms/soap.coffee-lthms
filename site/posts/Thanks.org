@@ -47,10 +47,12 @@ least to try keeping up-to-date a curated description of the “main” ones.
 - [[https://forkaweso.me/Fork-Awesome/][Fork Awesome]] ::
   Fork Awesome is a collection of icons for the web. It is a community fork of
   [[https://fontawesome.com/][Font Awesome]].
-- [[https://katex.org][KaTeX]] ::
-  Katex is the “fastest” math typesetting library for the web, and is uses to
-  render inline mathematics in my posts at build time. It has been created by
-  [[https://github.com/xymostech][Emily Eisenberg]] and [[https://sophiebits.com/][Sophie Alpert]], with the help of [[https://github.com/KaTeX/KaTeX/graphs/contributors][many contributors]].
+- [[https://katex.org][\im \KaTeX \mi]] ::
+  \im \KaTeX \mi is the “fastest” math typesetting library for the web, and is
+  uses to render inline mathematics in my posts at build time. It has been
+  created by [[https://github.com/xymostech][Emily Eisenberg]] and
+  [[https://sophiebits.com/][Sophie Alpert]], with the help of
+  [[https://github.com/KaTeX/KaTeX/graphs/contributors][many contributors]].
 - [[https://github.com/tonsky/FiraCode][Fira Code]] ::
   Fira Code is a monospaced font by [[https://github.com/tonsky][Nikita Prokopov]] inspired with Fira Mono by
   the [[https://www.mozilla.org/en-US/][Mozilla Foundation]], with “programming ligatures” (/e.g./, =>>==, ====,
