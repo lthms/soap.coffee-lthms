@@ -10,8 +10,9 @@ Over the past years, I have tried to capitalize on my findings. What I have
 lacked in regularity I made up for in subject exoticism.
 
 If you like what you read, have a question or for any other reasons really, you
-can shoot an email to [[mailto:~lthms/lthms.xyz@lists.sr.ht][the dedicated mailing list]] (see the [[https://lists.sr.ht/~lthms/lthms.xyz/%3C20190127111504.n27ttkvtl7l3lzwb%40ideepad.localdomain%3E][announcement]] for a
-guide on how to subscribe).
+can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on
+whichever site you like (I personnaly enjoy [[https://lobste.rs][Lobste.rs]]
+very much).
 
 * About Coq
 
