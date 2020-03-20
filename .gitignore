@@ -16,6 +16,7 @@ site/posts/ClightIntroduction.html
 site/posts/StronglySpecifiedFunctions.html
 site/posts/RewritingInCoq.html
 site/posts/Ltac101.html
+site/index.html
 site/news/ColorlessThemes-0.2.html
 site/cleopatra/Contents.html
 site/cleopatra/index.html
@@ -25,7 +26,6 @@ site/cleopatra/Soupault.html
 site/cleopatra/Contents/Org.html
 site/cleopatra/Contents/Coq.html
 site/posts/Thanks.html
-site/posts/index.html
 site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html

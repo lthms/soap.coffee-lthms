@@ -89,8 +89,7 @@ noscript.parentNode.removeChild(noscript);
   <nav>
     <ul>
       <li> <a href="/news">News</a></li>
-      <li> <a href="/posts">Write-ups</a></li>
-      <li> <a href="/">About</a></li>
+      <li> <a href="/">Write-ups</a></li>
     </ul>
   </nav>
   <header>
