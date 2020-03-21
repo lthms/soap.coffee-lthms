@@ -176,9 +176,6 @@ fix_org_urls(HTML.select(page, "a"), "href")
 The configuration of this plugin, and the associated widget, is straightforward.
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
-[plugins.fix-org-urls]
-file = "plugins/fix-org-urls.lua"
-
 [widgets.fix-org-urls]
 widget = "fix-org-urls"
 #+END_SRC
@@ -258,9 +255,6 @@ The only important thing to notice is the use of the ~after~ field, to ensure
 this plugin is run /after/ the plugin responsible for fixing Org documents URLs.
 
 #+BEGIN_SRC toml :tangle soupault.conf :noweb tangle
-[plugins.urls-rewriting]
-file = "plugins/urls-rewriting.lua"
-
 [widgets.urls-rewriting]
 widget = "urls-rewriting"
 prefix_url = "<<prefix>>"
@@ -310,12 +304,9 @@ end
 #+END_SRC
 
 #+BEGIN_SRC toml :tangle soupault.conf
-[plugins.external_links]
-file = "plugins/external-urls.lua"
-
 [widgets.mark-external-urls]
 after = "generate-history"
-widget = "external_links"
+widget = "external-urls"
 #+END_SRC
 
 ** Generating Per-File Revisions Tables
