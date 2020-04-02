@@ -1,5 +1,5 @@
 #+BEGIN_EXPORT html
-<h1><code>cleopatra</code></h1>
+A Series on Generating this Static Website
 #+END_EXPORT
 
 The generation of this website is far from being trivial, and requires the
