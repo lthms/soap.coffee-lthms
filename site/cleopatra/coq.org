@@ -21,7 +21,7 @@ COQDOCARG := --no-index --charset utf8 --short \
              --body-only --coqlib "${COQLIB}"
 
 %.html : %.v coq.mk
-	@echo "  export  $*.v"
+	@cleopatra echo Exporting "$*.v"
 	@coqc ${COQCARG} $<
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
 	@rm -f $(shell dirname $<)/coqdoc.css

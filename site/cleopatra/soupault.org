@@ -130,7 +130,7 @@ numbered_list = true
 #+END_SRC
 
 #+BEGIN_TODO
-Propose a patch to ~soupault~'s upstream to add numbering in titles.
+We could propose a patch to ~soupault~'s upstream to add numbering in titles.
 #+END_TODO
 
 ** Fixing Org Internal Links
@@ -140,8 +140,9 @@ For some reason, Org prefix internal links to other Org documents with
 from the begining of a URL.
 
 #+BEGIN_TODO
-This file should be part of ~Org.org~, but that would require to aggregate
-“subconfig” into a larger one.
+This plugin definition should be part of [[./Contents/Org.org][the ~org~
+generation process]], but that would require to aggregate “subconfig” into a
+larger one.
 #+END_TODO
 
 This plugin key component is the =fix_org_urls= function.
@@ -652,9 +653,11 @@ mode. Currently, only inline mode is supported.
 var katex = require("katex");
 var fs = require("fs");
 var input = fs.readFileSync(0);
+var displayMode = process.env.DISPLAY != undefined;
 
 var html = katex.renderToString(String.raw`${input}`, {
-    throwOnError: false
+    throwOnError : false,
+    displayModed : displayMode
 });
 
 console.log(html)
@@ -670,14 +673,23 @@ widget = "preprocess_element"
 selector = ".imath"
 command = "node scripts/katex.js"
 action = "replace_content"
+
+[widgets.display-math]
+widget = "preprocess_element"
+selector = ".dmath"
+command = "DISPLAY=1 node scripts/katex.js"
+action = "replace_content"
 #+END_SRC
 
 The \im\KaTeX\mi font is bigger than the serif font used for this
 website, so we reduce it a bit with a dedicated SASS rule.
 
 #+BEGIN_SRC sass :tangle site/style/plugins.sass
-.imath
-  font-size: smaller
+.imath, .dmath
+  font-size : smaller
+
+.dmath
+  text-align : center
 #+END_SRC
 
 * *~cleopatra~* Generation Process Definition
@@ -703,8 +715,9 @@ single (configurable) directory.
 #+NAME: stages
 #+BEGIN_SRC makefile :noweb no-export
 soupault-build :
-	@echo "     run  soupault"
+	@cleopatra echo Running  soupault
 	@soupault
+
 ARTIFACTS += <<build-dir>>/
 #+END_SRC
 

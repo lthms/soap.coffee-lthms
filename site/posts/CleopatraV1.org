@@ -1,6 +1,15 @@
 #+BEGIN_EXPORT html
-<h1>Bootstrapping an Extensible Toolchain</h1>
+<h1><strong><code>cleopatra</code></strong>: Bootstrapping an Extensible Toolchain</h1>
 #+END_EXPORT
+
+#+BEGIN_TODO
+You are about to read the first version of *~cleopatra~*, the toolchain
+initially implemented to build the website you are reading. Since then,
+*~cleopatra~* has been completely rewritten as a
+[[https://cleopatra.soap.coffee][independant, more generic command-line
+program]]. That being said, the build process described in this write-up remains
+the one implemented in *~cleopatra~* the Second.
+#+END_TODO
 
 A literate program is a particular type of software program where code is not
 directly written in source files, but rather in text document as code
@@ -18,8 +27,6 @@ The page you are currently reading is *~cleopatra~* entry point. Its primilarly
 purpose is to introduce two Makefiles: ~Makefile~ and ~bootstrap.mk~.
 
 #+TOC: headlines 2
-
-* The Root of Generation
 
 ~Makefile~ serves two purposes: it initiates a few global variables, and it
 provides a rule to generate ~bootstrap.mk~.  At this point, some readers may
@@ -45,7 +52,7 @@ For readers interested in using *~cleopatra~* for their own websites, this
 documents tries to highlight the potential modifications they would have to
 make.
 
-** Global Constants and Variables
+* Global Constants and Variables
 
 First, ~Makefile~ defines several global “constants” (although as far as I know
 ~make~ does not support true constant values, it is expected further generation
@@ -91,7 +98,7 @@ CONFIGURE :=
 Generation processes shall declare new build outputs using the ~+=~ assignement
 operators. Using another operator will likely provent an underisable result.
 
-** Easy Tangling of Org Documents
+* Easy Tangling of Org Documents
 
 *~cleopatra~* is a literate program implemented with Org mode, an Emacs major
 editing mode. We provide the necessary bits to easily tangle Org documents.
@@ -138,7 +145,7 @@ ${EMACS} $< ${TANGLE}
 endef
 #+END_SRC
 
-** Bootstrapping
+* Bootstrapping
 
 The core purpose of ~Makefile~ remains to bootstrap the chain of generation
 processes. This chain is divided into three stages: ~prebuild~, ~build~, and
@@ -268,98 +275,15 @@ this section, we first detail the structure of a typical generation process.
 Then, we construct ~bootstrap.mk~ by enumerating the generation processes that
 are currently used to generate the website you are reading.
 
-** Getting Started
+Each generation process shall
 
-#+BEGIN_TODO
-1. Defining ~proc-prebuild~, ~proc-build~, and ~proc-postbuild~
-2. Declaring dependencies between stages of generation processes
-3. Declaring build outputs (see ~ARTIFACTS~ and ~CONFIGURE~)
-#+END_TODO
+1. Define ~proc-prebuild~, ~proc-build~, and ~proc-postbuild~
+2. Declare dependencies between stages of generation processes
+3. Declare build outputs (see ~ARTIFACTS~ and ~CONFIGURE~)
 
-** Active Generation Processes
-
-*** Theming and Templating
-
-The [[./Theme.org][~theme~]] generation process controls the general appearance
-of the website.  More precisely, it introduces the main template used by
-~soupault~ (~main/templates.html~), and the main SASS sheet used by this
-template.
-
-If a generation process produces a set of styles within a specific SASS files,
-the current approach is
-
-1. To make this file a dependency of ~theme-build~
-2. To modify ~style/main.sass~ in ~theme~
-   to import this file
-
-#+BEGIN_TODO
-Eventually, the second step will be automated, but in the meantime
-this customization is mandatory.
-#+END_TODO
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
-<<extends(IN="Theme.org", PROC="theme", AUX="templates/main.html site/style/main.sass")>>
-#+END_SRC
-
-*** Configuring Soupault
-
-The [[./Soupault.org][~soupault~]] generation configures and run ~soupault~, in
-order to generate a static website.
-
-If a generation process ~proc~ produces files that will eventually be integrated to
-your website, its ~proc-build~ recipe needs to be executed /before/ the
-~soupault-build~ recipe. This can be enforced by making the dependency explicit
-to ~make~, /i.e./,
-
-#+BEGIN_SRC makefile
-soupault-build : proc-build
-#+END_SRC
-
-#+BEGIN_TODO
-Eventually, generation processes shall be allowed to produce specific ~soupault~
-widgets to be integrated into ~soupault.conf~.
-#+END_TODO
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
-<<extends(IN="Soupault.org", PROC="soupault", AUX="soupault.conf plugins/urls-rewriting.lua plugins/external-urls.lua site/style/plugins.sass scripts/history.sh templates/history.html package.json scripts/katex.js katex.mk")>>
-#+END_SRC
-
-*** Authoring Contents
-
-The fact that *~cleopatra~* is a literate program which gradually generates
-itself was not intended: it is a consequence of my desire to be able to easily
-use whatever format I so desire for writing my contents, and Org documents in
-particular.
-
-In the present website, contents can be written in the following format:
-
-- HTML Files ::
-  This requires no particular set-up, since HTML is the /lingua franca/ of
-  ~soupault~.
-- Regular Coq files ::
-  Coq is a system which allows to write machine-checked proofs, and it comes
-  with a source “prettifier” called ~coqdoc~.  [[./Contents/Coq.org][Learn more
-  about the generation process for Coq files​]]
-- Org documents ::
-  Emacs comes with a powerful editing mode called [[https://orgmode.org/][Org
-  mode]], and Org documents are really pleasant to work with.
-  [[./Contents/Org.org][Learn more about the generation process for Org
-  documents]]
-
-#+BEGIN_SRC makefile :tangle bootstrap.mk :noweb yes :exports none
-<<extends(IN="Contents/Coq.org", PROC="coq", AUX="site/style/coq.sass")>>
-<<extends(IN="Contents/Org.org", PROC="org", AUX="scripts/packages.el scripts/export-org.el site/style/org.sass")>>
-#+END_SRC
-
-** Wrapping-up
-
-#+BEGIN_TODO
-~clean~ and ~cleanall~ should probably follow a similar approach than the build
-stages.
-#+END_TODO
+* Wrapping-up
 
 #+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :shebang "#+/bin/bash"
-
 BEGIN_MARKER="# begin generated files"
 END_MARKER="# begin generated files"
 

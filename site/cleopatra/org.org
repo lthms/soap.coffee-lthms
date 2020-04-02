@@ -32,6 +32,7 @@
 (use-package org :ensure t)
 (use-package htmlize :ensure t)
 (use-package lua-mode :ensure t :defer t)
+(use-package rust-mode :ensure t :defer t)
 (use-package sass-mode :ensure t :defer t)
 (use-package haskell-mode :ensure t :defer t)
 (use-package toml-mode :ensure t :defer t)
@@ -53,6 +54,7 @@
 (setq org-src-fontify-natively t)
 (setq org-confirm-babel-evaluate nil)
 (setq org-export-with-toc nil)
+(setq org-export-with-sub-superscripts nil)
 
 (add-to-list 'org-entities-user
              '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
@@ -94,6 +96,12 @@
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle org.mk
+EMACSBIN := emacs
+EMACS := ROOT="${ROOT}" ${EMACSBIN}
+TANGLE := --batch \
+          --load="${ROOT}/scripts/tangle-org.el" \
+          2>> build.log
+
 ORG_POSTS := $(shell find site/ -name "*.org")
 ORG_HTML := $(ORG_POSTS:.org=.html)
 
@@ -113,13 +121,13 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
         2>> build.log
 
 .emacs : scripts/packages.el
-	@echo "    init  emacs configuration"
+	@cleopatra echo Initiating  "Emacs configuration"
 	@${EMACS} ${INIT}
 	@touch .emacs
 
 %.html : %.org scripts/packages.el scripts/export-org.el \
          .emacs org.mk
-	@echo "  export  $*.org"
+	@cleopatra echo Exporting "$*.org"
 	@${EMACS} $< ${EXPORT}
 #+END_SRC
 

@@ -7,7 +7,7 @@ SASS := site/style/main.sass
 CSS := $(SASS:.sass=.css)
 
 theme-build : ${SASS}
-	@echo " compile  ${CSS}"
+	@cleopatra echo Compiling  "${CSS}"
 	@sassc --style=compressed --sass ${SASS} ${CSS}
 
 soupault-build : theme-build

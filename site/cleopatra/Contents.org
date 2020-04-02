@@ -1,3 +1,0 @@
-#+BEGIN_EXPORT html
-<h1>Authoring Contents and HTML Generation</h1>
-#+END_EXPORT

@@ -1,0 +1,56 @@
+#+BEGIN_EXPORT html
+<h1><code>cleopatra</code></h1>
+#+END_EXPORT
+
+The generation of this website is far from being trivial, and requires the
+combination of —probably too— many tools. For instance, my write-ups about Coq
+are actually Coq files, and I use ~coqdoc~ to generate the HTML pages you read.
+The theme is not written in CSS, but in SASS that needs to be compiled.  Even
+more, the whole website is postprocessed using ~soupault~.
+
+At some point, I felt like the whole process was interesting enough so that it
+would deserve a write-up of its own, but the risk was that such a piece of text
+would quickly become out-dated. This is reminescent of documenting any software
+project, and I was aware at that time of a dedicated paradigm to prevent these
+kind of issues: [[http://www.literateprogramming.com/][literate programming]].
+I spent quite some time turning my custom toolchain into a literate program, so
+that its actual code source would actually be the write-ups I wanted to add to
+my website. This was an interesting challenge, since it meant *~cleopatra~*
+would have to generate itself before it could build my website. In other words,
+*~cleopatra~* achieves the bootstsrapping challenge!
+
+I really enjoyed this first experiment with literate programming, and I started
+using *~cleopatra~* for other projects of mine where literate programming felt
+like an interesting choice. In doing so, it quickly became clear *~cleopatra~*
+was cumbersome to set-up for a new project. At the end,
+[[https://cleopatra.soap.coffee][I ended up rewriting it]] to overcome the
+specific issues posed by its initial design[fn:bootstrap]. But the so-called
+generation processes I had written for *~cleopatra~* the first basically “just
+worked” with *~cleopatra~* the second.
+
+So, coming back to this series, it is just the very reason why I started using
+*~cleopatra~* in the first place: the generation processes used by this website,
+written as literate programs.
+
+#+BEGIN_EXPORT html
+<article class="index">
+#+END_EXPORT
+
+- [[file:cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]] ::
+
+- [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]] ::
+
+- [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]] ::
+
+- [[./cleopatra/soupault.org][Processing HTML with ~soupault~]] ::
+  ~soupault~ is a HTML processor, and it can be used as a static website
+  generator. We leverage *~soupault~* to provide a unified look and feel to a
+  website generated with diverse tools.
+
+#+BEGIN_EXPORT html
+</article>
+#+END_EXPORT
+
+[fn:bootstrap] For the record, this second version is also implemented using
+literate programming, and if I was first using the first version to build it, I
+quickly “made the bootstrap jump.”

@@ -73,21 +73,26 @@ One of my goal with this website is for it to /feel/ simple, but the truth is
 under the hood it is generated from a bunch of files using a not-that-simple
 process.
 
-- [[/cleopatra/][A Series on Generating this Static Website]] ::
-  The toolchain behind the generation of this website ---called *~cleopatra~*---
-  is a literate program which build itself in addition to the HTML files
-  composing this corner of the Internet. This series /is/ *~cleopatra~*.
+- [[./cleopatra.html][A Series on Generating this Static Website]] ::
+  This series consolidates the [[https://cleopatra.soap.coffee][*~cleopatra~*]]
+  generation processes used to build this website. That is, each write-up is a
+  literate program responsible for a particular step of the build process, and
+  you are guaranteed that the code you read is the code that has been used to
+  generate the HTML page you read it from.
 
-  1. [[/cleopatra/Bootstrap.html][Bootstrapping an Extensible Toolchain]]
-  2. [[/cleopatra/Soupault.html][~soupault~ Configuration]]
-  3. [[/cleopatra/Contents/Org.org][Generating Contents from Org Documents ~(TODO)~]]
-  4. [[/cleopatra/Contents/Coq.org][Generating Contents from Coq Documents ~(TODO)~]]
-  5. [[/cleopatra/Theme.html][Theming and Templating ~(TODO)~]]
+  1. [[./cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]]
+  2. [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]]
+  3. [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]]
+  4. [[./cleopatra/soupault.org][Processing HTML with ~soupault~]]
 
 - [[./posts/Thanks.html][Thanks!]] ::
   If it were not for many awesome FOSS projects, this corner of the Internet
   would not exist. This is my attempt to give well-deserved credit to them and
   their creators.
+
+- [[./posts/CleopatraV1.html][*~cleopatra~* the First]] ::
+  This write-up is the literate program of the first version of *~cleopatra~*,
+  before it became a command-line program implemented in Rust.
 
 #+BEGIN_EXPORT html
 </article>
