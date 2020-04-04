@@ -4,7 +4,6 @@
 coq.mk
 site/style/coq.sass
 .emacs
-emacs.d/
 scripts/export-org.el
 scripts/packages.el
 org.mk
@@ -50,7 +49,6 @@ site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
 site/posts/CleopatraV1.html
-*.html~
 build/
 site/style/main.css
 site/style/main.sass

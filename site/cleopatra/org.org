@@ -3,34 +3,6 @@
 * Under the Hood
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/packages.el
-(require 'package)
-
-(setq user-emacs-directory (concat (getenv "ROOT") "/emacs.d"))
-(setq package-user-dir (concat (getenv "ROOT") "/emacs.d"))
-(setq package-archives
-      '(("gnu"   . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")))
-
-(package-initialize)
-
-(or (file-exists-p package-user-dir)
-    (package-refresh-contents))
-
-(defun ensure-package-installed (&rest packages)
-  "Ensure every PACKAGES is installed."
-  (mapcar
-   (lambda (package)
-     (if (package-installed-p package)
-         nil
-       (package-install package))
-     package)
-   packages))
-
-(ensure-package-installed 'use-package)
-(eval-when-compile (require 'use-package))
-
-(use-package org :ensure t)
-(use-package htmlize :ensure t)
 (use-package lua-mode :ensure t :defer t)
 (use-package rust-mode :ensure t :defer t)
 (use-package sass-mode :ensure t :defer t)
@@ -40,21 +12,16 @@
 (use-package monokai-pro-theme :ensure t :defer t
   :init
   (load-theme 'monokai-pro t))
-
-(provide 'packages)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
-(require 'packages)
+(cleopatra:configure)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((shell . t)))
-(setq org-src-preserve-indentation t)
-(setq org-src-fontify-natively t)
-(setq org-confirm-babel-evaluate nil)
+
 (setq org-export-with-toc nil)
-(setq org-export-with-sub-superscripts nil)
 
 (add-to-list 'org-entities-user
              '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
@@ -96,11 +63,7 @@
 #+END_SRC
 
 #+BEGIN_SRC makefile :tangle org.mk
-EMACSBIN := emacs
-EMACS := ROOT="${ROOT}" ${EMACSBIN}
-TANGLE := --batch \
-          --load="${ROOT}/scripts/tangle-org.el" \
-          2>> build.log
+EMACS := cleopatra-emacs
 
 ORG_POSTS := $(shell find site/ -name "*.org")
 ORG_HTML := $(ORG_POSTS:.org=.html)
@@ -111,12 +74,14 @@ org-build : ${ORG_HTML}
 theme-build : site/style/org.sass
 soupault-build : org-build
 
-ARTIFACTS += ${ORG_HTML} "*.html~"
-CONFIGURE += .emacs emacs.d/
+ARTIFACTS += ${ORG_HTML}
+CONFIGURE += .emacs
 
-EXPORT := --directory="${ROOT}/scripts/" --batch \
+EXPORT := --batch \
+          --load="${ROOT}/scripts/packages.el" \
           --load="${ROOT}/scripts/export-org.el" \
           2>> build.log
+
 INIT := --batch --load="${ROOT}/scripts/packages.el" \
         2>> build.log
 
