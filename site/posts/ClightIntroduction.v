@@ -13,7 +13,9 @@ Import ListNotations.
     Clight and its semantics. This write-up is the result of this challenge,
     written as I was progressing.
 
-    #<div id="generate-toc"></div># *)
+    #<div id="generate-toc"></div>#
+
+    #<div id="history">site/posts/ClightIntroduction.v</div># *)
 
 (** ** Installing CompCert *)
 
