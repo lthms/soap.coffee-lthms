@@ -20,6 +20,12 @@ Coq is a formal proof management system which provides a pure functional
 language with nice dependent types together with an environment for writing
 machine-checked proofs.
 
+- [[./posts/AlgebraicDatatypes.html][Proving Algebraic Datatypes are “Algebraic”]] ::
+  The set of types which can be defined in a language together with ~+~ and ~*~
+  form an “algebraic structure” in the mathematical sense, hence the name. It
+  means the definitions of ~+~ and ~*~ have to satisfy properties such as
+  commutativity or the existence of neutral elements.
+
 - [[./posts/ClightIntroduction.html][A Study of Clight and its Semantics]] ::
   Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
   this write-up, we prove a straighforward functional property of a small C
