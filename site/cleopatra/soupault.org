@@ -380,6 +380,7 @@ https://code.soap.coffee/writing/lthms.git
     @include margin-centered(2rem)
     border-top: 2px solid $primary-color
     border-bottom: 2px solid $primary-color
+    width: calc(100% + 4rem)
     border-collapse: collapse;
 
   td
