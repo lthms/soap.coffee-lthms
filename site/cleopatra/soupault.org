@@ -494,7 +494,7 @@ use to collect our initial history is
 
 #+NAME: git-log
 #+BEGIN_SRC bash :noweb no-export
-_git log -n4 --follow --pretty=format:'<<pretty-format>>' "${file}"
+_git log --follow --pretty=format:'<<pretty-format>>' "${file}"
 #+END_SRC
 
 To manipulate JSON, we rely on three operators (yet to be defined):
