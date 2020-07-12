@@ -93,9 +93,9 @@ Inductive prod (A B : Type) : Type :=
 | pair : A -> B -> prod A B
 >>
 
-    #<div id="history">site/posts/AlgebraicDatatypes.v</div>#
+    #<div id="generate-toc"></div>#
 
-    #<div id="generate-toc"></div># *)
+    #<div id="history">site/posts/AlgebraicDatatypes.v</div># *)
 
 From Coq Require Import
      Basics Setoid Equivalence Morphisms
