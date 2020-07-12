@@ -485,7 +485,8 @@ Inductive empty : Prop := Build_empty {  }
 Definition from_empty {α} : empty -> α :=
   fun x => match x with end.
 
-(** It is the exact same trick that allows Coq to proofs by contradiction.
+(** It is the exact same trick that allows Coq to encode proofs by
+    contradiction.
 
     If we combine [from_empty] with the generic function *)
 
@@ -579,8 +580,8 @@ Qed.
 (** ** [prod] has an Absorbing Element *)
 
 (** And this absorbing element is [empty], just like the absorbing element of
-    the multiplication of natural number is #<span class="imath">#0#</span>#,
-    the neutral element of the addition. *)
+    the multiplication of natural number is #<span class="imath">#0#</span>#
+    (the neutral element of the addition). *)
 
 Lemma prod_absord (α : Type) : α * empty == empty.
 
@@ -594,7 +595,7 @@ Qed.
 (** ** [prod] and [sum] Distributivity *)
 
 (** Finally, we can prove the distributivity property of [prod] and [sum] using
-    a similar approach to proving the associativity of [prod] and [sum]. *)
+    a similar approach to prove the associativity of [prod] and [sum]. *)
 
 Lemma prod_sum_distr (α β γ : Type)
   : α * (β + γ) == α * β + α * γ.
@@ -615,9 +616,9 @@ Qed.
 (** ** Bonus: Algebraic Datatypes and Metaprogramming *)
 
 (** Algebraic datatypes are very suitable for generating functions, as
-    demonstrating by the automatic deriving of typeclass in Haskell or trait in
+    demonstrated by the automatic deriving of typeclass in Haskell or trait in
     Rust. Because a datatype can be expressed in terms of [sum] and [prod], you
-    just have to know to deal with these two constructions to start
+    just have to know how to deal with these two constructions to start
     metaprogramming.
 
     We can take the example of the [fold] functions. A [fold] function is a
@@ -627,7 +628,8 @@ Qed.
     We introduce [fold_type INPUT CANON_FORM OUTPUT], a tactic to compute the
     type of the fold function of the type <<INPUT>>, whose “canonical form” (in
     terms of [prod] and [sum]) is <<CANON_FORM>> and whose result type is
-    <<OUTPUT>>. Interested readers have to be familiar with [Ltac]. *)
+    #<code>#OUTPUT#</code>#. Interested readers have to be familiar with
+    [Ltac]. *)
 
 Ltac fold_args b a r :=
   lazymatch a with
@@ -654,7 +656,7 @@ Ltac currying a :=
 Ltac fold_type b a r :=
   exact (ltac:(currying (ltac:(fold_args b a r) -> b -> r))).
 
-(** We use it to computing the type of a [fold] function for [list]. *)
+(** We use it to compute the type of a [fold] function for [list]. *)
 
 Definition fold_list_type (α β : Type) : Type :=
   ltac:(fold_type (list α) (unit + α * list α)%type β).
