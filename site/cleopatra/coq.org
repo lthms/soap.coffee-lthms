@@ -41,6 +41,11 @@ COQDOCARG := --no-index --charset utf8 --short \
 div.code
     white-space: nowrap
 
+.coq-text-block
+    @include patchy-centered
+    padding-top: 1rem
+    padding-bottom: 1rem
+
 .doc
     @include padding-centered
     margin-top : 1em

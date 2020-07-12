@@ -12,7 +12,7 @@ theme-build : ${SASS}
 
 soupault-build : theme-build
 
-ARTIFACTS += ${CSS} ${SASS}
+ARTIFACTS += ${CSS}
 #+END_SRC
 
 * Main HTML Template
@@ -121,7 +121,7 @@ $remark-fg: #4d575e
 
 $sans-serif : sans-serif
 
-$document-width : 33rem
+$document-width : 38rem
 
 a
     color : #557de8
@@ -145,7 +145,7 @@ a:visited
         margin-right : 1rem
 
 @mixin text-font
-    font-family : et-book, serif
+    font-family : serif
 
 @mixin code-font($size : .9rem)
     font-family: 'Fira Code', monospace
@@ -223,8 +223,9 @@ body#default
         h1
             text-align: center
 
-        h1, h2, h3, h4, h5, h6
-            font-family : $sans-serif
+        h2, h3, h4, h5, h6
+            font-style: italic
+
 
             code, tt
                 font-size: 100%

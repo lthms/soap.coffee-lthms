@@ -125,6 +125,7 @@ contains a node matching a given ~selector~ (in the case of this document,
 widget = "toc"
 selector = "#generate-toc"
 action = "replace_element"
+valid_html = true
 min_level = 2
 numbered_list = true
 #+END_SRC
@@ -492,7 +493,7 @@ use to collect our initial history is
 
 #+NAME: git-log
 #+BEGIN_SRC bash :noweb no-export
-_git log --follow --pretty=format:'<<pretty-format>>' "${file}"
+_git log -n4 --follow --pretty=format:'<<pretty-format>>' "${file}"
 #+END_SRC
 
 To manipulate JSON, we rely on three operators (yet to be defined):

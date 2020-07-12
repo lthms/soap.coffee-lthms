@@ -17,7 +17,7 @@
     The [FreeSpec.Core] module reexports the key component provided by
     FreeSpec. *)
 
-From FreeSpec Require Import Core.
+From FreeSpec.Core Require Import All.
 
 (** ** Implementation *)
 
@@ -67,12 +67,12 @@ Axiom socket_descriptor : Type.
 Inductive TCP : interface :=
 
 (**   - [NewTCPSocket] is a primitive to create a socket. It takes as an argument
-        the address of the socket (of the form <<[url]:[port]>>) of type [bytes]
+        the address of the socket (of the form <<[url]:[port]>>) of type [bytestring]
         (a type provided by the <<coq-prelude>> project with a convenient string
         notation). It returns a [socket_descriptor] to interact with the newly
         created socket. *)
 
-| NewTCPSocket (addr : bytes)
+| NewTCPSocket (addr : bytestring)
   : TCP socket_descriptor
 
 (**   - [ListenIncomingConnection] changes the mode of a given socket identified
@@ -93,11 +93,11 @@ Inductive TCP : interface :=
 
 (**   - [ReadSocket] and [WriteSocket] allows to receive data from and send data
         to the socket, that is interacting with the client. They also use the
-        [bytes] type *)
+        [bytestring] type *)
 
 | ReadSocket (socket : socket_descriptor)
-  : TCP bytes
-| WriteSocket (socket : socket_descriptor) (msg : bytes)
+  : TCP bytestring
+| WriteSocket (socket : socket_descriptor) (msg : bytestring)
   : TCP unit
 
 (**   - Finally, [CloseTCPSocket] interrupts an existing connection by closing the
@@ -134,7 +134,7 @@ Generalizable All Variables.
     automatically, thanks to the [MetaCoq] project. *)
 
 Definition new_tcp_socket `{Provide ix TCP}
-    (addr : bytes)
+    (addr : bytestring)
   : impure ix socket_descriptor :=
   request (NewTCPSocket addr).
 
@@ -150,11 +150,11 @@ Definition accept_connection `{Provide ix TCP}
 
 Definition read_socket `{Provide ix TCP}
     (socket : socket_descriptor)
-  : impure ix bytes :=
+  : impure ix bytestring :=
   request (ReadSocket socket).
 
 Definition write_socket `{Provide ix TCP}
-      (socket : socket_descriptor) (msg : bytes)
+      (socket : socket_descriptor) (msg : bytestring)
     : impure ix unit :=
   request (WriteSocket socket msg).
 
@@ -172,13 +172,13 @@ Definition close_socket `{Provide ix TCP}
 Axiom file_descriptor : Type.
 
 Inductive FILESYSTEM : interface :=
-| Open (path : bytes) : FILESYSTEM file_descriptor
-| FileExists (file : bytes) : FILESYSTEM bool
-| Read (file : file_descriptor) : FILESYSTEM bytes
+| Open (path : bytestring) : FILESYSTEM file_descriptor
+| FileExists (file : bytestring) : FILESYSTEM bool
+| Read (file : file_descriptor) : FILESYSTEM bytestring
 | Close (file : file_descriptor) : FILESYSTEM unit.
 
 Definition open `{Provide ix FILESYSTEM}
-    (path : bytes)
+    (path : bytestring)
   : impure ix file_descriptor :=
   request (Open path).
 
@@ -188,29 +188,26 @@ Definition close `{Provide ix FILESYSTEM}
   request (Close fd).
 
 Definition file_exists `{Provide ix FILESYSTEM}
-    (path : bytes)
+    (path : bytestring)
   : impure ix bool :=
   request (FileExists path).
 
 Definition read `{Provide ix FILESYSTEM}
     (fd : file_descriptor)
-  : impure ix bytes :=
+  : impure ix bytestring :=
   request (Read fd).
 
 (** **** The [CONSOLE] Interface *)
 
-(** Finally, FreeSpec already provides a few generic interfaces for FreeSpec
-    users, including a [CONSOLE] interface:
-
-<<
 Inductive CONSOLE : interface :=
-| Scan : CONSOLE bytes
-| Echo : bytes -> CONSOLE unit.
->>
+| Scan : CONSOLE bytestring
+| Echo : bytestring -> CONSOLE unit.
 
-    It is defined in the [FreeSpec.Stdlib.Console] module. *)
+Definition scan `{Provide ix CONSOLE} : impure ix bytestring :=
+  request Scan.
 
-From FreeSpec.Stdlib Require Import Console.
+Definition echo `{Provide ix CONSOLE} (msg : bytestring) : impure ix unit :=
+  request (Echo msg).
 
 (** *** Implementing a HTTP Server *)
 
@@ -221,7 +218,7 @@ From FreeSpec.Stdlib Require Import Console.
     To that end, we rely on the <<coq-prelude>> package, and therefore import
     it. *)
 
-From Prelude Require Import All Bytes.
+From Base Require Import Prelude.
 
 (** **** A Word on Non-Termination *)
 
@@ -242,7 +239,7 @@ Fixpoint repeatM `{Monad m} {a}
   : m unit :=
   match n with
   | O => pure tt
-  | S n => do p >>= fun _ => repeatM n p end
+  | S n => p >>= fun _ => repeatM n p
   end.
 
 (** **** A Generic TCP Server *)
@@ -252,23 +249,21 @@ Fixpoint repeatM `{Monad m} {a}
     response message for each request message received from a client. *)
 
 Definition tcp_server `{Provide ix TCP}
-    (n : nat) (handler : bytes -> impure ix bytes)
+    (n : nat) (handler : bytestring -> impure ix bytestring)
   : impure ix unit :=
-  do let* server := new_tcp_socket "127.0.0.1:8088" in
-     listen_incoming_connection server;
+  let* server := new_tcp_socket "127.0.0.1:8088" in
+  listen_incoming_connection server;;
 
-     repeatM n do
-       let* client := accept_connection server in
+  repeatM n (
+    let* client := accept_connection server in
 
-       let* req := read_socket client in
-       let* res := handler req in
-       write_socket client res;
+    let* req := read_socket client in
+    let* res := handler req in
+    write_socket client res;;
 
-       close_socket client
-     end;
+    close_socket client);;
 
-     close_socket server
-  end.
+  close_socket server.
 
 (** **** A HTTP Handler *)
 
@@ -283,16 +278,15 @@ Definition tcp_server `{Provide ix TCP}
     FreeSpec provides [Provide2], [Provide3], [Provide4], and [Provide5] to make
     the type more readable. *)
 
-Definition read_content `{Provide2 ix FILESYSTEM CONSOLE}
-    (path : bytes)
-  : impure ix bytes :=
-  do echo ("  reading <" ++ path ++ ">... ");
-     let* fd := open path in
-     let* c := read fd in
-     close fd;
-     echo ("done.\n");
-     pure c
-  end.
+Timeout 2 Definition read_content `{Provide2 ix FILESYSTEM CONSOLE}
+    (path : bytestring)
+  : impure ix bytestring :=
+  echo ("  reading <" ++ path ++ ">... ");;
+  let* fd := open path in
+  let* c := read fd in
+  close fd;;
+  echo "done.\n";;
+  pure c.
 
 (** Using this utility function, we can define the handler itself.
 
@@ -307,7 +301,7 @@ From MiniHTTPServer Require Import URI HTTP.
 
       - [http_req] encodes the supported HTTP requests (currently, only GET
         requests are supported).
-      - [http_request] a parsing function of the form [bytes -> error_stack +
+      - [http_request] a parsing function of the form [bytestring -> error_stack +
         http_req]
       - [http_res] encodes the HTTP responses used by MiniHTTPServer (in our
         case, 200, 401, and 404)
@@ -318,35 +312,32 @@ Definition request_handler `{Provide2 ix FILESYSTEM CONSOLE}
   : impure ix response :=
   match req with
   | Get uri =>
-    do let path := uri_to_path (sandbox base uri) in
-       let* isf := file_exists path in
-       if (isf : bool)
-       then make_response success_OK <$> read_content path
-       else do
-         echo ("  resource <" ++ path ++"> not found\n");
-         pure (make_response client_error_NotFound
-                             "Resource not found.")
-       end
-    end
+    let path := uri_to_path (sandbox base uri) in
+    let* isf := file_exists path in
+    if (isf : bool)
+    then make_response success_OK <$> read_content path
+    else (
+      echo ("  resource <" ++ path ++"> not found\n");;
+      pure (make_response client_error_NotFound
+                          "Resource not found."))
   end.
 
 Definition http_handler `{Provide2 ix FILESYSTEM CONSOLE}
-    (base : list directory_id) (req : bytes)
-  : impure ix bytes :=
-  do echo "new request received\n";
-     echo ("  request size is "
-              ++ Int.bytes_of_int (Bytes.length req)
-              ++ "\n");
+    (base : list directory_id) (req : bytestring)
+  : impure ix bytestring :=
+  echo "new request received\n";;
+  echo ("  request size is "
+           ++ bytestring_of_int (Bytestring.length req)
+           ++ "\n");;
 
-     let* res :=
-        match http_request req with
-        | inr req => request_handler base (fst req)
-        | _ => pure (make_response client_error_BadRequest
-                                   "Bad request")
-        end in
+  let* res :=
+     match http_request req with
+     | inr req => request_handler base (fst req)
+     | _ => pure (make_response client_error_BadRequest
+                                "Bad request")
+     end in
 
-     pure (response_to_string res)
-  end.
+  pure (response_to_string res).
 
 (** Since [read_content] uses the [CONSOLE] interface in addition to
     [FILESYSTEM], our [http_handler] type exposes this explicitely. However,
@@ -362,9 +353,8 @@ Definition http_server
    `{Provide3 ix FILESYSTEM TCP CONSOLE}
     (n : nat)
   : impure ix unit :=
-  do echo "hello, MiniHTTPServer!\n";
-     tcp_server n (http_handler [Dirname "tmp"])
-  end.
+ echo "hello, MiniHTTPServer!\n";;
+ tcp_server n (http_handler [Dirname "tmp"]).
 
 (** ** Certifying *)
 
@@ -498,9 +488,9 @@ Inductive fd_set_caller_obligation (ω : fd_set)
 
 (** We do not restrict the use of [Open] or [FileExists] *)
 
-| fd_set_open_caller (p : bytes)
+| fd_set_open_caller (p : bytestring)
   : fd_set_caller_obligation ω file_descriptor (Open p)
-| fd_set_is_file_caller (p : bytes)
+| fd_set_is_file_caller (p : bytestring)
   : fd_set_caller_obligation ω bool (FileExists p)
 
 (** In order for [Read] and [Close] to be used correctly, their
@@ -508,7 +498,7 @@ Inductive fd_set_caller_obligation (ω : fd_set)
 
 | fd_set_read_caller (fd : file_descriptor)
     (is_member : member ω fd)
-  : fd_set_caller_obligation ω bytes (Read fd)
+  : fd_set_caller_obligation ω bytestring (Read fd)
 | fd_set_close_caller (fd : file_descriptor)
     (is_member : member ω fd)
   : fd_set_caller_obligation ω unit (Close fd).
@@ -536,7 +526,7 @@ Inductive fd_set_callee_obligation (ω : fd_set)
 (** The [file_descriptor] returned by the [Open] primitive shall not be a member
     of the witness state. *)
 
-| fd_set_open_callee (p : bytes) (fd : file_descriptor)
+| fd_set_open_callee (p : bytestring) (fd : file_descriptor)
     (is_absent : absent ω fd)
   : fd_set_callee_obligation ω file_descriptor (Open p) fd
 
@@ -546,11 +536,11 @@ Inductive fd_set_callee_obligation (ω : fd_set)
     another contract, which is totally fine with FreeSpec since we can compose
     them together. *)
 
-| fd_set_read_callee (fd : file_descriptor) (s : bytes)
-  : fd_set_callee_obligation ω bytes (Read fd) s
+| fd_set_read_callee (fd : file_descriptor) (s : bytestring)
+  : fd_set_callee_obligation ω bytestring (Read fd) s
 | fd_set_close_callee (fd : file_descriptor) (t : unit)
   : fd_set_callee_obligation ω unit (Close fd) t
-| fd_set_is_file_callee (p : bytes) (b : bool)
+| fd_set_is_file_callee (p : bytestring) (b : bool)
   : fd_set_callee_obligation ω bool (FileExists p) b.
 
 Hint Constructors fd_set_callee_obligation : minihttp.
@@ -638,7 +628,7 @@ Lemma fd_set_preserving_http_server
 
 Lemma fd_set_respectful_read_content
    `{StrictProvide2 ix FILESYSTEM CONSOLE}
-    (ω : fd_set) (path : bytes)
+    (ω : fd_set) (path : bytestring)
   : respectful_impure fd_set_contract ω (read_content path).
 
 (** FreeSpec provides the [prove_impure] tactics to automate as much as possible
@@ -651,7 +641,7 @@ Lemma fd_set_respectful_read_content
 
 <<
   ω : fd_set
-  path : bytes
+  path : bytestring
   x : unit
   H4 : gen_callee_obligation fd_set_contract ω
          (inj_p (Echo ("  reading <" ++ path ++ ">... "))) x
@@ -660,7 +650,7 @@ Lemma fd_set_respectful_read_content
          (gen_witness_update fd_set_contract ω
             (inj_p (Echo ("  reading <" ++ path ++ ">... "))) x)
          (inj_p (Open path)) x0
-  x1 : bytes
+  x1 : bytestring
   H6 : gen_callee_obligation fd_set_contract
          (gen_witness_update fd_set_contract
             (gen_witness_update fd_set_contract ω
@@ -693,7 +683,7 @@ subgoal 1 is:
   fd_set_caller_obligation ω file_descriptor (Open path)
 
 subgoal 2 is:
- fd_set_caller_obligation (add_fd ω x0) bytes (Read x0)
+ fd_set_caller_obligation (add_fd ω x0) bytestring (Read x0)
 
 subgoal 3 is:
  fd_set_caller_obligation (add_fd ω x0) unit (Close x0)
@@ -714,7 +704,7 @@ Hint Resolve fd_set_respectful_read_content : minihttp.
 
 Lemma fd_set_preserving_read_content
    `{StrictProvide2 ix FILESYSTEM CONSOLE}
-    (path : bytes)
+    (path : bytestring)
   : fd_set_preserving (read_content path).
 
 (** Similarly to [prove_impure], FreeSpec provides a tactic to exploit
@@ -734,9 +724,9 @@ Lemma fd_set_preserving_read_content
     This produces the following goal:
 
 <<
-  path : bytes
+  path : bytestring
   ω : fd_set
-  x : bytes
+  x : bytestring
   x0 : unit
   o_callee : gen_callee_obligation fd_set_contract ω
                (inj_p (Echo ("  reading <" ++ path ++ ">... "))) x0
@@ -812,7 +802,7 @@ Qed.
 
 Lemma fd_set_respectful_file_exists
    `{Provide ix FILESYSTEM}
-    (ω : fd_set) (path : bytes)
+    (ω : fd_set) (path : bytestring)
   : respectful_impure fd_set_contract ω (file_exists path).
 
 Proof.
@@ -822,7 +812,7 @@ Qed.
 Hint Resolve fd_set_respectful_file_exists : minihttp.
 
 Lemma fd_set_preserving_file_exists
-   `{Provide ix FILESYSTEM} (path : bytes)
+   `{Provide ix FILESYSTEM} (path : bytestring)
   : fd_set_preserving (file_exists path).
 
 Proof.
@@ -849,7 +839,7 @@ Qed.
 
 Lemma fd_set_respectful_http_handler
    `{StrictProvide2 ix FILESYSTEM CONSOLE}
-    (base : list directory_id) (req : bytes)
+    (base : list directory_id) (req : bytestring)
     (ω : fd_set)
   : respectful_impure fd_set_contract ω (http_handler base req).
 
@@ -881,7 +871,7 @@ Hint Resolve fd_set_respectful_http_handler : minihttp.
 
 Lemma fd_set_preserving_http_handler
    `{StrictProvide2 ix FILESYSTEM CONSOLE}
-    (base : list directory_id) (req : bytes)
+    (base : list directory_id) (req : bytestring)
   : fd_set_preserving (http_handler base req).
 
 Proof.
@@ -956,17 +946,16 @@ Qed.
 Lemma fd_set_preserving_tcp_server_repeat_routine
    `{Provide ix TCP, MayProvide ix FILESYSTEM, Distinguish ix TCP FILESYSTEM}
     (server : socket_descriptor)
-    (handler : bytes -> impure ix bytes)
-    (preserve : forall (req : bytes), fd_set_preserving (handler req))
-  : fd_set_preserving (do
+    (handler : bytestring -> impure ix bytestring)
+    (preserve : forall (req : bytestring), fd_set_preserving (handler req))
+  : fd_set_preserving (
          let* client := accept_connection server in
 
          let* req := read_socket client in
          let* res := handler req in
-         write_socket client res;
+         write_socket client res;;
 
-         close_socket client
-       end).
+         close_socket client).
 
 Proof.
   intros ω ω' b run fd.

@@ -1,5 +1,5 @@
 #+BEGIN_EXPORT html
-A Series on Generating this Static Website
+<h1>A Series on Generating this Static Website</h1>
 #+END_EXPORT
 
 The generation of this website is far from being trivial, and requires the
@@ -36,11 +36,11 @@ written as literate programs.
 <article class="index">
 #+END_EXPORT
 
+- [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]] ::
+
 - [[file:cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]] ::
 
 - [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]] ::
-
-- [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]] ::
 
 - [[./cleopatra/soupault.org][Processing HTML with ~soupault~]] ::
   ~soupault~ is a HTML processor, and it can be used as a static website

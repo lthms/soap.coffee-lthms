@@ -31,6 +31,7 @@ build.log
 .*.aux
 *.glob
 .lia.cache
+site/posts/AlgebraicDatatypes.html
 site/posts/StronglySpecifiedFunctionsProgram.html
 site/posts/MiniHTTPServer.html
 site/posts/ClightIntroduction.html
@@ -51,5 +52,4 @@ site/posts/MonadTransformers.html
 site/posts/CleopatraV1.html
 build/
 site/style/main.css
-site/style/main.sass
 # end generated files

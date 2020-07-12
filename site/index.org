@@ -80,9 +80,9 @@ process.
   you are guaranteed that the code you read is the code that has been used to
   generate the HTML page you read it from.
 
-  1. [[./cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]]
-  2. [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]]
-  3. [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]]
+  1. [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]]
+  2. [[./cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]]
+  3. [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]]
   4. [[./cleopatra/soupault.org][Processing HTML with ~soupault~]]
 
 - [[./posts/Thanks.html][Thanks!]] ::
