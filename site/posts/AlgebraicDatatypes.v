@@ -22,7 +22,7 @@ data List a =
 
 <<
 enum List<A> {
-  Cons(A, Box<List a>),
+  Cons(A, Box< List<a> >),
   Nil,
 }
 >>
@@ -57,7 +57,7 @@ Inductive list a :=
     Therefore, a datatype with several constructors is reminescent of a disjoint
     union.  Coming back to the [list] type, under the syntactic sugar of
     algebraic datatypes, the [list α] type is equivalent to [unit + α * list α],
-    where [unit] models the [nil] case, and [α + list α] models the [cons] case.
+    where [unit] models the [nil] case, and [α * list α] models the [cons] case.
 
     The set of types which can be defined in a language together with [+] and
     [*] form an “algebraic structure” in the mathematical sense, hence the
@@ -118,13 +118,11 @@ Set Implicit Arguments.
 (** *** Introducing [type_equiv] *)
 
 (** Since [=] for [Type] is not suitable for reasoning about algebraic
-    datatypes. As a consequence, we first introduce our own equivalence
-    relation, denoted [==].
-
-    We say two types [α] and [β] are equivalent up to an isomorphism (denoted by
-    [α == β]) when for any term of type [α], there exists a counter-part term of
-    type [β] and vice versa. In other words, [α] and [β] are equivalent if we
-    can exhibit two functions [f] and [g] such that:
+    datatypes, we introduce our own equivalence relation, denoted [==].  We say
+    two types [α] and [β] are equivalent up to an isomorphism (denoted by [α ==
+    β]) when for any term of type [α], there exists a counter-part term of type
+    [β] and vice versa. In other words, [α] and [β] are equivalent if we can
+    exhibit two functions [f] and [g] such that:
 
     #<span class="dmath">#\forall (x : α),\ x = g(f(x))#</span>#
 
@@ -136,8 +134,8 @@ Reserved Notation "x == y" (at level 72).
 
 Inductive type_equiv (α β : Type) : Prop :=
 | mk_type_equiv (f : α -> β) (g : β -> α)
-               (equ1 : forall (x : α), x = g (f x))
-               (equ2 : forall (y : β), y = f (g y))
+                (equ1 : forall (x : α), x = g (f x))
+                (equ2 : forall (y : β), y = f (g y))
   : α == β
 where "x == y" := (type_equiv x y).
 
@@ -306,7 +304,7 @@ Qed.
 
 (** **** Non-empty Lists *)
 
-(** We can introduce a variant of [list] which contains at least one element, by
+(** We can introduce a variant of [list] which contains at least one element by
     modifying the [nil] constructor so that it takes one argument instead of
     none. *)
 
