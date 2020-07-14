@@ -147,7 +147,7 @@ a:visited
 @mixin text-font
     font-family : serif
 
-@mixin code-font($size : .9rem)
+@mixin code-font($size : .8em)
     font-family: 'Fira Code', monospace
     font-size: $size
 
