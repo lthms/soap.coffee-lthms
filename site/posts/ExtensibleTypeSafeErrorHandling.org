@@ -1,8 +1,8 @@
 #+BEGIN_EXPORT html
 <h1>Extensible Type-Safe Error Handling in Haskell</h1>
 
-<p>This article has originally been published on <span class="time">February 04,
-2018</span>.</p>
+<p>This article has originally been published on <span
+id="original-created-at">February 04, 2018</span>.</p>
 #+END_EXPORT
 
 #+TOC: headlines 2

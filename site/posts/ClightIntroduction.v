@@ -8,10 +8,9 @@ Import ListNotations.
     you write is preserved by CompCert compilation passes up to the generated
     machine code.
 
-    I have been interested in CompCert for quite some times now. Today (#<span
-    id="time">#March 18, 2020#</span>#), I have challenged myself to study
-    Clight and its semantics. This write-up is the result of this challenge,
-    written as I was progressing.
+    I had been interested in CompCert for quite some times, and ultimately
+    challenged myself to study Clight and its semantics. This write-up is the
+    result of this challenge, written as I was progressing.
 
     #<div id="generate-toc"></div>#
 

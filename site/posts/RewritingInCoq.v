@@ -1,17 +1,13 @@
-(** * Rewriting in Coq
+(** * Rewriting in Coq *)
 
-    This article has originally been published on #<span class="time">May 13,
-    2017</span>.# *)
-
-(** I have to confess something. In the published codebase of SpecCert lies a
-    shameful secret. It takes the form of a set of axioms which are not
-    required. I thought they were when I wrote them, but it was before I heard
-    about “generalized rewriting,” setoids and morphisms.
-
-    Now, I know the truth. I will have to update SpecCert eventually. But,
-    in the meantime, let me try to explain how it is possible to rewrite a
-    term in a proof using a ad-hoc equivalence relation and, when
-    necessary, a proper morphism. *)
+(** I have to confess something. In the codebase of SpecCert lies a shameful
+    secret. It takes the form of a set of unnecessary axioms. I thought I
+    couldn’t avoid them at first, but it was before I heard about “generalized
+    rewriting,” setoids and morphisms.  Now, I know the truth, and I will have
+    to update SpecCert eventually. But, in the meantime, let me try to explain
+    in this article originally published on #<span id="original-created-at">May
+    13, 2017</span> how it is possible to rewrite a term in a proof using a
+    ad-hoc equivalence relation and, when necessary, a proper morphism. *)
 
 (** #<div id="generate-toc"></div>#
 

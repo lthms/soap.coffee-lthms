@@ -28,6 +28,10 @@ purpose is to introduce two Makefiles: ~Makefile~ and ~bootstrap.mk~.
 
 #+TOC: headlines 2
 
+#+BEGIN_EXPORT html
+<div id="history">site/posts/CleopatraV1.org</div>
+#+END_EXPORT
+
 ~Makefile~ serves two purposes: it initiates a few global variables, and it
 provides a rule to generate ~bootstrap.mk~.  At this point, some readers may
 wonder /why/ we need ~Makefile~ in this context, and the motivation behind this

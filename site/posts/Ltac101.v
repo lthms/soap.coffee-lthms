@@ -1,12 +1,12 @@
 (** * Ltac 101
 
-    This article has originally been published on #<span class="time">October
-    16, 2017</span>#. *)
+    This article has . *)
 
-(** In this article, I give an overview of my findings about the Ltac language,
-    more precisely how it can be used to automate the construction of proof
-    terms. If you never wrote a tactic in Coq and are curious about the subject,
-    it might be a good starting point. *)
+(** In this article (originally published on #<span
+    id="original-created-at">October 16, 2017</span>#), I give an overview of my
+    findings about the Ltac language, more precisely how it can be used to
+    automate the construction of proof terms. If you never wrote a tactic in Coq
+    and are curious about the subject, it might be a good starting point. *)
 
 (** #<div id="generate-toc"></div>#
 

@@ -1,8 +1,8 @@
 #+BEGIN_EXPORT html
 <h1>Monad Transformers are a Great Abstraction</h1>
 
-<p>This article has originally been published on <span class="time">July 15,
-2017</span>.</p>
+<p>This article has originally been published on <span
+id="original-created-at">July 15, 2017</span>.</p>
 #+END_EXPORT
 
 #+OPTIONS: toc:nil
