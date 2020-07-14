@@ -656,11 +656,6 @@ Once installed and available, \im \KaTeX \mi is really simple to use. The
 following script reads (synchronously!) the standard input, renders it using \im
 \KaTeX \mi and outputs the resut to the standard output.
 
-#+BEGIN_TODO
-This script should be generalized to handle both display and inline
-mode. Currently, only inline mode is supported.
-#+END_TODO
-
 #+BEGIN_SRC js :tangle scripts/katex.js
 var katex = require("katex");
 var fs = require("fs");
