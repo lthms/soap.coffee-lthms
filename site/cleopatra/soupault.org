@@ -361,8 +361,10 @@ https://code.soap.coffee/writing/lthms.git
   <table>
   {{#history}}
   <tr>
-    <td class="date">{{date}}</a></td>
-    <td class="subject">{{subject}}</a></td>
+    <td class="date"{{#created}} id="created-at"{{/created}}{{#modified}} id="modified-at"{{/modified}}>
+      {{date}}
+    </td>
+    <td class="subject">{{subject}}</td>
     <td class="commit">
       <a href="<<repo>>/commit/{{filename}}/?id={{hash}}">
         {{abbr_hash}}
@@ -510,9 +512,16 @@ To manipulate JSON, we rely on three operators (yet to be defined):
 #+BEGIN_SRC bash :noweb no-export
 local name="${file}"
 local revisions='[]'
+local first=0
 
 while read -r rev; do
   rev=$(jset "${rev}" "filename" "\"${name}\"")
+
+  if [ ${first} -eq 0 ]; then
+      rev=$(jset "${rev}" "modified" "true")
+      first=1
+  fi
+
   revisions=$(jappend "${revisions}" "${rev}")
 
   local hash=$(jget "${rev}" "hash")
@@ -522,6 +531,8 @@ while read -r rev; do
       name=${rename}
   fi
 done < <(echo "${logs}")
+
+revisions=$(_jq "${revisions}" "length as \$l | .[\$l - 1].created |= true")
 #+END_SRC
 
 #+BEGIN_SRC bash :tangle scripts/history.sh
