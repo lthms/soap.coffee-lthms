@@ -1,6 +1,4 @@
-(** * Ltac 101
-
-    This article has . *)
+(** * Ltac 101 *)
 
 (** In this article (originally published on #<span
     id="original-created-at">October 16, 2017</span>#), I give an overview of my
