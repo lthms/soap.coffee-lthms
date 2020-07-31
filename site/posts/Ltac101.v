@@ -1,10 +1,14 @@
 (** * Ltac 101 *)
 
-(** In this article (originally published on #<span
-    id="original-created-at">October 16, 2017</span>#), I give an overview of my
-    findings about the Ltac language, more precisely how it can be used to
-    automate the construction of proof terms. If you never wrote a tactic in Coq
-    and are curious about the subject, it might be a good starting point. *)
+(** We give an overview of my findings about the Ltac language, more
+    precisely how it can be used to automate the construction of proof terms. If
+    you never wrote a tactic in Coq and are curious about the subject, it might
+    be a good starting point.
+
+    This write-up (originally published on #<span
+    id="original-created-at">October 16, 2017</span>#) is the first part of a
+    series on Ltac. The next part explains #<a
+    href="/posts/MixingLtacAndGallina.html">how to mix Gallina and Ltac</a>#. *)
 
 (** #<div id="generate-toc"></div>#
 

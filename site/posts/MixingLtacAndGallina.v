@@ -1,6 +1,10 @@
 (** * Mixing Ltac and Gallina for Fun and Profit *)
 
-(** One of the most misleading introduction to Coq is to say that “Gallina is
+(** This write-up is the second part of a series on Ltac, the default tactic
+    language of Coq. The first part explains #<a href="/posts/Ltac101.html">how
+    Coq users can define their own tactics</a>#.
+
+    One of the most misleading introduction to Coq is to say that “Gallina is
     for programs, while tactics are for proofs.”  Indeed, in Coq we construct
     terms of given types, always. Terms encodes both programs and proofs about
     these programs. Gallina is the preferred way to construct programs, and
