@@ -40,7 +40,7 @@ machine-checked proofs.
   which construct proof terms later checked by Coq.
 
   1. [[./posts/Ltac101.html][Ltac 101]]
-  1. [[./posts/MixingLtacAndGallina.html][Mixing Ltac and Gallina for Fun and Benefits]]
+  1. [[./posts/MixingLtacAndGallina.html][Mixing Ltac and Gallina for Fun and Profit]]
 
 - [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
   The ~rewrite~ tactics are really useful, since they are not limited to the Coq

@@ -1,4 +1,4 @@
-(** * Mixing Ltac and Gallina for Fun and Benefits *)
+(** * Mixing Ltac and Gallina for Fun and Profit *)
 
 (** One of the most misleading introduction to Coq is to say that “Gallina is
     for programs, while tactics are for proofs.”  Indeed, in Coq we construct
