@@ -47,6 +47,9 @@ written as literate programs.
   generator. We leverage *~soupault~* to provide a unified look and feel to a
   website generated with diverse tools.
 
+*Appendix:* In case you are curious, you can have a look at
+[[./posts/CleopatraV1.html][the first implementaiton of *~cleopatra~*]].
+
 #+BEGIN_EXPORT html
 </article>
 #+END_EXPORT

@@ -11,7 +11,8 @@ lacked in regularity I made up for in subject exoticism.
 
 If you like what you read, have a question or for any other reasons really, you
 can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on
-whichever site you like (I personnaly enjoy [[https://lobste.rs][Lobste.rs]]
+whichever site you like (I personnaly enjoy
+[[https://lobste.rs/search?q=domain%3Asoap.coffee&what=stories&order=relevance][Lobste.rs]]
 very much).
 
 * About Coq
@@ -72,27 +73,6 @@ Common Lisp is a venerable programming languages like no other I know.
   From the creation of a Lisp package up to the creation of a standalone
   executable.
 
-* About this website
-
-One of my goal with this website is for it to /feel/ simple, but the truth is
-under the hood it is generated from a bunch of files using a not-that-simple
-process.
-
-- [[./cleopatra.html][A Series on Generating this Static Website]] ::
-  This series consolidates the [[https://cleopatra.soap.coffee][*~cleopatra~*]]
-  generation processes used to build this website. That is, each write-up is a
-  literate program responsible for a particular step of the build process, and
-  you are guaranteed that the code you read is the code that has been used to
-  generate the HTML page you read it from.
-
-  1. [[./cleopatra/theme.org][Theming with SASS ~(TODO)~]]
-  2. [[./cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]]
-  3. [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]]
-  4. [[./cleopatra/soupault.org][Processing HTML with ~soupault~]]
-
-- [[./posts/CleopatraV1.html][*~cleopatra~* the First]] ::
-  This write-up is the literate program of the first version of *~cleopatra~*,
-  before it became a command-line program implemented in Rust.
 
 #+BEGIN_EXPORT html
 </article>

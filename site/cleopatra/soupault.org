@@ -388,7 +388,7 @@ table
     border-top : 2px solid black
     border-bottom : 2px solid black
     border-collapse : collapse
-    max-width : 35rem
+    width : 35rem
 
 td
     border-bottom : 1px solid black

@@ -100,11 +100,12 @@ noscript.parentNode.removeChild(noscript);
     </p>
 
     <p>
-      This website has been generated using a collection of
-      <a href="/posts/Thanks.html">awesome free software projects</a>. You can
-      have a look at <a href="https://code.soap.coffee/writing/lthms">the source
-      of this webpage</a>, and if you have find an error, feel free to <a
-      href="mailto:">shoot me an email</a>.
+      This website has been generated using a collection of <a
+      href="/posts/Thanks.html">awesome free software projects</a>. You can have
+      a look at <a href="https://code.soap.coffee/writing/lthms.git/">the source of
+      this webpage</a> or <a href="/cleopatra.html">how it is being
+      generated</a>, and if you have find an error, feel free to <a
+      href="mailto:lthms@soap.coffee">shoot me a friendly email</a>.
     </p>
   </footer>
   <script>
@@ -124,6 +125,7 @@ html
     font-size : 100%
 
 body
+    font-family : 'et-book', serif
     padding : 2rem
 
 main p,
@@ -153,8 +155,8 @@ header ul
     gap : 1rem
 
 main
-    padding-top : 1rem
-    padding-bottom : 1rem
+    padding-top : 2rem
+    padding-bottom : 2rem
 
 footer img
     border-radius : 100%
@@ -162,6 +164,9 @@ footer img
     float : right
     margin-left : 1rem
     margin-bottom : 1rem
+
+pre
+    overflow-x : auto
 
 code,
 tt,
