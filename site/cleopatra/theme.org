@@ -29,35 +29,24 @@ ARTIFACTS += ${CSS}
 #+NAME: head
 #+BEGIN_SRC html :noweb no-export
 <head>
-  <<encoding>>
-  <<viewport>>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
   <title></title>
   <<syncloading_html>>
   <<asyncloading_html>>
 </head>
 #+END_SRC
 
-*** Encoding
-
-#+NAME: encoding
-#+BEGIN_SRC html
-<meta charset="utf-8">
-#+END_SRC
-
-*** Viewport
-
-#+NAME: viewport
-#+BEGIN_SRC html
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-#+END_SRC
-
 *** Assets Loading
 
 #+NAME: syncloading_html
 #+BEGIN_SRC html
+<link
+   href="https://soap.coffee/+vendors/normalize.css.8.0.1/normalize.css"
+   rel="stylesheet">
 <link rel="stylesheet" href="/style/main.css">
-<link rel="icon" type="image/ico"  href="/img/merida.webp">
+<link rel="icon" type="image/ico" href="/img/merida.webp">
 #+END_SRC
 
 #+NAME: asyncloading_js
@@ -71,13 +60,13 @@ noscript.parentNode.removeChild(noscript);
 #+BEGIN_SRC html
 <noscript id="asyncloading">
   <link href="https://soap.coffee/+vendors/fira-code.2+swap/font.css"
-     rel="stylesheet">
+        rel="stylesheet">
   <link href="https://soap.coffee/+vendors/et-book+swap/font.css"
-     rel="stylesheet">
+        rel="stylesheet">
   <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css"
-     rel="stylesheet">
+        rel="stylesheet">
   <link href="https://soap.coffee/+vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css"
-     rel="stylesheet">
+        rel="stylesheet">
 </nolink>
 #+END_SRC
 
@@ -86,20 +75,38 @@ noscript.parentNode.removeChild(noscript);
 #+NAME: body
 #+BEGIN_SRC html :noweb no-export
 <body id="default">
-  <nav>
+  <header>
     <ul>
       <li> <a href="/news">News</a></li>
-      <li> <a href="/">Write-ups</a></li>
+      <li> <a href="/">Technical Articles</a></li>
+      <li> <a href="/projects">Projects</a></li>
     </ul>
-  </nav>
-  <header>
-    <img src="/img/merida.webp"
-         alt="Merida in the movie Ralph 2.0" />
   </header>
   <main>
   <!-- your page content will be inserted here,
        see the content_selector option in soupault.conf -->
   </main>
+  <footer>
+    <img src="https://soap.coffee/~lthms/img/merida.webp"
+         alt="Merida from the movie Ralph 2.0 from Disney is the
+              avatar I use most of the time on the Internet"
+         title="lthms’ avatar" />
+
+    <p>
+      Hi, I’m <strong>lthms</strong>, and this is my humble corner of the
+      Internet. You are very welcome here! If you are interested in
+      <em>functional programming</em>, <em>formal verification</em>, or <em>free
+      software projects in the making</em>, you may even enjoy your stay!
+    </p>
+
+    <p>
+      This website has been generated using a collection of
+      <a href="/posts/Thanks.html">awesome free software projects</a>. You can
+      have a look at <a href="https://code.soap.coffee/writing/lthms">the source
+      of this webpage</a>, and if you have find an error, feel free to <a
+      href="mailto:">shoot me an email</a>.
+    </p>
+  </footer>
   <script>
     <<asyncloading_js>>
   </script>
@@ -109,184 +116,61 @@ noscript.parentNode.removeChild(noscript);
 * Main SASS File
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
-$bg-color: #2d2a2e
-$bg-verbatim : #f4f4f4
-$code-fg-color: #fcfcfa
-$text-fg-color: #505050
-$primary-color: black
-$todo-bg: #e4d3b3
-$todo-fg: #2f2b24
-$remark-bg: #c5dbe2
-$remark-fg: #4d575e
-
-$sans-serif : sans-serif
-
-$document-width : 38rem
-
-a
-    color : #557de8
-a:visited
-    color : #40599a
-
-@mixin padding-centered($inc: 0rem)
-    @media screen and (min-width : $document-width)
-        padding-left : calc(50% - #{$document-width} / 2 - #{$inc})
-        padding-right : calc(50% - #{$document-width} / 2 - #{$inc})
-    @media screen and (max-width : $document-width)
-        padding-left : 1rem
-        padding-right : 1rem
-
-@mixin margin-centered($inc: 0rem)
-    @media screen and (min-width : $document-width)
-        margin-left : calc(50% - #{$document-width} / 2 - #{$inc})
-        margin-right : calc(50% - #{$document-width} / 2 - #{$inc})
-    @media screen and (max-width : $document-width)
-        margin-left : 1rem
-        margin-right : 1rem
-
-@mixin text-font
-    font-family : serif
-
-@mixin code-font($size : .8em)
-    font-family: 'Fira Code', monospace
-    font-size: $size
-
-@mixin code-block
-    @include padding-centered
-    @include code-font
-    background : $bg-color
-    color : $code-fg-color
-    overflow-x : auto
-    scrollbar-width : thin
-
-@mixin verbatim-block
-    @include padding-centered
-    @include code-font
-    background : $bg-verbatim
-    overflow-x : auto
-    scrollbar-width : thin
-
 *
-  box-sizing: border-box
+    box-sizing : border-box
 
-html, body
-    margin : 0
-    padding : 0
+html
     width : 100%
-    height : 100%
-    font-size : 115%
-    @include text-font
+    font-size : 100%
 
 body
-    overflow-x : hidden
+    padding : 2rem
 
-code, tt
-    @include code-font
+main p,
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6,
+main ul,
+main dl,
+main ol,
+header,
+footer
+    max-width : 35rem
+    line-height : 140%
 
+header ul,
+footer p
+    font-size : 90%
+
+header ul
+    padding : 0
+    margin : 0
+    list-style-type : none
+    display : flex
+    gap : 1rem
+
+main
+    padding-top : 1rem
+    padding-bottom : 1rem
+
+footer img
+    border-radius : 100%
+    max-width : 7rem
+    float : right
+    margin-left : 1rem
+    margin-bottom : 1rem
+
+code,
+tt,
 pre
-    @include code-font
-
-body#default
-    nav
-        @include margin-centered
-        padding-top : 1rem
-        padding-bottom : 1rem
-
-        ul
-            padding : 0
-            margin : 0
-            width : 100%
-            display : flex
-            flex-direction : row
-            justify-content : center
-            list-style-type : none
-
-            li
-                padding-left: .5em
-                padding-right: .5em
-                text-transform: uppercase
-                font-family: sans-serif
-                font-weight: bold
-
-                a
-                    text-decoration: none
-
-    header
-        text-align: center
-
-        img
-            text-align: center
-            border-radius: 50%
-            width: 150px
-
-    main
-        h1
-            text-align: center
-
-        h2, h3, h4, h5, h6
-            font-style: italic
-
-
-            code, tt
-                font-size: 100%
-
-        h1, h2, h3, h4, h5, h6, p, summary
-            @include padding-centered
-
-        dl, ul, ol
-            @include margin-centered
-
-        .TODO
-            background : $todo-bg
-            color : $todo-fg
-            padding-top : .1rem
-            padding-bottom : .1rem
-            margin-top : 1rem
-            margin-bottom : 1rem
-
-        @import coq, org
-
-.index
-    dt
-        font-weight : bold
-        color : $primary-color
-
-    dd
-        margin-left : 0
-        margin-bottom : 1em
-
-        ol
-            margin-top: 0.3em
+    font-family : 'Fira Code', monospace
+    font-size : 80%
+    line-height : 140%
 
 @import plugins
-
-/* VCARD (index.html) */
-body#vcard
-    display: flex
-    align-items: center
-    flex-direction: column
-    font-size: 125%
-
-    article
-        max-width: 400px
-        width: 80%
-        margin: auto
-
-        img
-            display: block
-            border-radius: 50%
-            width: 175px
-            margin: auto
-            margin-bottom: 3em
-
-    h1
-        color: $primary-color
-        font-size: 300%
-        text-align: center
-
-    nav dt
-        font-weight: bold
-
-        a
-            color: $primary-color
+@import org
+@import coq
 #+END_SRC

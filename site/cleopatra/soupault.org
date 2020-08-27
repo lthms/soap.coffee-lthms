@@ -361,7 +361,14 @@ https://code.soap.coffee/writing/lthms.git
   <table>
   {{#history}}
   <tr>
-    <td class="date"{{#created}} id="created-at"{{/created}}{{#modified}} id="modified-at"{{/modified}}>
+    <td class="date"
+{{#created}}
+        id="created-at"
+{{/created}}
+{{#modified}}
+        id="modified-at"
+{{/modified}}
+        >
       {{date}}
     </td>
     <td class="subject">{{subject}}</td>
@@ -377,26 +384,21 @@ https://code.soap.coffee/writing/lthms.git
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/plugins.sass
-#history
-  table
-    @include margin-centered(2rem)
-    border-top: 2px solid $primary-color
-    border-bottom: 2px solid $primary-color
-    border-collapse: collapse;
+table
+    border-top : 2px solid black
+    border-bottom : 2px solid black
+    border-collapse : collapse
+    max-width : 35rem
 
-  td
-    border-bottom: 1px solid $primary-color
-    padding: .5em
-    vertical-align: top
+td
+    border-bottom : 1px solid black
+    padding : .5em
 
-  td.commit
-    font-size: smaller
-
-  td.commit
-    font-family: 'Fira Code', monospace
-    color: $code-fg-color
-    font-size: 80%
-    white-space: nowrap;
+#history .commit
+    font-size : smaller
+    font-family : 'Fira Code', monospace
+    width : 7em
+    text-align : center
 #+END_SRC
 
 *** Implementation

@@ -9,9 +9,9 @@
 (use-package haskell-mode :ensure t :defer t)
 (use-package toml-mode :ensure t :defer t)
 (use-package json-mode :ensure t :defer t)
-(use-package monokai-pro-theme :ensure t :defer t
+(use-package github-modern-theme :ensure t :defer t
   :init
-  (load-theme 'monokai-pro t))
+  (load-theme 'github-modern t))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
@@ -97,21 +97,8 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/org.sass
-.org-src-container
-    @include code-block
-    padding-top : .1rem
-    padding-bottom : .1rem
-
-.org-src-tangled-to, .org-src-name
-    @include padding-centered(4rem)
-
-.example
-    @include verbatim-block
-    // this is hacky, but it works: no need for a padding-bottom
-    padding-top : 1rem
-
-.footdef
-    @include padding-centered
+#text-footnotes
+    max-width : 35rem
 
 .footpara
     display: inline
@@ -127,27 +114,23 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
     display: none
 
 dl
-  dt
-    font-weight: bold
-  dd p
-    margin-top: 0
+    dt
+        font-weight: bold
+    dd p
+        margin-top: 0
 
 .footnotes
-  font-size : 1rem
+    font-size : 1rem
 
 .org-literate-programming
-  padding-top : 1rem
-  padding-bottom : 1rem
-  .org-src-name
-    @include code-font
-    font-weight: bold
+    .org-src-tangled-to:before
+        content: "\f054"
+        font : normal normal normal 11px/1 ForkAwesome
 
-  .org-src-tangled-to:before
-    content: "\f054"
-    font : normal normal normal 14px/1 ForkAwesome
-
-  .org-src-tangled-to
-    @include code-font
-    font-weight: bold
-    text-align: right
+    .org-src-tangled-to,
+    .org-src-name
+        font-family : 'Fira Code', monospace
+        font-size : 70%
+        font-weight: bold
+        color : #444
 #+END_SRC

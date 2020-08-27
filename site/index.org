@@ -1,7 +1,7 @@
 #+OPTIONS: toc:nil num:nil
 
 #+BEGIN_EXPORT html
-<h1>Write-ups</h1>
+<h1>Technical Articles</h1>
 
 <article class="index">
 #+END_EXPORT
@@ -20,32 +20,6 @@ Coq is a formal proof management system which provides a pure functional
 language with nice dependent types together with an environment for writing
 machine-checked proofs.
 
-- [[./posts/AlgebraicDatatypes.html][Proving Algebraic Datatypes are “Algebraic”]] ::
-  The set of types which can be defined in a language together with ~+~ and ~*~
-  form an “algebraic structure” in the mathematical sense, hence the name. It
-  means the definitions of ~+~ and ~*~ have to satisfy properties such as
-  commutativity or the existence of neutral elements.
-
-- [[./posts/ClightIntroduction.html][A Study of Clight and its Semantics]] ::
-  Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
-  this write-up, we prove a straighforward functional property of a small C
-  function, as an exercise to discover the Clight semantics.
-
-- [[./posts/MiniHTTPServer.html][Implementing and Certifying a Web Server in Coq]] ::
-  An explanation on how to write an almost pure Coq, and working (albeit
-  minimal) HTTP server.
-
-- A Series on Ltac ::
-  Ltac is the “tactic language” of Coq. It allows for writing proof scripts
-  which construct proof terms later checked by Coq.
-
-  1. [[./posts/Ltac101.html][Ltac 101]]
-  1. [[./posts/MixingLtacAndGallina.html][Mixing Ltac and Gallina for Fun and Profit]]
-
-- [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
-  The ~rewrite~ tactics are really useful, since they are not limited to the Coq
-  built-in equality relation.
-
 - A Series on Strongly-Specified Funcions in Coq ::
   Coq ~Prop~ sort allows for defining properties function arguments have to
   satisfy, such that using such a function requires providing a proof the
@@ -53,6 +27,28 @@ machine-checked proofs.
 
   1. [[./posts/StronglySpecifiedFunctions.html][Using the ~refine~ Tactics]]
   2. [[./posts/StronglySpecifiedFunctionsProgram.html][Using the ~Program~ Framework]]
+
+- A Series on Ltac ::
+  Ltac is the “tactic language” of Coq. It allows for writing proof scripts
+  which construct proof terms later checked by Coq.
+
+  1. [[./posts/Ltac101.html][Ltac 101]]
+  2. [[./posts/MixingLtacAndGallina.html][Mixing Ltac and Gallina for Fun and Profit]]
+
+- [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
+  The ~rewrite~ tactics are really useful, since they are not limited to the Coq
+  built-in equality relation.
+
+- [[./posts/ClightIntroduction.html][A Study of Clight and its Semantics]] ::
+  Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
+  this write-up, we prove a straighforward functional property of a small C
+  function, as an exercise to discover the Clight semantics.
+
+- [[./posts/AlgebraicDatatypes.html][Proving Algebraic Datatypes are “Algebraic”]] ::
+  The set of types which can be defined in a language together with ~+~ and ~*~
+  form an “algebraic structure” in the mathematical sense, hence the name. It
+  means the definitions of ~+~ and ~*~ have to satisfy properties such as
+  commutativity or the existence of neutral elements.
 
 * About Haskell
 
@@ -93,11 +89,6 @@ process.
   2. [[./cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]]
   3. [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]]
   4. [[./cleopatra/soupault.org][Processing HTML with ~soupault~]]
-
-- [[./posts/Thanks.html][Thanks!]] ::
-  If it were not for many awesome FOSS projects, this corner of the Internet
-  would not exist. This is my attempt to give well-deserved credit to them and
-  their creators.
 
 - [[./posts/CleopatraV1.html][*~cleopatra~* the First]] ::
   This write-up is the literate program of the first version of *~cleopatra~*,

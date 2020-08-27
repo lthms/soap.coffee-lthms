@@ -28,80 +28,52 @@ COQDOCARG := --no-index --charset utf8 --short \
 #+END_SRC
 
 #+BEGIN_SRC sass :tangle site/style/coq.sass
-@mixin patchy-centered($inc: 0rem)
-    width : 100vw
-    position: relative
-    @media screen and (min-width : $document-width)
-        padding-left : calc(50vw - #{$document-width} / 2)
-        right : calc(50vw - #{$document-width} / 2)
-    @media screen and (max-width : $document-width)
-        padding-left : 1rem
-        right : 1rem
-
 div.code
     white-space: nowrap
+    line-height : 140%
 
-.coq-text-block
-    @include patchy-centered
-    padding-top: 1rem
-    padding-bottom: 1rem
+div.code,
+span.inlinecode
+    font-family : 'Fira Code', monospace
+    font-size : 80%
 
-.doc
-    @include padding-centered
-    margin-top : 1em
-    margin-bottom : 1em
+div.doc
+    max-width : 35rem
+    line-height : 140%
 
-    pre
-        @include patchy-centered
-        padding-top : 1rem
-        padding-bottom : 1rem
-        background : $bg-verbatim
-        overflow-x : auto
+.paragraph
+    margin-bottom : .8em
+#+END_SRC
 
-.code
-    @include padding-centered
-    @include code-block
-
-.inlinecode
-    @include code-font
-
-h1, h2, h3, h4, h5, h6
-    .inlinecode
-        font-size: 100%
-
+#+BEGIN_SRC sass :tangle site/style/coq.sass
 .code
     .id[title="keyword"]
-        color : #ff6188
+        color : #d73a49
 
     .id[title="definition"],
     .id[title="projection"],
     .id[title="theorem"],
     .id[title="lemma"]
-        color : #a9dc76
+        color : #6f42c1
 
     .id[title="inductive"],
     .id[title="record"],
     .id[title="axiom"],
     .id[title="class"]
-        color : #78dce8
+        color : #005cc5
 
     .id[title="constructor"]
-        color : #ab9df2
+        color : #e36209
 
     a[href]
         color : inherit
         text-decoration : none
-        background : #403e41
-        padding : .05rem .15rem .05rem .15rem
+        background : #f7f7f7
+        padding : .1rem .15rem .1rem .15rem
         border-radius : 15%
 
         .url-mark
             display: none
-
-.paragraph
-    margin-top: 1em
-    margin-bottom: 1em
-
 #+END_SRC
 
 # Local Variables:
