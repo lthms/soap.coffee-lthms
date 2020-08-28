@@ -41,6 +41,10 @@ div.doc
     max-width : 35rem
     line-height : 140%
 
+    /* dirty patch to get the code in full page width */
+    pre
+        width : calc(100vw - 2*2rem)
+
 .paragraph
     margin-bottom : .8em
 #+END_SRC
