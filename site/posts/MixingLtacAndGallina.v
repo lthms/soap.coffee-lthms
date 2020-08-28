@@ -1,10 +1,6 @@
 (** * Mixing Ltac and Gallina for Fun and Profit *)
 
-(** This write-up is the second part of a series on Ltac, the default tactic
-    language of Coq. The first part explains #<a href="/posts/Ltac101.html">how
-    Coq users can define their own tactics</a>#.
-
-    One of the most misleading introduction to Coq is to say that “Gallina is
+(** One of the most misleading introduction to Coq is to say that “Gallina is
     for programs, while tactics are for proofs.”  Indeed, in Coq we construct
     terms of given types, always. Terms encodes both programs and proofs about
     these programs. Gallina is the preferred way to construct programs, and
@@ -12,189 +8,21 @@
 
     The key word here is “preferred.” We do not always need to use tactics to
     construct a proof term. Conversly, there are some occasions where
-    constructing a program with tactics become handy. Furthermore, Coq allows
-    for calling tactics from Gallina definitions. Compare to Gallina, Ltac
-    provides two very interesting features:
+    constructing a program with tactics become handy. Furthermore, Coq actually
+    allows for _mixing together_ Ltac and Gallina.
+
+    In the #<a href="LtacPatternMatching.html">#previous article of this
+    series#</a>#, we discuss how Ltac provides two very interesting features:
 
       - With [match goal with] it can inspect its context
       - With [match type of _ with] it can pattern matches on types
 
     It turns out these features are more than handy when it comes to
-    metaprogramming (that is, the generation of programs by programs).
-
-    We proceed as follows. First, we try to demystify how Ltac actually works
-    under the hood. Then, we detail which bridges exists between Gallian and
-    Ltac. Finally, we quickly discuss the risk of using Ltac to generate
-    terms that do not encode proofs. *)
+    metaprogramming (that is, the generation of programs by programs). *)
 
 (** #<div id="generate-toc"></div>#
 
     #<div id="history">site/posts/MixingLtacAndGallina.v</div># *)
-
-(** ** What Do Tactics Do? *)
-
-(** The Coq proof environment is basically a State monad, where said state is
-    an incomplete terms that is being gradually constructed. This term is hidden
-    to the user, and Coq rather presents so-called “goals.”
-
-    From this perspective, a goal in Coq in basically a hole within the term we
-    are constructing. It is presented to users as:
-
-      - A list of “hypotheses,” which are nothing more than the variables
-        in the scope of the hole
-      - A type, which is the type of the term to construct to fill the hole
-
-    We illustrate what happens under the hood of Coq executes a simple proof
-    script. *)
-
-Definition identity : forall (α : Type), α -> α.
-
-(** At this point, we have tell Coq that we want to construct a term of type
-    [forall (α : Type), α -> α]. *)
-
-Proof.
-
-(** Coq presents us one goal of the form
-
-    #<div class="dmath">#\vdash \forall (\alpha : \mathrm{Type}),\ \alpha \rightarrow \alpha#</div>#
-
-    As for the term that we want to construct and that Coq is hiding from us, it
-    is just a hole.
-
-    In a Coq course, you will learn than the <<intro>> allows for turning the
-    premise of an implication into an hypothesis within the context, that is
-
-    #<div class="dmath">#C \vdash P \rightarrow Q#</div>#
-
-    becomes
-
-    #<div class="dmath">#C,\ P \vdash Q#</div>#
-
-    What <<intro>> actually does in refining the “hidden” terms, by inserting
-    an anonymous function. So, when we use *)
-
-  intro α.
-
-(** it refines the term
-
-<<
-_1
->>
-
-    into
-
-<<
-fun (α : Type) => _2
->>
-
-    Similarly, *)
-
-  intros x.
-
-(** refines <<_2>> into
-
-<<
-fun (x : α) => _3
->>
-
-    which means the term constructed (and hidden) by Coq is now
-
-<<
-fun (α : Type) (x : α) => _3
->>
-
-    In the scope wherein <<_3>> lives, two variables are available: [α] and
-    [x]. Therefore, the goal presented by Coq is
-
-    #<div class="dmath">#\alpha : \mathrm{Type},\ x : \alpha \vdash \alpha#</div>#
-
-    The [assert] tactic is used to “add an hypothesis to the context, assuming
-    you can prove the hypothesis is true from the context.” What [assert] does
-    under the hood is refine the term we are constructed using [let _ in _].
-
-    More precisely, when we use *)
-
-  assert (y : α).
-
-(** It refines the hole [_3] into
-
-<<
-let y : α := _4 in _5
->>
-
-    which means the term we are constructing becomes
-
-<<
-fun (α : Type) (x : α) => let y : α := _4 in _5
->>
-
-    On the one hand, there are two variables availabre inside the scope wherein <<_4>> lives,
-    so the related goal is
-
-    #<div class="dmath">#α : \mathrm{Type},\ x : α \vdash \alpha#</div>#
-
-    On the other hand, there are _three_ variables available for defining
-    <<_5>> and the goal presented to the user is now
-
-    #<div class="dmath">#\alpha : \mathrm{Type},\ x : \alpha,\ y : \alpha \vdash \alpha#</div>#
-
-    To conclude this first example, we can discuss the [exact] tactic. This
-    tactic takes a term as its argument, and fills the current hole (solves the
-    current goal) with this term. We solve the two subgoals generated by
-    [assert] using [exact].
-
-    First, we fill <<_4>> with [x]. *)
-
-  + exact x.
-
-(** Therefore, <<_4>> becomes [x], and the terms that we are gradually defining
-    now is
-
-<<
-fun (α : Type) (x : α) => let y : α := x in _5
->>
-
-    Similarly, *)
-
-  + exact y.
-
-(** fill the last hole with [y].
-<<
-fun (α : Type) (x : α) => let y : α := x in y
->>
-
-    The term that we are constructing does not have any hole we need to fill,
-    and therefore Coq does not present us any more “goals to solve.”
-
-    This is not the end of the story, though. Tactics in Coq are not trusted.
-    It is assumed they can be buggy, which would mean that they can in theory
-    generate incorrect terms. As a consequence, we need to tell Coq to check the
-    term (or verify the proof) using [Qed] or [Defined]. *)
-
-Defined.
-
-(** Coq accepts the [Defined] command without complaining. It means that the
-    term generated by the tactics typechecks.
-
-    To some extend, the [refine] tactics is actually the most basic tool you may
-    need. For instance,
-
-    - [intro x] is equivalent to [refine (fun x => _)]
-    - [assert (x : T)] is equivalent to [refine (let x : T := _ in _)]
-    - [exact x] is equivalent to [refine x]
-
-    And so on. As a consequence, we can rewrite the previous proof script using
-    [refine]. *)
-
-Definition identity' : forall (α : Type), α -> α.
-
-Proof.
-  refine (fun (α : Type) => _).
-  refine (fun (x : α) => _).
-  unshelve refine (let y : α := _ in _).
-  + refine x.
-  + refine y.
-Defined.
 
 (** ** A Tale of Two Worlds, and Some Bridges *)
 

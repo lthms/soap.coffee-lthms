@@ -2,8 +2,6 @@
 
 #+BEGIN_EXPORT html
 <h1>Technical Articles</h1>
-
-<article class="index">
 #+END_EXPORT
 
 Over the past years, I have tried to capitalize on my findings. What I have
@@ -22,19 +20,23 @@ language with nice dependent types together with an environment for writing
 machine-checked proofs.
 
 - A Series on Strongly-Specified Funcions in Coq ::
-  Coq ~Prop~ sort allows for defining properties function arguments have to
-  satisfy, such that using such a function requires providing a proof the
-  property is satisfied.
+  Using dependent types and the ~Prop~ sort, it becomes possible to specify
+  functions whose arguments and results are constrained by properties.
+  Using such a “strongly-specified” function requires to provide a proof that
+  the supplied arguments satisfy the expected properties, and allows for soundly
+  assuming the results are correct too. However, implementing dependently-typed
+  functions can be challenging. In this series, we explore several approaches
+  available to Coq developers.
 
   1. [[./posts/StronglySpecifiedFunctions.html][Using the ~refine~ Tactics]]
   2. [[./posts/StronglySpecifiedFunctionsProgram.html][Using the ~Program~ Framework]]
 
-- A Series on Ltac ::
-  Ltac is the “tactic language” of Coq. It allows for writing proof scripts
-  which construct proof terms later checked by Coq.
-
-  1. [[./posts/Ltac101.html][Ltac 101]]
-  2. [[./posts/MixingLtacAndGallina.html][Mixing Ltac and Gallina for Fun and Profit]]
+- [[./posts/Ltac.org][A Series on Ltac]] ::
+  Ltac is the “tactic language” of Coq. It is commonly advertised as the common
+  approach to write proofs, which tends to bias how it is introduced to new Coq
+  users (/e.g./, in Master courses). In this series, we present Ltac as the
+  metaprogramming tool it is, since fundamentally it is an imperative language
+  which allows for constructing Coq terms interactively and incrementally.
 
 - [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
   The ~rewrite~ tactics are really useful, since they are not limited to the Coq
@@ -65,15 +67,9 @@ type system.
   Monads are hard to get right, monad transformers are harder. Yet, they remain
   a very powerful abstraction.
 
-* About Common Lisp
-
-Common Lisp is a venerable programming languages like no other I know.
+* Miscellaneous
 
 - [[./posts/DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::
-  From the creation of a Lisp package up to the creation of a standalone
-  executable.
-
-
-#+BEGIN_EXPORT html
-</article>
-#+END_Export
+  Common Lisp is a venerable programming languages like no other I know.  From
+  the creation of a Lisp package up to the creation of a standalone executable,
+  we explore the shore of this strange beast.

@@ -33,10 +33,11 @@ build.log
 .lia.cache
 site/posts/AlgebraicDatatypes.html
 site/posts/StronglySpecifiedFunctionsProgram.html
+site/posts/LtacPatternMatching.html
 site/posts/ClightIntroduction.html
 site/posts/StronglySpecifiedFunctions.html
 site/posts/RewritingInCoq.html
-site/posts/Ltac101.html
+site/posts/LtacMetaprogramming.html
 site/posts/MixingLtacAndGallina.html
 site/index.html
 site/news/ColorlessThemes-0.2.html
@@ -51,6 +52,7 @@ site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/MonadTransformers.html
 site/posts/CleopatraV1.html
+site/posts/Ltac.html
 build/
 site/style/main.css
 # end generated files

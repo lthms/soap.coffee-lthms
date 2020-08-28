@@ -1,0 +1,30 @@
+#+BEGIN_EXPORT html
+<h1>A Series on Ltac</h1>
+#+END_EXPORT
+
+Ltac is the “tactic language” of Coq. It is commonly advertised as the common
+approach to write proofs, which tends to bias how it is introduced to new Coq
+users (/e.g./, in Master courses). In this series, we present Ltac as the
+metaprogramming tool it is, since fundamentally it is an imperative language
+which allows for constructing Coq terms interactively and incrementally.
+
+- [[./LtacMetaprogramming.html][Ltac is an Imperative Metaprogramming Language]] ::
+  Ltac generates terms, therefore it is a metaprogramming language. It does it
+  incrementally, by using primitives to modifying an implicit state, therefore
+  it is an imperative language. Henceforth, it is an imperative metaprogramming
+  language.
+
+- [[./LtacPatternMatching.html][Pattern Matching on Types and Contexts]] ::
+  Ltac allows for pattern matching on types and contexts. In this article, we
+  give a short introduction on this feature of key importance. Ltac programs
+  (“proof scripts”) generate terms, and the shape of said terms can be very
+  different regarding the initial context. For instance, ~induction x~ will
+  refine the current goal using an inductive principle dedicated to the type of
+  ~x~.
+
+- [[./MixingLtacAndGallina.html][Mixing Ltac and Gallina Together for Fun and Profit]] ::
+  One of the most misleading introduction to Coq is to say that “Gallina is for
+  programs, while tactics are for proofs.” Gallina is the preferred way to
+  construct programs, and tactics are the preferred way to construct proofs.
+  The key word here is “preferred.” Coq actually allows for /mixing/
+  Ltac and Gallina together.
