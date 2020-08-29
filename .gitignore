@@ -21,9 +21,9 @@ plugins/external-urls.lua
 plugins/urls-rewriting.lua
 plugins/fix-org-urls.lua
 soupault.conf
+theme.mk
 site/style/main.sass
 templates/main.html
-theme.mk
 build.log
 *.vo
 *.vok

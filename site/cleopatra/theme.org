@@ -2,40 +2,37 @@
 <h1>Theming and Templating</h1>
 #+END_EXPORT
 
-#+BEGIN_SRC makefile :tangle theme.mk
-SASS := site/style/main.sass
-CSS := $(SASS:.sass=.css)
+The purpose of this build process is to implement the default layout of this
+website. To that end, it provides a template file (~main.html~), and a
+collection of SASS files that *~cleopatra~* then compiles into a single CSS file
+using ~sassc~.
 
-theme-build : ${SASS}
-	@cleopatra echo Compiling  "${CSS}"
-	@sassc --style=compressed --sass ${SASS} ${CSS}
-
-soupault-build : theme-build
-
-ARTIFACTS += ${CSS}
-#+END_SRC
+We first discuss the structure of the website, by defining the default HTML
+template =soupault= will use to generate the website. Then, we specify its
+minimal design, implemented in SASS. Finally, we discuss the necessary build
+instructions for *~cleopatra~*.
 
 * Main HTML Template
 
-#+BEGIN_SRC html  :tangle templates/main.html :noweb no-export
+#+BEGIN_SRC html  :tangle templates/main.html :noweb yes
 <html lang="en">
-  <<head>>
+  <head>
+    <<meta-tags>>
+    <title><!-- page title will be inserted here --></title>
+    <<syncloading_html>>
+    <<asyncloading_html>>
+  </head></head>
   <<body>>
 </html>
 #+END_SRC
 
 ** ~<head>~
 
-#+NAME: head
+#+NAME: meta-tags
 #+BEGIN_SRC html :noweb no-export
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-  <title></title>
-  <<syncloading_html>>
-  <<asyncloading_html>>
-</head>
+<meta charset="utf-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 #+END_SRC
 
 *** Assets Loading
@@ -74,7 +71,7 @@ noscript.parentNode.removeChild(noscript);
 
 #+NAME: body
 #+BEGIN_SRC html :noweb no-export
-<body id="default">
+<body>
   <header>
     <ul>
       <li> <a href="/news">News</a></li>
@@ -83,8 +80,7 @@ noscript.parentNode.removeChild(noscript);
     </ul>
   </header>
   <main>
-  <!-- your page content will be inserted here,
-       see the content_selector option in soupault.conf -->
+  <!-- page content will be inserted here -->
   </main>
   <footer>
     <img src="https://soap.coffee/~lthms/img/merida.webp"
@@ -102,8 +98,8 @@ noscript.parentNode.removeChild(noscript);
     <p>
       This website has been generated using a collection of <a
       href="/posts/Thanks.html">awesome free software projects</a>. You can have
-      a look at <a href="https://code.soap.coffee/writing/lthms.git/">the source of
-      this webpage</a> or <a href="/cleopatra.html">how it is being
+      a look at <a href="https://code.soap.coffee/writing/lthms.git/">the source
+      of this website</a> or <a href="/cleopatra.html">how it is being
       generated</a>, and if you have find an error, feel free to <a
       href="mailto:lthms@soap.coffee">shoot me a friendly email</a>.
     </p>
@@ -178,4 +174,37 @@ pre
 @import plugins
 @import org
 @import coq
+#+END_SRC
+
+* Build Instructions
+
+The build instruction are pretty straightforward. We start by how to compile the
+main CSS file.
+
+#+BEGIN_SRC makefile :tangle theme.mk
+SASS := $(wildcard site/style/*.sass)
+MAIN_SASS := site/style/main.sass
+CSS := $(MAIN_SASS:.sass=.css)
+
+${CSS} : ${SASS}
+	@cleopatra echo Compiling  "${CSS}"
+	@sassc --style=compressed --sass ${MAIN_SASS} ${CSS}
+#+END_SRC
+
+Since the HTML template does not need any particular processing, the
+=theme-build= phase is only responsible for generating the main CSS file.  The
+[[./soupault.org][=soupault= build phase]] needs to start after the CSS file is
+compiled (since it copies all relevant files to the ~build/~ directory), so we
+explicit this dependency.
+
+#+BEGIN_SRC makefile :tangle theme.mk
+theme-build : ${CSS}
+soupault-build : theme-build
+#+END_SRC
+
+Therefore, at the end of this generation process only one file has been
+generated.
+
+#+BEGIN_SRC makefile :tangle theme.mk
+ARTIFACTS += ${CSS}
 #+END_SRC
