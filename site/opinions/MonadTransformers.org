@@ -8,7 +8,7 @@ id="original-created-at">July 15, 2017</span>.</p>
 #+OPTIONS: toc:nil
 
 #+BEGIN_EXPORT html
-<div id="history">site/posts/MonadTransformers.org</div>
+<div id="history">site/opinions/MonadTransformers.org</div>
 #+END_EXPORT
 
 Monads are hard to get right. I think it took me around a year of Haskelling to

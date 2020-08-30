@@ -63,10 +63,6 @@ type system.
   error handling, the result is nice, type-safe API for Haskell, with a lot of
   GHC magic under the hood.
 
-- [[./posts/MonadTransformers.org][Monad Transformers are a Great Abstraction]] ::
-  Monads are hard to get right, monad transformers are harder. Yet, they remain
-  a very powerful abstraction.
-
 * Miscellaneous
 
 - [[./posts/DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::

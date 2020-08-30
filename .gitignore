@@ -39,6 +39,8 @@ site/posts/StronglySpecifiedFunctions.html
 site/posts/RewritingInCoq.html
 site/posts/LtacMetaprogramming.html
 site/posts/MixingLtacAndGallina.html
+site/opinions/index.html
+site/opinions/MonadTransformers.html
 site/index.html
 site/news/ColorlessThemes-0.2.html
 site/cleopatra/soupault.html
@@ -50,7 +52,6 @@ site/projects/index.html
 site/posts/Thanks.html
 site/posts/DiscoveringCommonLisp.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
-site/posts/MonadTransformers.html
 site/posts/CleopatraV1.html
 site/posts/Ltac.html
 build/

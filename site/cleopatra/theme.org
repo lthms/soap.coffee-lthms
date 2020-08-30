@@ -74,8 +74,9 @@ noscript.parentNode.removeChild(noscript);
 <body>
   <header>
     <ul>
-      <li> <a href="/news">News</a></li>
       <li> <a href="/">Technical Articles</a></li>
+      <li> <a href="/opinions">Opinions</a></li>
+      <li> <a href="/news">News</a></li>
       <li> <a href="/projects">Projects</a></li>
     </ul>
   </header>

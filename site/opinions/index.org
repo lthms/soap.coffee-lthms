@@ -1,0 +1,18 @@
+#+options: num:nil
+
+#+BEGIN_EXPORT html
+<h1>Opinions</h1>
+#+END_EXPORT
+
+I may have some opinions on some topics, and sometimes I may want to share
+them. However, I strongly believe facts and opinions are two differents things,
+and even though I do not intend to write plain wrong facts, I prefer to keep two
+separate indexes.
+
+I would encourage you to use your critical mind while reading these write-ups.
+
+** 2017
+
+- [[./MonadTransformers.org][Monad Transformers are a Great Abstraction]] ::
+  Monads are hard to get right, monad transformers are harder. Yet, they remain
+  a very powerful abstraction.
