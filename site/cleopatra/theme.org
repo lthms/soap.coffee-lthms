@@ -172,6 +172,14 @@ pre
     font-size : 80%
     line-height : 140%
 
+#gallery
+    display : flex
+    flex-wrap : wrap
+    align-content : flex-start
+
+    img
+        width : 20rem
+
 @import plugins
 @import org
 @import coq

@@ -173,6 +173,7 @@ behavior. For now, only ~<a>~ has been affected.
 
 #+BEGIN_SRC lua :tangle plugins/fix-org-urls.lua
 fix_org_urls(HTML.select(page, "a"), "href")
+fix_org_urls(HTML.select(page, "img"), "src")
 #+END_SRC
 
 The configuration of this plugin, and the associated widget, is straightforward.
