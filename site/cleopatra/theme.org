@@ -101,7 +101,7 @@ noscript.parentNode.removeChild(noscript);
       href="/posts/Thanks.html">awesome free software projects</a>. You can have
       a look at <a href="https://code.soap.coffee/writing/lthms.git/">the source
       of this website</a> or <a href="/cleopatra.html">how it is being
-      generated</a>, and if you have find an error, feel free to <a
+      generated</a>, and if you run into an error, feel free to <a
       href="mailto:lthms@soap.coffee">shoot me a friendly email</a>.
     </p>
   </footer>
