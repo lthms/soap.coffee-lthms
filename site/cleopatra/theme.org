@@ -123,7 +123,7 @@ html
 
 body
     font-family : 'et-book', serif
-    padding : 2rem
+    padding : 2rem 5rem
 
 main p,
 main h1,
@@ -178,7 +178,7 @@ pre
     align-content : flex-start
 
     img
-        width : 20rem
+        max-width : 20rem
 
 @import plugins
 @import org

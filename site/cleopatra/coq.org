@@ -43,7 +43,7 @@ div.doc
 
     /* dirty patch to get the code in full page width */
     pre
-        width : calc(100vw - 2*2rem)
+        width : calc(100vw - 2*5rem)
 
 .paragraph
     margin-bottom : .8em
