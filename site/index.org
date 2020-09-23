@@ -14,6 +14,9 @@ whichever site you like (I personnaly enjoy
 very much).
 
 * About Coq
+:PROPERTIES:
+:CUSTOM_ID: coq
+:END:
 
 Coq is a formal proof management system which provides a pure functional
 language with nice dependent types together with an environment for writing
