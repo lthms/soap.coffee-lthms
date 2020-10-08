@@ -58,7 +58,7 @@ noscript.parentNode.removeChild(noscript);
 <noscript id="asyncloading">
   <link href="https://soap.coffee/+vendors/fira-code.2+swap/font.css"
         rel="stylesheet">
-  <link href="https://soap.coffee/+vendors/et-book+swap/font.css"
+  <link href="https://soap.coffee/+vendors/Linux-Libertine/import.css"
         rel="stylesheet">
   <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css"
         rel="stylesheet">
@@ -122,7 +122,7 @@ html
     font-size : 110%
 
 body
-    font-family : 'et-book', serif
+    font-family : 'Linux Libertine', serif
     padding : 2rem 5rem
 
 main p,
@@ -139,6 +139,14 @@ header,
 footer
     max-width : 35rem
     line-height : 140%
+
+main h1,
+main h2,
+main h3,
+main h4,
+main h5,
+main h6
+    font-weight : 400
 
 header ul,
 footer p
