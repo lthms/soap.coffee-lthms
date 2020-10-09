@@ -38,12 +38,12 @@ span.inlinecode
     font-size : 80%
 
 div.doc
-    max-width : 35rem
+    max-width : $content-width
     line-height : 140%
 
     /* dirty patch to get the code in full page width */
     pre
-        width : calc(100vw - 2*5rem)
+        width : calc(100vw - 2*var(--side-margin))
 
 .paragraph
     margin-bottom : .8em

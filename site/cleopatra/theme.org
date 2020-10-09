@@ -113,6 +113,28 @@ noscript.parentNode.removeChild(noscript);
 
 * Main SASS File
 
+First, we introduce a set of variables.
+
+#+BEGIN_SRC sass :tangle site/style/main.sass
+$content-width : 35rem
+$large-side-margin : 5rem
+$small-side-margin : 2rem
+#+END_SRC
+
+Then, we introduce a key CSS variable whose definition will change according to
+the current width of the page (something we cannot achieve with SASS variables,
+whose behavior is purely static).
+
+#+BEGIN_SRC sass :tangle site/style/main.sass
+\:root
+    @media screen and (min-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
+        --side-margin : #{$large-side-margin}
+    @media screen and (max-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
+        --side-margin : #{$small-side-margin}
+#+END_SRC
+
+Then, we style!
+
 #+BEGIN_SRC sass :tangle site/style/main.sass
 *
     box-sizing : border-box
@@ -123,7 +145,7 @@ html
 
 body
     font-family : 'Linux Libertine', serif
-    padding : 2rem 5rem
+    padding : 2rem var(--side-margin)
 
 main p,
 main h1,
@@ -137,7 +159,7 @@ main dl,
 main ol,
 header,
 footer
-    max-width : 35rem
+    max-width : $content-width
     line-height : 140%
 
 main h1,
