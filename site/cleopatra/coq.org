@@ -36,6 +36,7 @@ div.code,
 span.inlinecode
     font-family : 'Fira Code', monospace
     font-size : 80%
+    overflow-x : auto
 
 div.doc
     max-width : $content-width
