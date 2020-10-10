@@ -21,7 +21,7 @@
 
     #<div id="generate-toc"></div>#
 
-    #<div id="history">site/posts/StronglySpecifiedFunctions.v</div># *)
+    #<div id="history">site/posts/StronglySpecifiedFunctionsRefine.v</div># *)
 
 (** ** Is this list empty? *)
 

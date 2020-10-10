@@ -1,0 +1,17 @@
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_EXPORT html
+<h1>A Series on Strongly-Specified Functions in Coq</h1>
+#+END_EXPORT
+
+Using dependent types and the ~Prop~ sort, it becomes possible to specify
+functions whose arguments and results are constrained by properties.  Using such
+a “strongly-specified” function requires to provide a proof that the supplied
+arguments satisfy the expected properties, and allows for soundly assuming the
+results are correct too. However, implementing dependently-typed functions can
+be challenging. In this series, we explore several approaches available to Coq
+developers.
+
+- [[./StronglySpecifiedFunctionsRefine.html][Using the ~refine~ Tactics]] ::
+
+- [[./StronglySpecifiedFunctionsProgram.html][Using the ~Program~ Framework]] ::

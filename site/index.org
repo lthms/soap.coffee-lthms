@@ -22,17 +22,13 @@ Coq is a formal proof management system which provides a pure functional
 language with nice dependent types together with an environment for writing
 machine-checked proofs.
 
-- A Series on Strongly-Specified Funcions in Coq ::
+- [[./posts/StronglySpecifiedFunctions.org][A Series on Strongly-Specified Funcions in Coq]] ::
   Using dependent types and the ~Prop~ sort, it becomes possible to specify
   functions whose arguments and results are constrained by properties.
   Using such a “strongly-specified” function requires to provide a proof that
   the supplied arguments satisfy the expected properties, and allows for soundly
   assuming the results are correct too. However, implementing dependently-typed
-  functions can be challenging. In this series, we explore several approaches
-  available to Coq developers.
-
-  1. [[./posts/StronglySpecifiedFunctions.html][Using the ~refine~ Tactics]]
-  2. [[./posts/StronglySpecifiedFunctionsProgram.html][Using the ~Program~ Framework]]
+  functions can be challenging.
 
 - [[./posts/Ltac.org][A Series on Ltac]] ::
   Ltac is the “tactic language” of Coq. It is commonly advertised as the common

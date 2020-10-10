@@ -35,7 +35,7 @@ site/posts/AlgebraicDatatypes.html
 site/posts/StronglySpecifiedFunctionsProgram.html
 site/posts/LtacPatternMatching.html
 site/posts/ClightIntroduction.html
-site/posts/StronglySpecifiedFunctions.html
+site/posts/StronglySpecifiedFunctionsRefine.html
 site/posts/RewritingInCoq.html
 site/posts/LtacMetaprogramming.html
 site/posts/MixingLtacAndGallina.html
@@ -51,6 +51,7 @@ site/cleopatra.html
 site/projects/index.html
 site/posts/Thanks.html
 site/posts/DiscoveringCommonLisp.html
+site/posts/StronglySpecifiedFunctions.html
 site/posts/ExtensibleTypeSafeErrorHandling.html
 site/posts/CleopatraV1.html
 site/posts/Ltac.html
