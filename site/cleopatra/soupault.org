@@ -64,8 +64,8 @@ ignore_extensions = [
 
 generator_mode = true
 complete_page_selector = "html"
-default_template = "templates/main.html"
-content_selector = "main"
+default_template_file = "templates/main.html"
+default_content_selector = "main"
 doctype = "<!DOCTYPE html>"
 clean_urls = false
 #+END_SRC
