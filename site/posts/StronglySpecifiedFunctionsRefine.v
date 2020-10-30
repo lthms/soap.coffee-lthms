@@ -1,4 +1,4 @@
-(** * Strongly-Specified Functions in Coq, part 1: using the <<refine>> Tactic *)
+(** * Implementing Strongly-Specified Functions with the <<refine>> Tactic *)
 
 (** This is the first article (initially published on #<span
     class="original-created-at">January 11, 2015</span>#) of a series of two on

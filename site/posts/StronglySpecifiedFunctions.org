@@ -12,6 +12,6 @@ results are correct too. However, implementing dependently-typed functions can
 be challenging. In this series, we explore several approaches available to Coq
 developers.
 
-- [[./StronglySpecifiedFunctionsRefine.html][Using the ~refine~ Tactics]] ::
+- [[./StronglySpecifiedFunctionsRefine.html][Implementing Strongly-Specified Functions with the ~refine~ Tactic]] ::
 
-- [[./StronglySpecifiedFunctionsProgram.html][Using the ~Program~ Framework]] ::
+- [[./StronglySpecifiedFunctionsProgram.html][Implementing Strongly-Specified Functions with the ~Program~ Framework]] ::
