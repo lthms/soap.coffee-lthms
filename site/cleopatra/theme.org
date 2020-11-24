@@ -21,7 +21,7 @@ instructions for *~cleopatra~*.
     <title><!-- page title will be inserted here --></title>
     <<syncloading_html>>
     <<asyncloading_html>>
-  </head></head>
+  </head>
   <<body>>
 </html>
 #+END_SRC
