@@ -73,12 +73,10 @@ noscript.parentNode.removeChild(noscript);
 #+BEGIN_SRC html :noweb no-export
 <body>
   <header>
-    <ul>
-      <li> <a href="/">Technical Articles</a></li>
-      <li> <a href="/opinions">Opinions</a></li>
-      <li> <a href="/news">News</a></li>
-      <li> <a href="/projects">Projects</a></li>
-    </ul>
+    <a href="/">Technical Articles</a> /
+    <a href="/opinions">Opinions</a> /
+    <a href="/news">News</a> /
+    <a href="/projects">Projects</a>
   </header>
   <main>
   <!-- page content will be inserted here -->
@@ -170,16 +168,9 @@ main h5,
 main h6
     font-weight : 400
 
-header ul,
+header a,
 footer p
     font-size : 90%
-
-header ul
-    padding : 0
-    margin : 0
-    list-style-type : none
-    display : flex
-    gap : 1rem
 
 main
     padding-top : 2rem
