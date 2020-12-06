@@ -39,9 +39,8 @@ instructions for *~cleopatra~*.
 
 #+NAME: syncloading_html
 #+BEGIN_SRC html
-<link
-   href="https://soap.coffee/+vendors/normalize.css.8.0.1/normalize.css"
-   rel="stylesheet">
+<link href="https://soap.coffee/+vendors/normalize.css.8.0.1/normalize.css"
+      rel="stylesheet">
 <link rel="stylesheet" href="/style/main.css">
 <link rel="icon" type="image/ico" href="/img/merida.webp">
 #+END_SRC
@@ -58,13 +57,13 @@ noscript.parentNode.removeChild(noscript);
 <noscript id="asyncloading">
   <link href="https://soap.coffee/+vendors/fira-code.2+swap/font.css"
         rel="stylesheet">
-  <link href="https://soap.coffee/+vendors/Linux-Libertine/import.css"
-        rel="stylesheet">
   <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css"
         rel="stylesheet">
   <link href="https://soap.coffee/+vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css"
         rel="stylesheet">
-</nolink>
+  <link href="https://soap.coffee/+vendors/Spectral/extra-light.css"
+        rel="stylesheet">
+</noscript>
 #+END_SRC
 
 ** ~body~
@@ -115,7 +114,7 @@ First, we introduce a set of variables.
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
 $content-width : 35rem
-$large-side-margin : 5rem
+$large-side-margin : 7rem
 $small-side-margin : 2rem
 #+END_SRC
 
@@ -139,11 +138,15 @@ Then, we style!
 
 html
     width : 100%
-    font-size : 110%
+    height : 100%
+    font-size : 115%
 
 body
-    font-family : 'Linux Libertine', serif
-    padding : 2rem var(--side-margin)
+    font-family : Spectral, serif
+    margin : 0 var(--side-margin) 0 calc(var(--side-margin) - 2rem) !important
+    padding : 2rem
+    @media screen and (min-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
+        border-left : 1px solid #ccc
 
 main p,
 main h1,
@@ -166,15 +169,15 @@ main h3,
 main h4,
 main h5,
 main h6
-    font-weight : 400
+    font-weight : bold
 
 header a,
 footer p
     font-size : 90%
 
 main
-    padding-top : 2rem
-    padding-bottom : 2rem
+    padding-top : 4rem
+    padding-bottom : 4rem
 
 footer img
     border-radius : 100%
