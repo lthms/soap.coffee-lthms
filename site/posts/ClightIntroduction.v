@@ -26,8 +26,10 @@ Import ListNotations.
     Installing CompCert is as easy as
 
 <<
-opam install compcert
+opam install coq-compcert
 >>
+
+    More precisely, this article uses #<code>coq-compcert.3.8</code>#.
 
     Once <<opam>> terminates, the <<compcert>> namespace becomes available. In
     addition, several binaries are now available if you have correctly set your
