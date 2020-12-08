@@ -326,24 +326,9 @@ res_equ : sem_cast res tint tint m1 = Some (Vint z)
 >>
 
       - [res_equ] is the equation which says that the result of [f_add] is
-        [res], after it has been cast as a [tint] value
+        [res], after it has been cast as a [tint] value.
 
-    Surprisingly, neither [add_op] nor [res_equ] can be reduced easily… After
-    some digging, I have found that this is because both rely on [Archi.ptr64],
-    which is basically opaque as far as reduction strategies are concerned.
-
-    Now, there are probably more elegant (idiomatic) way to deal with this
-    issue, but a working approach is to unfold until [Archi.ptr64] appears, then
-    use the [Archi.splitlong_ptr32] lemma to replace it with its value
-    ([false]). *)
-
-  unfold sem_binarith in *.
-  cbn in *.
-  unfold sem_cast in *.
-  cbn in *.
-  rewrite Archi.splitlong_ptr32 in *; auto.
-
-(** We can now simplify [add_op] and [res_equ], and this allows us to
+    We can simplify [add_op] and [res_equ], and this allows us to
     conclude. *)
 
   smart_inv add_op.
@@ -353,17 +338,14 @@ Qed.
 
 (** ** Conclusion *)
 
-(** The main difficulty of this exercise was the opaqueness of [Archi.ptr64];
-    this is surprising, since it means my struggle was technical, not
-    conceptual. On the contrary, the definitions of Clight are easy to
-    understand, and the #<a
-    href="http://compcert.inria.fr/doc/index.html">#CompCert documentation#</a>#
-    is very pleasant to read.
-
-    Understanding Clight and its semantics can be very interesting if you are
-    working on a language that you want to translate into machine code. However,
-    proving functional properties of a given C snippet using only CompCert can
-    quickly become cumbersome. From this perspective, the #<a
-    href="https://github.com/PrincetonUniversity/VST">#VST#</a># project is very
-    interesting, as its main purpose is to provide tools to reason about Clight
-    programs more easily. *)
+(** The definitions of Clight are easy to understand, and the #<a
+    href="http://compcert.inria.fr/doc/index.html">#CompCert
+    documentation#</a># is very pleasant to read.  Understanding
+    Clight and its semantics can be very interesting if you are
+    working on a language that you want to translate into machine
+    code. However, proving functional properties of a given C snippet
+    using only CompCert can quickly become cumbersome. From this
+    perspective, the #<a
+    href="https://github.com/PrincetonUniversity/VST">#VST#</a>#
+    project is very interesting, as its main purpose is to provide
+    tools to reason about Clight programs more easily. *)
