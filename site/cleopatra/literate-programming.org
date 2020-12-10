@@ -16,7 +16,7 @@ coqffi-tutorial-build : literate-programming-prebuild
 	@cd lp/coqffi-tutorial; dune build --display quiet
 	@cleopatra echo "Archiving" "coqffi tutorial"
 	@rm -f ${COQFFI_ARCHIVE}
-	@tar --exclude="_build" -czvf ${COQFFI_ARCHIVE} lp/coqffi-tutorial >> build.log
+	@tar --exclude="_build" -C lp/ -czvf ${COQFFI_ARCHIVE} coqffi-tutorial >> build.log
 
 literate-programming-build : coqffi-tutorial-build
 
