@@ -4,8 +4,8 @@
 
 ~coqffi~ generates Coq FFI modules from compiled OCaml interface
 modules (~.cmi~). In practice, it greatly reduces the hassle to mix
-together OCaml and Coq modules within the same codebase, especially
-when used together with the ~build~ build system.
+OCaml and Coq modules within the same codebase, especially when used
+together with the ~dune~ build system.
 
 - [[./CoqffiIntro.org][~coqffi~ in a Nutshell]] ::
   For each entry of a ~cmi~ file, ~coqffi~ tries to generate an

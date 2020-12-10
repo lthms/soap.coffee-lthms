@@ -7,19 +7,23 @@ equivalent (from the extraction mechanism perspective) Coq
 definition. In this article, we walk through how ~coqffi~ works.
 
 Note that we do not dive into the vernacular commands ~coqffi~
-generates. They are of no concern for ~coqffi~’s users.
+generates. They are of no concern for users of ~coqffi~.
 
 #+TOC: headlines 2
+
+#+BEGIN_EXPORT html
+<div id="history">site/posts/CoqffiIntro.org</div>
+#+END_EXPORT
 
 * Getting Started
 
 ** Requirements
 
-The latest versiof of ~coqffi~ (~coqffi.1.0.0~beta2~ at the time of
-writing) is compatible with OCaml ~4.08~ up to ~4.11~, and Coq ~8.12~.
-If you want to use ~coqffi~, but have incompatible requirements of
-your own, feel free to
-[[https://github.com/coq-community/coqffi/issues][submit an issue]].
+The latest version of ~coqffi~ (~1.0.0~beta2~ at the time of writing)
+is compatible with OCaml ~4.08~ up to ~4.11~, and Coq ~8.12~.  If you
+want to use ~coqffi~, but have incompatible requirements of your own,
+feel free to [[https://github.com/coq-community/coqffi/issues][submit
+an issue]].
 
 ** Installing ~coqffi~
 
@@ -46,7 +50,7 @@ information to build it from source.
 ** Additional Dependencies
 
 One major difference between Coq and OCaml is that the former is pure,
-while the latter is not. Impurity can be modelled in pure languages,
+while the latter is not. Impurity can be modeled in pure languages,
 and Coq does not lack of frameworks in this respect. ~coqffi~
 currently supports two of them:
 [[https://github.com/Lysxia/coq-simple-io][~coq-simple-io~]] and
@@ -56,15 +60,15 @@ possible to use it with
 albeit in a less direct manner.
 
 
-* Primitives Types
+* Primitive Types
 
-~coqffi~ supports a set of primitives types, /i.e./, a set of OCaml
+~coqffi~ supports a set of primitive types, /i.e./, a set of OCaml
 types for which it knows an equivalent type in Coq. The list is the
 following (the Coq types are fully qualified in the table, but not in
-the generated Coq module as the necessry ~Import~ statement are
+the generated Coq module as the necessary ~Import~ statement are
 generated too).
 
-| Ocaml type  | Coq type                      |
+| OCaml type  | Coq type                      |
 |-------------+-------------------------------|
 | =bool=      | =Coq.Init.Datatypes.bool=     |
 | =char=      | =Coq.Strings.Ascii.ascii=     |
@@ -81,19 +85,18 @@ primitive integers to Coq users. They are implemented on top of the
 primitive integers find their way to Coq upstream]].
 
 When processing the entries of a given interface model, ~coqffi~ will
-checks that they only use these types, or types introduced by the
+check that they only use these types, or types introduced by the
 interface module itself.
 
 * Code Generation
 
-~coqffi~ distinguishes three types of entries:
-types, pure functions, and impure primitives. We now discuss how each
-one of them are handled.
+~coqffi~ distinguishes three types of entries: types, pure functions,
+and impure primitives. We now discuss how each one of them is handled.
 
 ** Types
 
 By default, ~coqffi~ generates axiomatized definitions for each type
-defined in a ~cmi~ files. This means that src_ocaml[:exports
+defined in a ~.cmi~ file. This means that src_ocaml[:exports
 code]{type t} becomes src_coq[:exports code]{Axiom t : Type}.
 Polymorphism is supported, /i.e./, src_ocaml[:exports code]{type 'a t}
 becomes src_coq[:exports code]{Axiom t : forall (a : Type), Type}.
@@ -193,7 +196,7 @@ Axiom map : forall (a : Type) (b : Type), (a -> b) -> list a -> list b.
 ** Impure Primitives
 
 Finally, ~coqffi~ reserves a special treatment for OCaml value
-explicitely marked as impure, using the =impure= annotation.  Impurity
+explicitly marked as impure, using the =impure= annotation.  Impurity
 is usually handled in pure programming languages by means of monads,
 and ~coqffi~ is no exception to the rule.
 
@@ -210,7 +213,7 @@ val echo : string -> unit [@@impure]
 val scan : unit -> string [@@impure]
 #+END_SRC
 
-where =echo= allows to write something the standard output, and =scan=
+where =echo= allows writing something the standard output, and =scan=
 to read the standard input.
 
 Assuming the processed module interface is named ~console.mli~, the
@@ -240,8 +243,8 @@ several frameworks have been released to tackle this challenge.
 
 *** ~simple-io~
 
-This feature allows to generate an instance of the typeclass for the
-=IO= monad introduced in the ~coq-simple-io~ package
+When this feature is enabled, ~coqffi~ generates an instance of the
+typeclass for the =IO= monad introduced in the ~coq-simple-io~ package
 
 #+BEGIN_SRC coq
 Axiom io_echo : string -> IO unit.
@@ -257,9 +260,9 @@ It is enabled by default, but can be disabled using the
 
 *** ~interface~
 
-This feature allows to generate an inductive type which describes the
-set of primitives available, to be used with frameworks like
-[[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]] or
+When this feature is enabled, ~coqffi~ generates an inductive type
+which describes the set of primitives available, to be used with
+frameworks like [[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]] or
 [[https://github.com/DeepSpec/InteractionTrees][Interactions Trees]]
 
 #+BEGIN_SRC coq
@@ -287,8 +290,8 @@ FreeSpec implements it]]).
 
 *** ~freespec~
 
-It allows to generate a semantics for the inductive type generated by
-the ~interface~ feature.
+When this feature in enabled, ~coqffi~ generates a semantics for the
+inductive type generated by the ~interface~ feature.
 
 #+BEGIN_SRC coq
 Axiom unsafe_echo : string -> unit.
