@@ -9,6 +9,8 @@
 (use-package haskell-mode :ensure t :defer t)
 (use-package toml-mode :ensure t :defer t)
 (use-package json-mode :ensure t :defer t)
+(use-package proof-general :ensure t :defer t)
+(use-package tuareg :ensure t :defer t)
 (use-package github-modern-theme :ensure t :defer t
   :init
   (load-theme 'github-modern t))
@@ -17,9 +19,13 @@
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
 (cleopatra:configure)
 
+(setq org-html-doctype "html5")
+(setq org-html-html5-fancy t)
+
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((shell . t)))
+ '((shell . t)
+   (dot . t)))
 
 (setq org-export-with-toc nil)
 
@@ -27,37 +33,6 @@
              '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
 (add-to-list 'org-entities-user
              '("mi" "\\)" nil "</span>" "" "" ""))
-
-(setq org-babel-exp-code-template
-      (concat "#+BEGIN_SRC %lang%switches%flags "
-              ":tangle %tangle :name %name\n"
-              "%body\n"
-              "#+END_SRC"))
-
-(defun cleopatra-html-src-block (oldfun src-block contents info)
-  (let*
-      ((old-ret (funcall oldfun src-block contents info))
-       (pars (org-babel-parse-header-arguments
-              (org-element-property :parameters src-block)))
-       (tangle (cdr (assoc :tangle pars)))
-       (name (cdr (assoc :name pars))))
-    (cond
-     (name
-      (concat
-       "<div class=\"org-literate-programming\">"
-       (format "<div class=\"org-src-name\">&lt;&lt%s&gt;&gt :=</div>" name)
-       old-ret
-       "</div>"))
-     ((not (string= tangle "no"))
-      (concat
-       "<div class=\"org-literate-programming\">"
-       old-ret
-       (format "<div class=\"org-src-tangled-to\">%s</div>" tangle)
-       "</div>"))
-     (t old-ret))))
-
-(advice-add 'org-html-src-block
-            :around #'cleopatra-html-src-block)
 
 (org-html-export-to-html nil nil nil t)
 #+END_SRC
@@ -73,6 +48,7 @@ org-build : ${ORG_HTML}
 
 theme-build : site/style/org.sass
 soupault-build : org-build
+org-build : literate-programming-build
 
 ARTIFACTS += ${ORG_HTML}
 CONFIGURE += .emacs

@@ -1,0 +1,310 @@
+#+BEGIN_EXPORT html
+<h1><code>coqffi</code> in a Nutshell</h1>
+#+END_EXPORT
+
+For each entry of a ~cmi~ file, ~coqffi~ tries to generate an
+equivalent (from the extraction mechanism perspective) Coq
+definition. In this article, we walk through how ~coqffi~ works.
+
+Note that we do not dive into the vernacular commands ~coqffi~
+generates. They are of no concern for ~coqffi~’s users.
+
+#+TOC: headlines 2
+
+* Getting Started
+
+** Requirements
+
+The latest versiof of ~coqffi~ (~coqffi.1.0.0~beta2~ at the time of
+writing) is compatible with OCaml ~4.08~ up to ~4.11~, and Coq ~8.12~.
+If you want to use ~coqffi~, but have incompatible requirements of
+your own, feel free to
+[[https://github.com/coq-community/coqffi/issues][submit an issue]].
+
+** Installing ~coqffi~
+
+The recommended way to install ~coqffi~ is through the
+[[https://coq.inria.fr/opam/www][Opam Coq Archive]], in the ~released~
+repository.  If you haven’t activated this repository yet, you can use
+the following bash command.
+
+#+BEGIN_SRC sh
+opam repo add coq-released https://coq.inria.fr/opam/released
+#+END_SRC
+
+Then, installing ~coqffi~ is as simple as
+
+#+BEGIN_SRC sh
+opam install coq-coqffi
+#+END_SRC
+
+You can also get the source from
+[[https://github.com/coq-community/coqffi][the upstream ~git~
+repository]]. The ~README~ provides the necessary pieces of
+information to build it from source.
+
+** Additional Dependencies
+
+One major difference between Coq and OCaml is that the former is pure,
+while the latter is not. Impurity can be modelled in pure languages,
+and Coq does not lack of frameworks in this respect. ~coqffi~
+currently supports two of them:
+[[https://github.com/Lysxia/coq-simple-io][~coq-simple-io~]] and
+[[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]]. It is also
+possible to use it with
+[[https://github.com/DeepSpec/InteractionTrees][Interaction Trees]],
+albeit in a less direct manner.
+
+
+* Primitives Types
+
+~coqffi~ supports a set of primitives types, /i.e./, a set of OCaml
+types for which it knows an equivalent type in Coq. The list is the
+following (the Coq types are fully qualified in the table, but not in
+the generated Coq module as the necessry ~Import~ statement are
+generated too).
+
+| Ocaml type  | Coq type                      |
+|-------------+-------------------------------|
+| =bool=      | =Coq.Init.Datatypes.bool=     |
+| =char=      | =Coq.Strings.Ascii.ascii=     |
+| =int=       | =CoqFFI.Data.Int.i63=         |
+| ='a list=   | =Coq.Init.Datatypes.list a=   |
+| ='a option= | =Coq.Init.Datatypes.option a= |
+| =string=    | =Coq.Strings.String.string=   |
+| =unit=      | =Coq.Init.Datatypes.unit=     |
+
+The =i63= type is introduced by the =CoqFFI= theory to provide signed
+primitive integers to Coq users. They are implemented on top of the
+(sadly unsigned) Coq native integers introduced in Coq
+~8.10~. Hopefully, the =i63= type will be deprecated once [[https://github.com/coq/coq/pull/13559][signed
+primitive integers find their way to Coq upstream]].
+
+When processing the entries of a given interface model, ~coqffi~ will
+checks that they only use these types, or types introduced by the
+interface module itself.
+
+* Code Generation
+
+~coqffi~ distinguishes three types of entries:
+types, pure functions, and impure primitives. We now discuss how each
+one of them are handled.
+
+** Types
+
+By default, ~coqffi~ generates axiomatized definitions for each type
+defined in a ~cmi~ files. This means that src_ocaml[:exports
+code]{type t} becomes src_coq[:exports code]{Axiom t : Type}.
+Polymorphism is supported, /i.e./, src_ocaml[:exports code]{type 'a t}
+becomes src_coq[:exports code]{Axiom t : forall (a : Type), Type}.
+
+It is possible to provide a “model” for a type using the =coq_model=
+annotation, for instance for reasoning purposes. For instance,
+we can specify that a type is equivalent to a =list=.
+
+#+BEGIN_SRC ocaml
+type 'a t [@@coq_model "list"]
+#+END_SRC
+
+This generates the following Coq definition.
+
+#+BEGIN_SRC coq
+Definition t : forall (a : Type), Type := list.
+#+END_SRC
+
+It is important to be careful when using the =coq_model= annotation.
+More precisely, the fact that =t= is a =list= in the “Coq universe”
+shall not be used while the implementation phase, only the
+verification phase.
+
+Finally, ~coqffi~ has got an experimental feature called
+~transparent-types~ (enable by using the ~-ftransparent-types~
+command-line argument). If the type definition is given in the module
+interface, then ~coqffi~ tries to generates an equivalent definition
+in Coq. For instance,
+
+#+BEGIN_SRC ocaml
+type 'a llist =
+  | LCons of 'a * (unit -> 'a llist)
+  | LNil
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Inductive llist (a : Type) : Type :=
+| LCons (x0 : a) (x1 : unit -> llist a) : llist a
+| LNil : llist a.
+#+END_SRC
+
+Mutually recursive types are supported, so
+
+#+BEGIN_SRC ocaml
+type even = Zero | ESucc of odd
+and odd = OSucc of even
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Inductive odd : Type :=
+| OSucc (x0 : even) : odd
+with even : Type :=
+| Zero : even
+| ESucc (x0 : odd) : even.
+#+END_SRC
+
+The ~transparent-types~ feature is *experimental*, and is currently
+limited to variant types. It notably does not support
+records. Besides, it may generate incorrect Coq types, because it does
+not check whether or not the
+[[https://coq.inria.fr/refman/language/core/inductive.html#positivity-condition][positivity
+condition]] is satisfied.
+
+** Pure Functions
+
+~coqffi~ assumes OCaml values are pure by default, and will generate
+regular axiomatized Coq definitions for them. Similarly to type
+entries, it is possible to provide a Coq model using the =coq_module=
+annotation.
+
+#+BEGIN_SRC ocaml
+val unpack : string -> (char * string) option
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Axiom unpack : string -> option (ascii * string).
+#+END_SRC
+
+Polymorphic functions are supported.
+
+#+BEGIN_SRC ocaml
+val map : ('a -> 'b) -> 'a list -> 'b list
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Axiom map : forall (a : Type) (b : Type), (a -> b) -> list a -> list b.
+#+END_SRC
+
+** Impure Primitives
+
+Finally, ~coqffi~ reserves a special treatment for OCaml value
+explicitely marked as impure, using the =impure= annotation.  Impurity
+is usually handled in pure programming languages by means of monads,
+and ~coqffi~ is no exception to the rule.
+
+Given the set of impure primitives declared in an interface module,
+~coqffi~ will (1) generates a typeclass which gathers these
+primitives, and (2) generates instances of this typeclass for
+supported backends.
+
+We illustrate the rest of this section with the following impure
+primitives.
+
+#+BEGIN_SRC ocaml
+val echo : string -> unit [@@impure]
+val scan : unit -> string [@@impure]
+#+END_SRC
+
+where =echo= allows to write something the standard output, and =scan=
+to read the standard input.
+
+Assuming the processed module interface is named ~console.mli~, the
+following Coq typeclass is generated.
+
+#+BEGIN_SRC coq
+Class MonadConsole (m : Type -> Type) := { echo : string -> m unit
+                                         ; scan : unit -> m string
+                                         }.
+#+END_SRC
+
+Using this typeclass and with the additional support of an additional
+=Monad= typeclass, we can specify impure computations which interacts
+with the console. For instance, with the support of ~ExtLib~, one can
+write.
+
+#+BEGIN_SRC coq
+Definition pipe `{Monad m, MonadConsole m} : m unit :=
+  let* msg := scan () in
+  echo msg.
+#+END_SRC
+
+There is no canonical way to model impurity in Coq, but over the years
+several frameworks have been released to tackle this challenge.
+
+~coqffi~ provides three features related to impure primitives.
+
+*** ~simple-io~
+
+This feature allows to generate an instance of the typeclass for the
+=IO= monad introduced in the ~coq-simple-io~ package
+
+#+BEGIN_SRC coq
+Axiom io_echo : string -> IO unit.
+Axiom io_scan : unit -> IO string.
+
+Instance IO_MonadConsole : MonadConsole IO := { echo := io_echo
+                                              ; scan := io_scan
+                                              }.
+#+END_SRC
+
+It is enabled by default, but can be disabled using the
+~-fno-simple-io~ command-line argument.
+
+*** ~interface~
+
+This feature allows to generate an inductive type which describes the
+set of primitives available, to be used with frameworks like
+[[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]] or
+[[https://github.com/DeepSpec/InteractionTrees][Interactions Trees]]
+
+#+BEGIN_SRC coq
+Inductive CONSOLE : Type -> Type :=
+| Echo : string -> CONSOLE unit
+| Scan : unit -> CONSOLE string.
+
+Definition inj_echo `{Inject CONSOLE m} (x0 : string) : m unit :=
+  inject (Echo x0).
+
+Definition inj_scan `{Inject CONSOLE m} (x0 : unit) : m string :=
+  inject (Scan x0).
+
+Instance Inject_MonadConsole `{Inject CONSOLE m} : MonadConsole m :=
+  { echo := inj_echo
+  ; scan := inj_scan
+  }.
+#+END_SRC
+
+Providing an instance of the form src_coq[:exports code]{forall i,
+Inject i M} is enough for your monad =M= to be compatible with this
+feature (see for instance
+[[https://github.com/ANSSI-FR/FreeSpec/blob/master/theories/FFI/FFI.v][how
+FreeSpec implements it]]).
+
+*** ~freespec~
+
+It allows to generate a semantics for the inductive type generated by
+the ~interface~ feature.
+
+#+BEGIN_SRC coq
+Axiom unsafe_echo : string -> unit.
+Axiom unsafe_scan : uint -> string.
+
+Definition console_unsafe_semantics : semantics CONSOLE :=
+  bootstrap (fun a e =>
+    local match e in CONSOLE a return a with
+          | Echo x0 => unsafe_echo x0
+          | Scan x0 => unsafe_scan x0
+          end).
+#+END_SRC
+
+* Moving Forward
+
+~coqffi~ comes with a comprehensive man page. In addition, the
+interested reader can proceed to the next article of this series,
+which explains how [[./CoqffiEcho.org][~coqffi~ can be used to easily
+implement an echo server in Coq]].

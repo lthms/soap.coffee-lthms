@@ -1,0 +1,17 @@
+#+BEGIN_EXPORT html
+<h1>A Series on <code>coqffi</code></h1>
+#+END_EXPORT
+
+~coqffi~ generates Coq FFI modules from compiled OCaml interface
+modules (~.cmi~). In practice, it greatly reduces the hassle to mix
+together OCaml and Coq modules within the same codebase, especially
+when used together with the ~build~ build system.
+
+- [[./CoqffiIntro.org][~coqffi~ in a Nutshell]] ::
+  For each entry of a ~cmi~ file, ~coqffi~ tries to generate an
+  equivalent (from the extraction mechanism perspective) Coq
+  definition. In this article, we walk through how ~coqffi~ works.
+- [[./CoqffiEcho.org][Implementing an Echo Server in Coq with ~coqffi~]] ::
+  In this tutorial, we will demonstrate how ~coqffi~ can be used to
+  implement an echo server, /i.e./, a TCP server which sends back
+  any input it receives from its clients.

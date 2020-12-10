@@ -52,6 +52,12 @@ machine-checked proofs.
   means the definitions of ~+~ and ~*~ have to satisfy properties such as
   commutativity or the existence of neutral elements.
 
+- [[./posts/Coqffi.org][A Series on ~coqffi~]] ::
+  ~coqffi~ generates Coq FFI modules from compiled OCaml interface
+  modules (~.cmi~). In practice, it greatly reduces the hassle to mix
+  together OCaml and Coq modules within the same codebase, especially
+  when used together with the ~build~ build system.
+
 * About Haskell
 
 Haskell is a pure, lazy, functional programming language with a very expressive

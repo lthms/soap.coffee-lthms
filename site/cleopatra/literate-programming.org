@@ -1,0 +1,42 @@
+#+BEGIN_EXPORT html
+<h1>Literate Programming Projects</h1>
+#+END_EXPORT
+
+#+BEGIN_SRC makefile :tangle literate-programming.mk
+literate-programming-prebuild :
+	@cleopatra echo "Tangling" "literate programming project"
+	@cleopatra exec -- cleopatra-run-elisp export-lp.el >> build.log
+
+org-build : literate-programming-build
+
+COQFFI_ARCHIVE := site/files/coqffi-tutorial.tar.gz
+
+coqffi-tutorial-build : literate-programming-prebuild
+	@cleopatra echo "Building" "coqffi tutorial"
+	@cd lp/coqffi-tutorial; dune build --display quiet
+	@cleopatra echo "Archiving" "coqffi tutorial"
+	@rm -f ${COQFFI_ARCHIVE}
+	@tar --exclude="_build" -czvf ${COQFFI_ARCHIVE} lp/coqffi-tutorial >> build.log
+
+literate-programming-build : coqffi-tutorial-build
+
+ARTIFACTS += lp/ ${COQFFI_ARCHIVE} site/posts/deps.svg
+
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle export-lp.el
+(cleopatra:configure)
+
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((shell . t)))
+
+(setq org-publish-project-alist
+      '(("lp"
+         :base-directory "site/posts"
+         :publishing-directory "lp"
+         :recursive t
+         :publishing-function cleopatra:tangle-publish)))
+
+(org-publish-all)
+#+END_SRC

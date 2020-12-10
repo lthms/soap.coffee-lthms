@@ -648,7 +648,7 @@ consequence, we systematically ~touch~ ~packase-lock.json~ to satisfy ~make~.
 
 #+BEGIN_SRC makefile :tangle katex.mk
 package-lock.json : package.json
-	@echo "    init  npm packages"
+	@cleopatra echo "Fetching" "npm packages"
 	@npm install &>> build.log
 	@touch $@
 

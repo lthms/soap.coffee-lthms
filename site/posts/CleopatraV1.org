@@ -78,7 +78,7 @@ In a nutshell,
 
 For this website, these constants are defined as follows.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb no-export
+#+BEGIN_SRC makefile :noweb no-export
 ROOT := $(shell pwd)
 CLEODIR := site/cleopatra
 #+END_SRC
@@ -94,7 +94,7 @@ and providing rules to remove them.
   Long-term artifacts whose generation can be time consuming. They will only be
   removed by ~make cleanall~.
 
-#+BEGIN_SRC makefile :tangle Makefile
+#+BEGIN_SRC makefile
 ARTIFACTS := build.log
 CONFIGURE :=
 #+END_SRC
@@ -114,7 +114,7 @@ deleted with ~make clean~ for instance).  However, it is overwritten. If you try
 to modify it and find that *~cleopatra~* does not work properly, you should
 restore it using ~git~.
 
-#+BEGIN_SRC emacs-lisp :tangle scripts/tangle-org.el
+#+BEGIN_SRC emacs-lisp
 (require 'org)
 (cd (getenv "ROOT"))
 (setq org-confirm-babel-evaluate nil)
@@ -130,7 +130,7 @@ restore it using ~git~.
 We define variables that ensure that the ~ROOT~ environment variable is set and
 ~tangle-org.el~ is loaded when using Emacs.
 
-#+BEGIN_SRC makefile :tangle Makefile
+#+BEGIN_SRC makefile
 EMACSBIN := emacs
 EMACS := ROOT="${ROOT}" ${EMACSBIN}
 TANGLE := --batch \
@@ -142,7 +142,7 @@ Finally, we introduce a
 [[https://www.gnu.org/software/make/manual/html_node/Canned-Recipes.html#Canned-Recipes][canned
 recipe]] to seamlessly tangle a given file.
 
-#+BEGIN_SRC makefile :tangle Makefile
+#+BEGIN_SRC makefile
 define emacs-tangle =
 echo "  tangle  $<"
 ${EMACS} $< ${TANGLE}
@@ -157,7 +157,7 @@ processes. This chain is divided into three stages: ~prebuild~, ~build~, and
 
 This translates as follows in ~Makefile~.
 
-#+BEGIN_SRC makefile :tangle Makefile
+#+BEGIN_SRC makefile
 default : postbuild ignore
 
 init :
@@ -261,7 +261,7 @@ source block when the latter is tangled.
 We derive the rule to tangle ~bootstrap.mk~ using =extends=, which gives us the
 following Makefile snippet.
 
-#+BEGIN_SRC makefile :tangle Makefile :noweb yes
+#+BEGIN_SRC makefile :noweb yes
 <<extends(IN="Bootstrap.org", PROC="bootstrap", AUX="scripts/update-gitignore.sh")>>
 #+END_SRC
 
@@ -287,7 +287,7 @@ Each generation process shall
 
 * Wrapping-up
 
-#+BEGIN_SRC bash :tangle scripts/update-gitignore.sh :shebang "#+/bin/bash"
+#+BEGIN_SRC bash :shebang "#+/bin/bash"
 BEGIN_MARKER="# begin generated files"
 END_MARKER="# begin generated files"
 
@@ -305,7 +305,7 @@ done
 echo ${END_MARKER} >> .gitignore
 #+END_SRC
 
-#+BEGIN_SRC makefile :tangle bootstrap.mk
+#+BEGIN_SRC makefile
 ignore :
 	@echo "  update  gitignore"
 	@scripts/update-gitignore.sh \

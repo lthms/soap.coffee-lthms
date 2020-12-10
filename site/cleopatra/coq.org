@@ -5,13 +5,18 @@
 #+BEGIN_SRC makefile :tangle coq.mk
 COQ_POSTS := $(shell find site/ -name "*.v")
 COQ_HTML := $(COQ_POSTS:.v=.html)
+COQ_ARTIFACTS := $(COQ_POSTS:.v=.vo) \
+  $(COQ_POSTS:.v=.vok) \
+  $(COQ_POSTS:.v=.vos) \
+  $(COQ_POSTS:.v=.glob) \
+  $(join $(dir ${COQ_POSTS}),$(addprefix ".",$(notdir $(COQ_POSTS:.v=.aux))))
 
 coq-build : ${COQ_HTML}
 
 theme-build : site/style/coq.sass
 soupault-build : coq-build
 
-ARTIFACTS += *.vo *.vok *.vos .*.aux *.glob .lia.cache
+ARTIFACTS += ${COQ_ARTIFACTS} .lia.cache
 ARTIFACTS += ${COQ_HTML}
 
 COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
