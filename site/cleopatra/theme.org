@@ -139,7 +139,10 @@ Then, we style!
 html
     width : 100%
     height : 100%
-    font-size : 115%
+    font-size : 110%
+
+a
+    color : #0c0016
 
 body
     font-family : Spectral, serif
@@ -170,6 +173,7 @@ main h4,
 main h5,
 main h6
     font-weight : bold
+    color : #0c0016
 
 header a,
 footer p
@@ -178,6 +182,16 @@ footer p
 main
     padding-top : 4rem
     padding-bottom : 4rem
+
+    dl dd
+        margin-left : 0
+
+    dl dt:not(:first-child)
+        padding-top : .5rem
+
+    details
+        font-size : 90%
+        filter : opacity(0.8)
 
 footer img
     border-radius : 100%
