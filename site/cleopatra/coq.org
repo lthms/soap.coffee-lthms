@@ -23,7 +23,10 @@ COQLIB := "https://coq.inria.fr/distrib/current/stdlib/"
 COQCARG := -async-proofs-cache force \
            -w -custom-entry-overriden
 COQDOCARG := --no-index --charset utf8 --short \
-             --body-only --coqlib "${COQLIB}"
+             --body-only --coqlib "${COQLIB}" \
+             --external "https://coq-community.org/coq-ext-lib/v0.11.2/" ExtLib \
+             --external "https://compcert.org/doc/html" compcert \
+             --external "https://lysxia.github.io/coq-simple-io" SimpleIO
 
 %.html : %.v coq.mk
 	@cleopatra echo Exporting "$*.v"
