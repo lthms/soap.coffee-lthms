@@ -90,8 +90,6 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
     display: none
 
 dl
-    dt
-        font-weight: bold
     dd p
         margin-top: 0
 
