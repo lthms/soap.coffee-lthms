@@ -143,9 +143,13 @@ html
     height : 100%
     font-size : 110%
     font-weight : 200
+    color : #222
 
 a
-    color : #0c0016
+    color : black
+
+a:visited
+    color : #222
 
 body
     font-family : Spectral, serif
