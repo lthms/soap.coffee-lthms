@@ -58,9 +58,10 @@ least to try keeping up-to-date a curated description of the “main” ones.
   the [[https://www.mozilla.org/en-US/][Mozilla Foundation]], with “programming ligatures” (/e.g./, =>>==, ====,
   =!==, etc.), and it is used here for verbatim content (principally source
   code).
-- [[https://edwardtufte.github.io/et-book/][ET Book]] ::
-  ET Book is a webfont of the typeface used in [[http://www.edwardtufte.com/][Edward Tufte]]’s books, converted
-  by [[http://adamschwartz.co/][Adam Schwartz]]. It is used as the main font of this website.
+- [[https://github.com/productiontype/spectral][Spectral]] ::
+  Spectral is an original typeface designed by Production Type,
+  primarily intended for use inside Google’s Docs and Slides.  It is
+  used as the main font of this website.
 
 #+BEGIN_EXPORT html
 </article>
