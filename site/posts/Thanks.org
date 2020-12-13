@@ -38,9 +38,10 @@ least to try keeping up-to-date a curated description of the “main” ones.
 - [[https://github.com/sass/sassc][~sassc~]] ::
   ~sassc~ is a compiler for SASS files (actually, a wrapper around [[https://github.com/sass/libsass][~libsass~]]),
   authored by [[https://github.com/akhleung][Aaron Leung]], [[https://github.com/hcatlin][Hampton Catlin]], [[https://github.com/mgreter][Marcel Greter]], and [[https://github.com/xzyfer][Michael Mifsud]].
-- [[https://www.gnu.org/software/make/][GNU Make]] ::
-  GNU Make is a build automation tool which ensures HTML files are generated
-  from my posts before calling soupault. It is part of the [[https://www.gnu.org/gnu/gnu.html][GNU project]].
+- [[https://cleopatra.soap.coffee][~cleopatra~]] ::
+  ~cleopatra~ is a generic, extensible toolchain with facilities for
+  literate programming projects using Org mode and more. I have
+  written it for this very website.
 
 * Frontend
 
