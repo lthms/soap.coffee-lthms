@@ -416,11 +416,6 @@ command = 'scripts/history.sh templates/history.html'
 action = "replace_content"
 #+END_SRC
 
-#+BEGIN_TODO
-This plugin should be reimplemented using ~libgit2~ or other ~git~ libraries, in
-a language more suitable than bash.
-#+END_TODO
-
 This plugin proceeds as follows:
 
 1. Using an ad-hoc script, it generates a JSON containing for each revision
@@ -445,165 +440,162 @@ function main () {
 }
 #+END_SRC
 
-The difficult part of this script is the definition of the =generate_json=
-function. From a high-level perspective, this function is divided into three
-steps.
+Generating the expected JSON is therefore as simple as:
 
-1. We get an initial (but partial) set of data about the ~git~ commit of
-   ~${file}~, from the most recent to the oldest
-2. For each commit, we check whether or not ~${file}~ was renamed or not
-3. Finally, we output a result (because we are writing a bash script)
+- Fetching the logs
+- Reading 8 line from the logs, parse the filename from the 6th
+  line
+- Outputing the JSON
 
-#+BEGIN_SRC bash :tangle scripts/history.sh :noweb no-export
-function generate_json () {
+We will use ~git~ to get the information we need. By default, ~git~
+subcommands use a pager when its output is likely to be long. This
+typically includes ~git-log~. To disable this behavior, ~git~ exposes
+the ~--no-pager~ command.  Besides, we also need ~--follow~ and
+~--stat~ to deal with file renaming. Without this option, ~git-log~
+stops when the file first appears in the repository, even if this
+“creation” is actually a renaming. Therefore, the ~git~ command line
+we use to collect our history is
+
+#+NAME: gitlog
+#+BEGIN_SRC bash :tangle scripts/history.sh :noweb yes
+function gitlog () {
   local file="${1}"
-  local logs=`<<git-log>>`
+  git --no-pager log \
+      --follow \
+      --stat=10000 \
+      --pretty=format:'%s%n%h%n%H%n%cs%n' \
+      "${file}"
+}
+#+END_SRC
+
+This function will generate a sequence of 8 lines containing all the
+relevant information we are looking for, for each commit, namely:
+
+- Subject
+- Abbreviated hash
+- Full hash
+- Date
+- Empty line
+- Change summary
+- Shortlog
+- Empty line
+
+For instance, the =gitlog= function will output the following lines
+for the last commit of this very file:
+
+#+BEGIN_SRC bash :results verbatim :exports results :noweb yes
+<<gitlog>>
+gitlog "soupault.org" | head -n8
+#+END_SRC
+
+Among other things, the 6th line contains the filename. We need to
+extract it, and we do that with ~sed~. In case of file renaming, we
+need to parse something of the form ~both/to/{old => new}~.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :noweb yes
+function parse_filename () {
+  local line="${1}"
+  local shrink='s/ *\(.*\) \+|.*/\1/'
+  local unfold='s/\(.*\){\(.*\) => \(.*\)}/\1\3/'
+
+  echo ${line} | sed -e "${shrink}" | sed -e "${unfold}"
+}
+#+END_SRC
+
+The next step is to process the logs to generate the expected JSON. We
+have to deal with the fact that JSON does not allow the last item of
+an array to be concluded by ",". Besides, we also want to indicate
+which commit is responsible for the creation of the file.  To do that,
+we use two variables: =idx= and =last_entry=. When =idx= is equal to
+0, we know it is the latest commit. When =idx= is equal to
+=last_entry=, we know we are looking at the oldest commit for that
+file.
+
+#+BEGIN_SRC bash :tangle scripts/history.sh :noweb yes
+function generate_json () {
+  local input="${1}"
+  local logs="$(gitlog ${input})"
 
   if [ ! $? -eq 0 ]; then
       exit 1
   fi
 
-  <<remane-tracking>>
+  let "idx=0"
+  let "last_entry=$(echo "${logs}" | wc -l) / 8"
 
-  <<result-echoing>>
+  local subject=""
+  local abbr_hash=""
+  local hash=""
+  local date=""
+  local file=""
+  local created="true"
+  local modified="false"
+
+  echo -n "{"
+  echo -n "\"file\": \"${input}\""
+  echo -n ",\"history\": ["
+
+  while read -r subject; do
+    read -r abbr_hash
+    read -r hash
+    read -r date
+    read -r # empty line
+    read -r file
+    read -r # short log
+    read -r # empty line
+
+    if [ ${idx} -ne 0 ]; then
+      echo -n ","
+    fi
+
+    if [ ${idx} -eq ${last_entry} ]; then
+      created="true"
+      modified="false"
+    else
+      created="false"
+      modified="true"
+    fi
+
+    output_json_entry "${subject}" \
+                      "${abbr_hash}" \
+                      "${hash}" \
+                      "${date}" \
+                      "$(parse_filename "${file}")" \
+                      "${created}" \
+                      "${modified}"
+
+    let idx++
+  done < <(echo "${logs}")
+
+  echo -n "]}"
 }
 #+END_SRC
 
-We will use ~git~ to get the information we need. By default, ~git~ subcommands
-use a pager when its output is likely to be long. This typically includes
-~git-log~. To disable this behavior, ~git~ exposes the ~--no-pager~ command.
-We introduce =_git=, a wrapper around ~git~ with the proper option.
+Generating the JSON object for a given commit is as simple as
 
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function _git () {
-  git --no-pager "$@"
+#+BEGIN_SRC bash :tangle scripts/history.sh :noweb yes
+function output_json_entry () {
+  local subject="${1}"
+  local abbr_hash="${2}"
+  local hash="${3}"
+  local date="${4}"
+  local file="${5}"
+  local created="${6}"
+  local last_entry="${7}"
+
+  echo -n "{\"subject\": \"${subject}\""
+  echo -n ",\"created\":${created}"
+  echo -n ",\"modified\":${modified}"
+  echo -n ",\"abbr_hash\":\"${abbr_hash}\""
+  echo -n ",\"hash\":\"${hash}\""
+  echo -n ",\"date\":\"${date}\""
+  echo -n ",\"filename\":\"${file}\""
+  echo -n "}"
 }
 #+END_SRC
 
-Afterwards, we use =_git= in place of ~git~.
-
-Using the ~git-log~ ~--pretty~ command-line argument, we can generate
-one JSON object per commit which contains most of the information we need, using
-the following format string.
-
-#+NAME: pretty-format
-#+BEGIN_SRC json
-{ "subject" : "%s", "abbr_hash" : "%h", "hash" : "%H", "date" : "%cs" }
-#+END_SRC
-
-Besides, we also need ~--follow~ to deal with file renaming. Without this
-option, ~git-log~ stops when the file first appears in the repository, even if
-this “creation” is actually a renaming.  Therefore, the ~git~ command line we
-use to collect our initial history is
-
-#+NAME: git-log
-#+BEGIN_SRC bash :noweb no-export
-_git log --follow --pretty=format:'<<pretty-format>>' "${file}"
-#+END_SRC
-
-To manipulate JSON, we rely on three operators (yet to be defined):
-
-- =jget OBJECT FIELD= ::
-  In an =OBJECT=, get the value of a given =FIELD=
-- =jset OBJECT FIELD VALIE= ::
-  In an =OBJECT=, set the =VALUE= of a given =FIELD=
-- =jappend ARRAY VALUE= ::
-  Append a =VALUE= at the end of an =ARRAY=
-
-#+NAME: remane-tracking
-#+BEGIN_SRC bash :noweb no-export
-local name="${file}"
-local revisions='[]'
-local first=0
-
-while read -r rev; do
-  rev=$(jset "${rev}" "filename" "\"${name}\"")
-
-  if [ ${first} -eq 0 ]; then
-      rev=$(jset "${rev}" "modified" "true")
-      first=1
-  fi
-
-  revisions=$(jappend "${revisions}" "${rev}")
-
-  local hash=$(jget "${rev}" "hash")
-  local rename=$(previous_name "${name}" "${hash}")
-
-  if [[ ! -z "${rename}" ]]; then
-      name=${rename}
-  fi
-done < <(echo "${logs}")
-
-revisions=$(_jq "${revisions}" "length as \$l | .[\$l - 1].created |= true")
-#+END_SRC
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function previous_name () {
-  local name=${1}
-  local hash=${2}
-
-  local unfold='s/ *\(.*\){\(.*\) => \(.*\)}/\1\2 => \1\3/'
-
-  _git show --stat=10000 ${hash} \
-      | sed -e "${unfold}" \
-      | grep "=> ${name}" \
-      | xargs \
-      | cut -d' ' -f1
-}
-#+END_SRC
-
-#+NAME: result-echoing
-#+BEGIN_SRC bash :noweb no-export
-jset "$(jset "{}" "file" "\"${file}\"")" \
-     "history" \
-     "${revisions}"
-#+END_SRC
-
-The last missing pieces are the definitions of the three JSON operators.  We use
-[[https://stedolan.github.io/jq/][~jq~]] to manipulate JSON data. Since ~jq~
-processes JSON from its standard input, we first define a helper (similar to
-=_git=) to deal with JSON from variables seamlessly.
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function _jq () {
-  local input="${1}"
-  local filter="${2}"
-
-  echo "${input}" | jq -jcM "${filter}"
-}
-#+END_SRC
-
-- *-j* tells ~jq~ not to print a new line at the end of its outputs
-- *-c* tells ~jq~ to print JSON in a compact format (rather than prettified)
-- *-M* tells ~jq~ to output monochrome outputs
-
-Internally, =jget=, =jset=, and =jappend= are implemented with ~jq~
-[[https://stedolan.github.io/jq/manual/#Basicfilters][basic filters]].
-
-#+BEGIN_SRC bash :tangle scripts/history.sh
-function jget () {
-  local obj="${1}"
-  local field="${2}"
-
-  _jq "${obj}" ".${field}"
-}
-
-function jset () {
-  local obj="${1}"
-  local field="${2}"
-  local val="${3}"
-
-  _jq "${obj}" "setpath([\"${field}\"]; ${val})"
-}
-function jappend () {
-  local arr="${1}"
-  local val="${2}"
-
-  _jq "${arr}" ". + [ ${val} ]"
-}
-#+END_SRC
-
-Everything is defined. We can call =main= now.
+And we are done! We can safely call the =main= function to generate
+our revisions table.
 
 #+BEGIN_SRC bash :tangle scripts/history.sh
 main "$(cat)" "${1}"
