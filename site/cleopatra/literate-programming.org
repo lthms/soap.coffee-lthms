@@ -8,8 +8,6 @@ literate-programming-prebuild :
 	@cleopatra exec -- cleopatra-run-elisp export-lp.el \
 	    >> build.log 2>&1
 
-org-build : literate-programming-build
-
 COQFFI_ARCHIVE := site/files/coqffi-tutorial.tar.gz
 
 coqffi-tutorial-build : literate-programming-prebuild
@@ -19,6 +17,7 @@ coqffi-tutorial-build : literate-programming-prebuild
 	@rm -f ${COQFFI_ARCHIVE}
 	@tar --exclude="_build" -C lp/ -czvf ${COQFFI_ARCHIVE} coqffi-tutorial >> build.log
 
+site/posts/CoqffiEcho.html : coqffi-tutorial-build
 literate-programming-build : coqffi-tutorial-build
 
 ARTIFACTS += lp/ ${COQFFI_ARCHIVE} site/posts/deps.svg
