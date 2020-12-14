@@ -5,7 +5,8 @@
 #+BEGIN_SRC makefile :tangle literate-programming.mk
 literate-programming-prebuild :
 	@cleopatra echo "Tangling" "literate programming project"
-	@cleopatra exec -- cleopatra-run-elisp export-lp.el >> build.log
+	@cleopatra exec -- cleopatra-run-elisp export-lp.el \
+	    >> build.log 2>&1
 
 org-build : literate-programming-build
 
