@@ -40,7 +40,13 @@ written as literate programs.
 
 - [[file:cleopatra/coq.org][Authoring Contents As Coq Documents ~(TODO)~]] ::
 
-- [[./cleopatra/literate-programming.org][Authoring Literate Programs ~(TODO)~]] ::
+- [[./cleopatra/literate-programming.org][Authoring Literate Programs]] ::
+  Literate programming is an interesting exercice, and it is
+  particularly well-suited for blog posts, since at the very least it
+  provides the tool to enforce the code presented to readers is
+  correct. We use Emacs and ~org-mode~ to tangle the literate
+  programming projects present in the ~posts/~ directory of this
+  website.
 
 - [[./cleopatra/org.org][Authoring Contents As Org Documents ~(TODO)~]] ::
 
