@@ -111,7 +111,7 @@ noscript.parentNode.removeChild(noscript);
 First, we introduce a set of variables.
 
 #+BEGIN_SRC sass :tangle site/style/main.sass
-$content-width : 35rem
+$content-width : 30rem
 $large-side-margin : 7rem
 $small-side-margin : 2rem
 #+END_SRC
@@ -207,6 +207,8 @@ footer img
     margin-bottom : 1rem
 
 pre
+    padding-left : 1.5rem
+    padding-right : 1.5rem
     overflow-x : auto
 
 code,
