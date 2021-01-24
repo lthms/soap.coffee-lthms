@@ -151,12 +151,12 @@ necessary type and functions to manipulate them.
 #+BEGIN_SRC ocaml :tangle coqffi-tutorial/ffi/socket.mli
 type socket_descr
 
-val open_socket : string -> int -> socket_descr [@@impure]
-val listen : socket_descr -> unit [@@impure]
-val recv : socket_descr -> string [@@impure]
-val send : socket_descr -> string -> int [@@impure]
-val accept_connection : socket_descr -> socket_descr [@@impure]
-val close_socket : socket_descr -> unit [@@impure]
+val open_socket : string -> int -> socket_descr
+val listen : socket_descr -> unit
+val recv : socket_descr -> string
+val send : socket_descr -> string -> int
+val accept_connection : socket_descr -> socket_descr
+val close_socket : socket_descr -> unit
 #+END_SRC
 
 Our focus is how to write the interface modules for ~coqffi~. Since
@@ -243,7 +243,7 @@ without sending anything, we can fork a new process for each client.
 #+BEGIN_SRC ocaml :tangle coqffi-tutorial/ffi/proc.mli
 type identity = Parent of int | Child
 
-val fork : unit -> identity [@@impure]
+val fork : unit -> identity
 #+END_SRC
 
 #+BEGIN_details

@@ -19,7 +19,7 @@ generates. They are of no concern for users of ~coqffi~.
 
 ** Requirements
 
-The latest version of ~coqffi~ (~1.0.0~beta2~ at the time of writing)
+The latest version of ~coqffi~ (~1.0.0~beta3~ at the time of writing)
 is compatible with OCaml ~4.08~ up to ~4.11~, and Coq ~8.12~.  If you
 want to use ~coqffi~, but have incompatible requirements of your own,
 feel free to [[https://github.com/coq-community/coqffi/issues][submit
@@ -90,8 +90,9 @@ interface module itself.
 
 * Code Generation
 
-~coqffi~ distinguishes three types of entries: types, pure functions,
-and impure primitives. We now discuss how each one of them is handled.
+~coqffi~ distinguishes five types of entries: types, pure values,
+impure primitives, exceptions, and exceptions. We now discuss how each
+one of them is handled.
 
 ** Types
 
@@ -120,8 +121,22 @@ More precisely, the fact that =t= is a =list= in the “Coq universe”
 shall not be used while the implementation phase, only the
 verification phase.
 
+Unamed polymorphic type parameters are also supported. In presence of
+such parameters, ~coqffi~ will find it a name that is not already
+used. For instance,
+
+#+BEGIN_SRC ocaml
+type (_, 'a) ast
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC ocaml
+Axiom ast : forall (b : Type) (a : Type), Type.
+#+END_SRC
+
 Finally, ~coqffi~ has got an experimental feature called
-~transparent-types~ (enable by using the ~-ftransparent-types~
+~transparent-types~ (enabled by using the ~-ftransparent-types~
 command-line argument). If the type definition is given in the module
 interface, then ~coqffi~ tries to generates an equivalent definition
 in Coq. For instance,
@@ -160,19 +175,25 @@ with even : Type :=
 The ~transparent-types~ feature is *experimental*, and is currently
 limited to variant types. It notably does not support
 records. Besides, it may generate incorrect Coq types, because it does
-not check whether or not the
-[[https://coq.inria.fr/refman/language/core/inductive.html#positivity-condition][positivity
-condition]] is satisfied.
+not check whether or not the [[https://coq.inria.fr/refman/language/core/inductive.html#positivity-condition][positivity condition]] is
+satisfied. Similarly, it has *not* been tested with OCaml GADT yet,
+and will most certainly produced ill-formed code.
 
-** Pure Functions
+** Pure values
 
-~coqffi~ assumes OCaml values are pure by default, and will generate
-regular axiomatized Coq definitions for them. Similarly to type
-entries, it is possible to provide a Coq model using the =coq_module=
-annotation.
+~coqffi~ decides whether or not a given OCaml values is pure or impure
+with the following heuristics:
+
+- Constants are pure
+- Functions are impure by default
+- Functions with a =coq_model= annotation are pure
+- Functions marked with the =pure= annotation are pure
+
+Similarly to types, ~coqffi~ generates axioms (or definitions, if the
+~coq_model~ annotation is used) for pure values. Then,
 
 #+BEGIN_SRC ocaml
-val unpack : string -> (char * string) option
+val unpack : string -> (char * string) option [@@pure]
 #+END_SRC
 
 becomes
@@ -181,10 +202,10 @@ becomes
 Axiom unpack : string -> option (ascii * string).
 #+END_SRC
 
-Polymorphic functions are supported.
+Polymorphic values are supported.
 
 #+BEGIN_SRC ocaml
-val map : ('a -> 'b) -> 'a list -> 'b list
+val map : ('a -> 'b) -> 'a list -> 'b list [@@pure]
 #+END_SRC
 
 becomes
@@ -193,24 +214,34 @@ becomes
 Axiom map : forall (a : Type) (b : Type), (a -> b) -> list a -> list b.
 #+END_SRC
 
+Again, unamed polymorphic type are supported, so
+
+#+BEGIN_SRC ocaml
+val ast_to_string : _ ast -> string [@@pure]
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Axiom ast_to_string : forall (a : Type), string.
+#+END_SRC
+
 ** Impure Primitives
 
-Finally, ~coqffi~ reserves a special treatment for OCaml value
-explicitly marked as impure, using the =impure= annotation.  Impurity
-is usually handled in pure programming languages by means of monads,
-and ~coqffi~ is no exception to the rule.
+Finally, ~coqffi~ reserves a special treatment for _impure_ OCaml
+functions.  Impurity is usually handled in pure programming languages
+by means of monads, and ~coqffi~ is no exception to the rule.
 
 Given the set of impure primitives declared in an interface module,
-~coqffi~ will (1) generates a typeclass which gathers these
-primitives, and (2) generates instances of this typeclass for
-supported backends.
+~coqffi~ will (1) generate a typeclass which gathers these primitives,
+and (2) generate instances of this typeclass for supported backends.
 
 We illustrate the rest of this section with the following impure
 primitives.
 
 #+BEGIN_SRC ocaml
-val echo : string -> unit [@@impure]
-val scan : unit -> string [@@impure]
+val echo : string -> unit
+val scan : unit -> string
 #+END_SRC
 
 where =echo= allows writing something the standard output, and =scan=
@@ -303,6 +334,104 @@ Definition console_unsafe_semantics : semantics CONSOLE :=
           | Echo x0 => unsafe_echo x0
           | Scan x0 => unsafe_scan x0
           end).
+#+END_SRC
+
+** Exceptions
+
+OCaml features an exception mechanisms. Developers can define their
+own exceptions using the ~exception~ keyword, whose syntax is similar
+to constructors definition. For instance,
+
+#+BEGIN_SRC ocaml
+exception Foo of int * bool
+#+END_SRC
+
+introduces a new exception =Foo= which takes two parameters of type
+=int= and =bool=. =Foo (x, y)= constructs of value of type =exn=.
+
+For each new exceptions introduced in an OCaml module, ~coqffi~
+generates (1) a so-called “proxy type,” and (2) conversion functions
+to and from this type.
+
+Coming back to our example, the “proxy type” generates by ~coqffi~ is
+
+#+BEGIN_SRC coq
+Inductive FooExn : Type :=
+| MakeFooExn (x0 : i63) (x1 : bool) : FooExn.
+#+END_SRC
+
+Then, ~coqffi~ generates conversion functions.
+
+#+BEGIN_SRC coq
+Axiom exn_of_foo : FooExn -> exn.
+Axiom foo_of_exn : exn -> option FooExn.
+#+END_SRC
+
+Besides, ~coqffi~ also generates an instance for the =Exn= typeclass
+provided by the =CoqFFI= theory:
+
+#+BEGIN_SRC coq
+Instance FooExn_Exn : Exn FooExn :=
+  { to_exn := exn_of_foo
+  ; of_exn := foo_of_exn
+  }.
+#+END_SRC
+
+Under the hood, =exn= is an open datatype, and how ~coqffi~ supports
+it will probably be generalized in future releases.
+
+Finally, ~coqffi~ has a minimal support for functions which may raise
+exceptions. Since OCaml type system does not allow to identify such
+functions, they need to be annotated explicitely, using the
+=may_raise= annotation. In such a case, ~coqffi~ will change the
+return type of the function to use the =sum= Coq inductive type.
+
+For instance,
+
+#+BEGIN_SRC ocaml
+val from_option : 'a option -> 'a [@@may_raise] [@@pure]
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Axiom from_option : forall (a : Type), option a -> sum a exn.
+#+END_SRC
+
+** Modules
+
+Lastly, ~coqffi~ supports OCaml modules described within ~mli~ files,
+when they are specify as ~module T : sig ... end~. For instance,
+
+#+BEGIN_SRC ocaml
+module T : sig
+  type t
+
+  val to_string : t -> string [@@pure]
+end
+#+END_SRC
+
+becomes
+
+#+BEGIN_SRC coq
+Module T.
+  Axiom t : Type.
+
+  Axiom to_string : t -> string.
+End T.
+#+END_SRC
+
+As of now, the following construction is unfortunately *not*
+supported, and will be ignored by ~coqffi~:
+
+#+BEGIN_SRC coq
+module S = sig
+  type t
+
+  val to_string : t -> string [@@pure]
+end
+
+module T : S
 #+END_SRC
 
 * Moving Forward
