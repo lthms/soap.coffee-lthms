@@ -11,9 +11,6 @@
 (use-package json-mode :ensure t :defer t)
 (use-package proof-general :ensure t :defer t)
 (use-package tuareg :ensure t :defer t)
-(use-package github-modern-theme :ensure t :defer t
-  :init
-  (load-theme 'github-modern t))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
@@ -27,6 +24,7 @@
  '((shell . t)
    (dot . t)))
 
+(setq org-html-htmlize-output-type nil)
 (setq org-export-with-toc nil)
 
 (add-to-list 'org-entities-user

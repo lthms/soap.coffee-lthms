@@ -45,6 +45,7 @@ div.code
 div.code,
 span.inlinecode
     font-family : 'Fira Code', monospace
+    color : $monospace-color
     font-size : 80%
     overflow-x : auto
 
@@ -62,24 +63,6 @@ div.doc
 
 #+BEGIN_SRC sass :tangle site/style/coq.sass
 .code
-    .id[title="keyword"]
-        color : #d73a49
-
-    .id[title="definition"],
-    .id[title="projection"],
-    .id[title="theorem"],
-    .id[title="lemma"]
-        color : #6f42c1
-
-    .id[title="inductive"],
-    .id[title="record"],
-    .id[title="axiom"],
-    .id[title="class"]
-        color : #005cc5
-
-    .id[title="constructor"]
-        color : #e36209
-
     a[href]
         color : inherit
         text-decoration : none

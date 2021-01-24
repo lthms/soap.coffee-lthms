@@ -114,6 +114,7 @@ First, we introduce a set of variables.
 $content-width : 30rem
 $large-side-margin : 7rem
 $small-side-margin : 2rem
+$monospace-color : #FF006D
 #+END_SRC
 
 Then, we introduce a key CSS variable whose definition will change according to
@@ -217,6 +218,7 @@ pre
     font-family : 'Fira Code', monospace
     font-size : 80%
     line-height : 140%
+    color : $monospace-color
 
 #gallery
     display : flex
