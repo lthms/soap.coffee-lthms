@@ -2,9 +2,10 @@
 <h1><code>coqffi</code> in a Nutshell</h1>
 #+END_EXPORT
 
-For each entry of a ~cmi~ file, ~coqffi~ tries to generate an
-equivalent (from the extraction mechanism perspective) Coq
-definition. In this article, we walk through how ~coqffi~ works.
+For each entry of a ~cmi~ file (a /compiled/ ~mli~ file), ~coqffi~
+tries to generate an equivalent (from the extraction mechanism
+perspective) Coq definition. In this article, we walk through how
+~coqffi~ works.
 
 Note that we do not dive into the vernacular commands ~coqffi~
 generates. They are of no concern for users of ~coqffi~.
@@ -19,7 +20,7 @@ generates. They are of no concern for users of ~coqffi~.
 
 ** Requirements
 
-The latest version of ~coqffi~ (~1.0.0~beta3~ at the time of writing)
+The latest version of ~coqffi~ (~1.0.0~beta4~ at the time of writing)
 is compatible with OCaml ~4.08~ up to ~4.11~, and Coq ~8.12~.  If you
 want to use ~coqffi~, but have incompatible requirements of your own,
 feel free to [[https://github.com/coq-community/coqffi/issues][submit
@@ -52,13 +53,9 @@ information to build it from source.
 One major difference between Coq and OCaml is that the former is pure,
 while the latter is not. Impurity can be modeled in pure languages,
 and Coq does not lack of frameworks in this respect. ~coqffi~
-currently supports two of them:
-[[https://github.com/Lysxia/coq-simple-io][~coq-simple-io~]] and
-[[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]]. It is also
-possible to use it with
-[[https://github.com/DeepSpec/InteractionTrees][Interaction Trees]],
-albeit in a less direct manner.
-
+currently supports two of them: [[https://github.com/Lysxia/coq-simple-io][~coq-simple-io~]] and [[https://github.com/ANSSI-FR/FreeSpec][FreeSpec]]. It is
+also possible to use it with [[https://github.com/DeepSpec/InteractionTrees][Interaction Trees]], albeit in a less
+direct manner.
 
 * Primitive Types
 
@@ -68,15 +65,18 @@ following (the Coq types are fully qualified in the table, but not in
 the generated Coq module as the necessary ~Import~ statement are
 generated too).
 
-| OCaml type  | Coq type                      |
-|-------------+-------------------------------|
-| =bool=      | =Coq.Init.Datatypes.bool=     |
-| =char=      | =Coq.Strings.Ascii.ascii=     |
-| =int=       | =CoqFFI.Data.Int.i63=         |
-| ='a list=   | =Coq.Init.Datatypes.list a=   |
-| ='a option= | =Coq.Init.Datatypes.option a= |
-| =string=    | =Coq.Strings.String.string=   |
-| =unit=      | =Coq.Init.Datatypes.unit=     |
+| OCaml type        | Coq type                      |
+|-------------------+-------------------------------|
+| =bool=            | =Coq.Init.Datatypes.bool=     |
+| =char=            | =Coq.Strings.Ascii.ascii=     |
+| =int=             | =CoqFFI.Data.Int.i63=         |
+| ='a list=         | =Coq.Init.Datatypes.list a=   |
+| ='a Seq.t=        | =CoqFFI.Data.Seq.t=           |
+| ='a option=       | =Coq.Init.Datatypes.option a= |
+| =('a, 'e) result= | =Coq.Init.Datatypes.sum=      |
+| =string=          | =Coq.Strings.String.string=   |
+| =unit=            | =Coq.Init.Datatypes.unit=     |
+| =exn=             | =CoqFFI.Exn=                  |
 
 The =i63= type is introduced by the =CoqFFI= theory to provide signed
 primitive integers to Coq users. They are implemented on top of the
@@ -88,11 +88,60 @@ When processing the entries of a given interface model, ~coqffi~ will
 check that they only use these types, or types introduced by the
 interface module itself.
 
+Sometimes, you may encounter a situation where you have two interface
+modules ~b.mli~ and ~b.mli~, such that ~b.mli~ uses a type introduced
+in ~a.mli~.  To deal with this scenario, you can use the ~--witness~
+flag to generate ~A.v~.  This will tell ~coqffi~ to also generate
+~A.ffi~; this file can then be used when generating ~B.v~ thanks to
+the ~-I~ option.  Furthermore, for ~B.v~ to compile the ~--require~
+option needs to be used to ensure the ~A~ Coq library (~A.v~) is
+required.
+
+To give a more concrete example, given ~a.mli~
+
+#+BEGIN_SRC ocaml
+type t
+#+END_SRC
+
+and ~b.mli~
+
+#+BEGIN_SRC ocaml
+type a = A.t
+#+END_SRC
+
+To generate ~A.v~, we can use the following commands:
+
+#+BEGIN_SRC bash
+ocamlc a.mli
+coqffi --witness -o A.v a.cmi
+#+END_SRC
+
+Which would generate the following axiom for =t=.
+
+#+BEGIN_SRC coq
+Axiom t : Type.
+#+END_SRC
+
+Then, generating ~B.v~ can be achieved as follows:
+
+#+BEGIN_SRC bash
+ocamlc b.mli
+coqffi -I A.ffi -ftransparent-types -r A -o B.v b.cmi
+#+END_SRC
+
+which results in the following output for =v=:
+
+#+BEGIN_SRC coq
+Require A.
+
+Definition u : Type := A.t.
+#+END_SRC
+
 * Code Generation
 
 ~coqffi~ distinguishes five types of entries: types, pure values,
-impure primitives, exceptions, and exceptions. We now discuss how each
-one of them is handled.
+impure primitives, asynchronous primitives, exceptions, and
+modules. We now discuss how each one of them is handled.
 
 ** Types
 
@@ -172,12 +221,14 @@ with even : Type :=
 | ESucc (x0 : odd) : even.
 #+END_SRC
 
+Besides, ~coqffi~ supports alias types, as suggested in this write-up
+when we discuss witness files.
+
 The ~transparent-types~ feature is *experimental*, and is currently
 limited to variant types. It notably does not support
 records. Besides, it may generate incorrect Coq types, because it does
 not check whether or not the [[https://coq.inria.fr/refman/language/core/inductive.html#positivity-condition][positivity condition]] is
-satisfied. Similarly, it has *not* been tested with OCaml GADT yet,
-and will most certainly produced ill-formed code.
+satisfied.
 
 ** Pure values
 
@@ -188,6 +239,9 @@ with the following heuristics:
 - Functions are impure by default
 - Functions with a =coq_model= annotation are pure
 - Functions marked with the =pure= annotation are pure
+- If the ~pure-module~ feature is enabled (~-fpure-module~),
+  then synchronous functions (which do not live inside the [[https://ocsigen.org/lwt/5.3.0/manual/manual][~Lwt~]]
+  monad) are pure
 
 Similarly to types, ~coqffi~ generates axioms (or definitions, if the
 ~coq_model~ annotation is used) for pure values. Then,
@@ -228,9 +282,9 @@ Axiom ast_to_string : forall (a : Type), string.
 
 ** Impure Primitives
 
-Finally, ~coqffi~ reserves a special treatment for _impure_ OCaml
-functions.  Impurity is usually handled in pure programming languages
-by means of monads, and ~coqffi~ is no exception to the rule.
+~coqffi~ reserves a special treatment for /impure/ OCaml functions.
+Impurity is usually handled in pure programming languages by means of
+monads, and ~coqffi~ is no exception to the rule.
 
 Given the set of impure primitives declared in an interface module,
 ~coqffi~ will (1) generate a typeclass which gathers these primitives,
@@ -336,9 +390,29 @@ Definition console_unsafe_semantics : semantics CONSOLE :=
           end).
 #+END_SRC
 
+** Asynchronous Primitives
+
+~coqffi~ also reserves a special treatment for /asynchronous/
+primitives —/i.e./, functions which live inside the ~Lwt~ monad— when
+the ~lwt~ feature is enabled.
+
+The treatment is very analoguous to the one for impure primitives: (1)
+a typeclass is generated (with the ~_Async~ suffix), and (2) an
+instance for the ~Lwt~ monad is generated. Besides, an instance for
+the “synchronous” primitives is also generated for ~Lwt~. If the
+~interface~ feature is enabled, an interface datatype is generated,
+which means you can potentially use Coq to reason about your
+asynchronous programs (using FreeSpec and alike, although the
+interleaving of asynchronous programs in not yet supported in
+FreeSpec).
+
+By default, the type of the ~Lwt~ monad is ~Lwt.t~. You can override
+this setting using the ~--lwt-alias~ option.  This can be useful when
+you are using an alias type in place of ~Lwt.t~.
+
 ** Exceptions
 
-OCaml features an exception mechanisms. Developers can define their
+OCaml features an exception mechanism. Developers can define their
 own exceptions using the ~exception~ keyword, whose syntax is similar
 to constructors definition. For instance,
 
@@ -377,8 +451,8 @@ Instance FooExn_Exn : Exn FooExn :=
   }.
 #+END_SRC
 
-Under the hood, =exn= is an open datatype, and how ~coqffi~ supports
-it will probably be generalized in future releases.
+Under the hood, =exn= is an [[https://caml.inria.fr/pub/docs/manual-ocaml/extensiblevariants.html][extensible datatype]], and how ~coqffi~
+supports it will probably be generalized in future releases.
 
 Finally, ~coqffi~ has a minimal support for functions which may raise
 exceptions. Since OCaml type system does not allow to identify such
@@ -438,5 +512,5 @@ module T : S
 
 ~coqffi~ comes with a comprehensive man page. In addition, the
 interested reader can proceed to the next article of this series,
-which explains how [[./CoqffiEcho.org][~coqffi~ can be used to easily
-implement an echo server in Coq]].
+which explains how [[./CoqffiEcho.org][~coqffi~ can be used to easily implement an echo
+server in Coq]].
