@@ -1,12 +1,16 @@
-#+BEGIN_EXPORT html
-<h1>A Series on Ltac</h1>
-#+END_EXPORT
+#+TITLE: A Series on Ltac
+
+#+SERIES: ../coq.html
+#+SERIES_PREV: ./StronglySpecifiedFunctions.html
+#+SERIES_NEXT: ./RewritingInCoq.html
 
 Ltac is the “tactic language” of Coq. It is commonly advertised as the common
-approach to write proofs, which tends to bias how it is introduced to new Coq
-users (/e.g./, in Master courses). In this series, we present Ltac as the
-metaprogramming tool it is, since fundamentally it is an imperative language
-which allows for constructing Coq terms interactively and incrementally.
+approach to write proofs, which tends to bias how it is introduced to
+new Coq users[fn::I know /I/ was introduced to Coq in a similar way in
+my Master courses.]. In this series, we present Ltac as the
+metaprogramming tool it is, since fundamentally it is an imperative
+language which allows for constructing Coq terms interactively and
+incrementally.
 
 - [[./LtacMetaprogramming.html][Ltac is an Imperative Metaprogramming Language]] ::
   Ltac generates terms, therefore it is a metaprogramming language. It does it

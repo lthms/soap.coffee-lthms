@@ -5,7 +5,7 @@
     to write strongly-specified functions in Coq. You can read the previous part
     #<a href="./StronglySpecifiedFunctionsRefine.html">here</a>#. # *)
 
-(** #<div id="generate-toc"></div>#
+(** #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/StronglySpecifiedFunctionsProgram.v</div># *)
 
@@ -341,7 +341,8 @@ Defined.
 (** val extract : 'a1 vector -> nat -> nat -> 'a1 vector **)
 let extract v e b =
   take (drop v b) (sub e b)
->> *)
+>>
+    *)
 
 (** I was pretty happy, so I tried some more. Each time, using [nth], I managed
     to write a precise post condition and to prove it holds true. For instance,
@@ -467,7 +468,8 @@ cannot be applied to the terms
  "b" : "Type"
 The 3rd term has type "Type" which should be coercible
 to "nat".
->> *)
+>>
+    *)
 
 #[program]
 Fixpoint map2 {a b c n}
@@ -520,4 +522,5 @@ cannot be applied to the terms
  "wildcard'" : "vector A n'"
 The 3rd term has type "vector A n'" which should be
 coercible to "nat".
->> *)
+>>
+    *)

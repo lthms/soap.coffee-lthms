@@ -1,0 +1,44 @@
+#+SERIES: ./index.html
+#+SERIES_NEXT: haskell.html
+
+#+TITLE: About Coq
+
+Coq is a formal proof management system which provides a pure
+functional language with nice dependent types together with an
+environment for writing machine-checked proofs.
+
+- [[./posts/StronglySpecifiedFunctions.org][A Series on Strongly-Specified Funcions in Coq]] ::
+  Using dependent types and the ~Prop~ sort, it becomes possible to specify
+  functions whose arguments and results are constrained by properties.
+  Using such a “strongly-specified” function requires to provide a proof that
+  the supplied arguments satisfy the expected properties, and allows for soundly
+  assuming the results are correct too. However, implementing dependently-typed
+  functions can be challenging.
+
+- [[./posts/Ltac.org][A Series on Ltac]] ::
+  Ltac is the “tactic language” of Coq. It is commonly advertised as the common
+  approach to write proofs, which tends to bias how it is introduced to new Coq
+  users (/e.g./, in Master courses). In this series, we present Ltac as the
+  metaprogramming tool it is, since fundamentally it is an imperative language
+  which allows for constructing Coq terms interactively and incrementally.
+
+- [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
+  The ~rewrite~ tactics are really useful, since they are not limited to the Coq
+  built-in equality relation.
+
+- [[./posts/ClightIntroduction.html][A Study of Clight and its Semantics]] ::
+  Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
+  this write-up, we prove a straighforward functional property of a small C
+  function, as an exercise to discover the Clight semantics.
+
+- [[./posts/AlgebraicDatatypes.html][Proving Algebraic Datatypes are “Algebraic”]] ::
+  The set of types which can be defined in a language together with ~+~ and ~*~
+  form an “algebraic structure” in the mathematical sense, hence the name. It
+  means the definitions of ~+~ and ~*~ have to satisfy properties such as
+  commutativity or the existence of neutral elements.
+
+- [[./posts/Coqffi.org][A Series on ~coqffi~]] ::
+  ~coqffi~ generates Coq FFI modules from compiled OCaml interface
+  modules (~.cmi~). In practice, it greatly reduces the hassle to
+  together OCaml and Coq modules within the same codebase, especially
+  when used together with the ~dune~ build system.

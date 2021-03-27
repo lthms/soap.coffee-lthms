@@ -1,0 +1,23 @@
+#+TITLE: About this Website
+
+#+SERIES: ./index.html
+#+SERIES_PREV: miscellaneous.html
+
+The generation of this website is far from being trivial, and requires
+the combination of —probably too— many tools. For instance, even if I
+mostly use Org mode for authoring content, most of my write-ups about
+Coq are actually Coq files, and I use ~coqdoc~ to generate the HTML
+pages you read.
+
+- [[./posts/Thanks.org][Thanks!]] ::
+  This website could not exist without many awesome free software
+  projects. Although I could not list them all even if I wanted, my
+  desire is at least to try keeping up-to-date a curated description
+  of the most significant ones.
+
+- [[./cleopatra.org][A Series on Generating this Website]] ::
+  At some point, I felt like the whole process of generating this
+  website was interesting enough so that it would deserve a write-up
+  of its own.  As a result, I spent quite some time turning my custom
+  toolchain into a literate program, so that its actual code source
+  would actually be the write-ups I wanted to add to my website.

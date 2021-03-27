@@ -1,0 +1,89 @@
+#+TITLE: Installing Dependencies
+
+#+SERIES: ../cleopatra.html
+#+SERIES_NEXT: ./coq.html
+
+* OCaml and Coq
+
+  #+caption: Dependencies for Coq articles
+  #+name: coq-deps
+  | Package      | Version |
+  |--------------+---------|
+  | coq          |  8.13.1 |
+  | coq-compcert |     3.8 |
+
+  #+caption: Dependencies for the ~coqffi~ series
+  #+name: lp-deps
+  | Package       |     Version |
+  |---------------+-------------|
+  | dune          |       2.8.4 |
+  | coq-coqffi    | 1.0.0~beta5 |
+  | coq-simple-io |       1.5.0 |
+
+  #+caption: Soupault
+  #+name: soupault-deps
+  | Package  | Version |
+  |----------+---------|
+  | soupault |   2.5.0 |
+
+  #+name: deps-listing
+  #+begin_src emacs-lisp :noweb yes :var coq-deps=coq-deps :var lp-deps=lp-deps :var soupault-deps=soupault-deps :results value raw :exports none
+;; We use this Emacs Lisp snippet to generate the list of dependencies
+;; we have to install with Opam
+(defun fmt-deps (d)
+  (mapconcat (lambda (d) (format "%s" d)) d "."))
+
+(string-join
+ (append (mapcar 'fmt-deps lp-deps)
+         (mapcar 'fmt-deps soupault-deps)
+         (mapcar 'fmt-deps coq-deps))
+ " ")
+  #+end_src
+
+  #+begin_src makefile :tangle dependencies.mk :noweb yes
+OCAML_VERSION := 4.11.2
+OCAML := ocaml-base-compiler.${OCAML_VERSION}
+
+_opam/init :
+	@cleopatra echo "Creating" "a local Opam switch"
+	@opam switch create . ${OCAML} --repos default,coq-released || true
+	@cleopatra echo "Installing" "OCaml dependencies"
+	@opam install <<deps-listing()>> -y
+	@touch $@
+
+CONFIGURE += _opam
+  #+end_src
+
+* Frontend
+
+  #+caption: Frontend dependencies
+  #+name: frontend-deps
+  | Package       | Version |
+  |---------------+---------|
+  | katex         |  0.13.0 |
+  | minify        |   7.0.1 |
+  | normalize.css |   8.0.1 |
+
+  #+name: frontend-listing
+  #+begin_src emacs-lisp :var frontend-deps=frontend-deps :exports none
+;; We use this Emacs Lisp snippet to generate the list of dependencies
+;; we have to install with npm
+(defun fmt-deps (d)
+  (format "  \"%s\": \"^%s\"" (nth 0 d) (nth 1 d)))
+
+(string-join (mapcar 'fmt-deps frontend-deps) ",\n")
+  #+end_src
+
+  #+begin_src json :tangle package.json :noweb yes
+{
+  "dependencies": {
+    <<frontend-listing()>>
+  }
+}
+  #+end_src
+
+  #+begin_src makefile :tangle dependencies.mk :noweb yes
+package-lock.json : package.json
+	@cleopatra echo "Installing" "frontend dependencies"
+	@npm install
+  #+end_src

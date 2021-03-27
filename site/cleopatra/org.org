@@ -1,54 +1,30 @@
+#+TITLE: Authoring Content with ~org-mode~
+
+#+SERIES: ../cleopatra.html
+#+SERIES_PREV: ./coq.html
+#+SERIES_NEXT: ./literate-programming.html
+
+#+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
+<div id="history">site/cleopatra/org.org</div>
+#+END_EXPORT
+
 * Author Guidelines
 
-* Under the Hood
+* Implementation
 
-#+BEGIN_SRC emacs-lisp :tangle scripts/packages.el
-(use-package lua-mode :ensure t :defer t)
-(use-package rust-mode :ensure t :defer t)
-(use-package sass-mode :ensure t :defer t)
-(use-package haskell-mode :ensure t :defer t)
-(use-package toml-mode :ensure t :defer t)
-(use-package json-mode :ensure t :defer t)
-(use-package proof-general :ensure t :defer t)
-(use-package tuareg :ensure t :defer t)
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp :tangle scripts/export-org.el
-(cleopatra:configure)
-
-(setq org-html-doctype "html5")
-(setq org-html-html5-fancy t)
-
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((shell . t)
-   (dot . t)))
-
-(setq org-html-htmlize-output-type nil)
-(setq org-export-with-toc nil)
-
-(add-to-list 'org-entities-user
-             '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
-(add-to-list 'org-entities-user
-             '("mi" "\\)" nil "</span>" "" "" ""))
-
-(org-html-export-to-html nil nil nil t)
-#+END_SRC
-
-#+BEGIN_SRC makefile :tangle org.mk
+#+begin_src makefile :tangle org.mk
 EMACS := cleopatra-emacs
 
-ORG_POSTS := $(shell find site/ -name "*.org")
-ORG_HTML := $(ORG_POSTS:.org=.html)
+ORG_IN := $(shell find site/ -name "*.org")
+ORG_OUT := $(ORG_IN:.org=.html)
 
 org-prebuild : .emacs
-org-build : ${ORG_HTML}
+org-build : ${ORG_OUT}
 
-theme-build : site/style/org.sass
 soupault-build : org-build
-org-build : literate-programming-build
 
-ARTIFACTS += ${ORG_HTML}
+ARTIFACTS += ${ORG_OUT}
 CONFIGURE += .emacs
 
 EXPORT := --batch \
@@ -68,44 +44,91 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
          .emacs org.mk
 	@cleopatra echo Exporting "$*.org"
 	@${EMACS} $< ${EXPORT}
-#+END_SRC
+#+end_src
 
-#+BEGIN_SRC sass :tangle site/style/org.sass
-#text-footnotes
-    max-width : 35rem
+#+begin_src emacs-lisp :tangle scripts/packages.el
+(use-package ox-tufte :ensure t)
+#+end_src
 
-.footpara
-    display: inline
-    margin-left: .2em
+#+begin_src emacs-lisp :tangle scripts/export-org.el
+(cleopatra:configure)
 
-.section-number-2:after,
-.section-number-3:after
-    content: ". "
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((dot . t)
+   (shell . t)))
 
-.section-number-4,
-.section-number-5,
-.section-number-6
-    display: none
+(setq org-export-with-toc nil
+      org-html-htmlize-output-type nil
+      org-export-with-section-numbers nil)
 
-dl
-    dd p
-        margin-top: 0
+(add-to-list 'org-entities-user
+             '("im" "\\(" nil "<span class=\"imath\">" "" "" ""))
+(add-to-list 'org-entities-user
+             '("mi" "\\)" nil "</span>" "" "" ""))
 
-.footnotes
-    font-size : 1rem
+(defun with-keyword (keyword k)
+  "Look-up for keyword KEYWORD, and call continuation K with its value."
+  (pcase (org-collect-keywords `(,keyword))
+    (`((,keyword . ,kw))
+     (when kw (funcall k (string-join kw " "))))))
 
-.org-literate-programming
-    .org-src-tangled-to:before
-        content: "\f054"
-        font : normal normal normal 11px/1 ForkAwesome
+(defun get-keyword (keyword)
+  "Look-up for keyword KEYWORD, and returns its value"
+  (with-keyword keyword (lambda (x) x)))
 
-    .org-src-tangled-to,
-        padding-left : 2rem
+(defun get-org-title (path)
+  "Fetch the title of an Org file whose path is PATH."
+  (with-temp-buffer
+    (find-file-read-only path)
+    (get-keyword "TITLE")))
 
-    .org-src-tangled-to,
-    .org-src-name
-        font-family : 'Fira Code', monospace
-        font-size : 70%
-        font-weight: bold
-        color : #444
-#+END_SRC
+(defun insert-title ()
+  "Insert the title of the article."
+  (with-keyword
+   "TITLE"
+   (lambda (title)
+     (insert
+      (format "\n\n@@html:<h1>@@ %s @@html:</h1>@@\n\n" title)))))
+
+(defun insert-series ()
+  "Insert the series root link."
+  (with-keyword
+   "SERIES"
+   (lambda (series)
+     (insert "\n\n#+attr_html: :class series\n")
+     (insert series))))
+
+(defun insert-series-prev ()
+  "Insert the series previous article link."
+  (with-keyword
+   "SERIES_PREV"
+   (lambda (series-prev)
+     (insert "\n\n#+attr_html: :class series-prev\n")
+     (insert series-prev))))
+
+(defun insert-series-next ()
+  "Insert the series next article link."
+  (with-keyword
+   "SERIES_NEXT"
+   (lambda (series-next)
+     (insert "\n\n#+attr_html: :class series-next\n")
+     (insert series-next))))
+
+(defun insert-nav ()
+  "Insert the navigation links."
+  (when (get-keyword "SERIES")
+    (insert "\n\n#+begin_nav\n")
+    (insert-series)
+    (insert-series-prev)
+    (insert-series-next)
+    (insert "\n\n#+end_nav\n")))
+
+(beginning-of-buffer)
+(insert-nav)
+(insert-title)
+
+(let ((outfile (org-export-output-file-name ".html"))
+      (org-html-footnotes-section "<!-- %s --><!-- %s -->"))
+  (org-export-to-file 'tufte-html outfile nil nil nil t))
+#+end_src

@@ -1,8 +1,4 @@
-#+options: num:nil
-
-#+BEGIN_EXPORT html
-<h1>Opinions</h1>
-#+END_EXPORT
+#+TITLE: Opinions
 
 I may have some opinions on some topics, and sometimes I may want to share
 them. However, I strongly believe facts and opinions are two differents things,

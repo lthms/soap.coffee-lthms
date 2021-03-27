@@ -1,3 +1,7 @@
+(** #<nav><p class="series">../coq.html</p>
+     <p class="series-prev">./Ltac.html</p>
+     <p class="series-next">./ClightIntroduction.html</p></nav># *)
+
 (** * Rewriting in Coq *)
 
 (** I have to confess something. In the codebase of SpecCert lies a shameful
@@ -9,7 +13,7 @@
     13, 2017</span> how it is possible to rewrite a term in a proof using a
     ad-hoc equivalence relation and, when necessary, a proper morphism. *)
 
-(** #<div id="generate-toc"></div>#
+(** #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/RewritingInCoq.v</div># *)
 

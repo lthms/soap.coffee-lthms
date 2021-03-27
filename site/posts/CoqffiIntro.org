@@ -1,6 +1,7 @@
-#+BEGIN_EXPORT html
-<h1><code>coqffi</code> in a Nutshell</h1>
-#+END_EXPORT
+#+TITLE: ~coqffi~ in a Nutshell
+
+#+SERIES: ./Coqffi.html
+#+SERIES_NEXT: ./CoqffiEcho.html
 
 For each entry of a ~cmi~ file (a /compiled/ ~mli~ file), ~coqffi~
 tries to generate an equivalent (from the extraction mechanism
@@ -10,9 +11,8 @@ perspective) Coq definition. In this article, we walk through how
 Note that we do not dive into the vernacular commands ~coqffi~
 generates. They are of no concern for users of ~coqffi~.
 
-#+TOC: headlines 2
-
 #+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
 <div id="history">site/posts/CoqffiIntro.org</div>
 #+END_EXPORT
 

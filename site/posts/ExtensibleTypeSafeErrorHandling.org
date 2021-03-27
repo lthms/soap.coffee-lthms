@@ -1,13 +1,14 @@
-#+BEGIN_EXPORT html
-<h1>Extensible Type-Safe Error Handling in Haskell</h1>
+#+TITLE: Extensible Type-Safe Error Handling in Haskell
 
+#+SERIES: ../haskell.html
+
+#+BEGIN_EXPORT html
 <p>This article has originally been published on <span
 id="original-created-at">February 04, 2018</span>.</p>
 #+END_EXPORT
 
-#+TOC: headlines 2
-
 #+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
 <div id="history">site/posts/ExtensibleTypeSafeErrorHandling.org</div>
 #+END_EXPORT
 

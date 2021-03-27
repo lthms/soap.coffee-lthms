@@ -1,267 +1,471 @@
+#+TITLE: Layout and Style
+
+#+SERIES: ../cleopatra.html
+#+SERIES_PREV: ./literate-programming.html
+#+SERIES_NEXT: ./soupault.html
+
 #+BEGIN_EXPORT html
-<h1>Theming and Templating</h1>
+<nav id="generate-toc"></nav>
+<div id="history">site/cleopatra/theme.org</div>
 #+END_EXPORT
 
-The purpose of this build process is to implement the default layout of this
-website. To that end, it provides a template file (~main.html~), and a
-collection of SASS files that *~cleopatra~* then compiles into a single CSS file
-using ~sassc~.
+* Setup
 
-We first discuss the structure of the website, by defining the default HTML
-template =soupault= will use to generate the website. Then, we specify its
-minimal design, implemented in SASS. Finally, we discuss the necessary build
-instructions for *~cleopatra~*.
+  As often when it comes to frontend development, we will use several
+  tools hosted in the ~npm~ packages repository.  ~npm~ is infamous
+  for downloading lots of files and to store it in the ~node_modules/~
+  directory.  We configure *~cleopatra~* accordingly.
 
-* Main HTML Template
+  #+begin_src makefile :tangle theme.mk
+CONFIGURE += package.json package-lock.json node_modules
+  #+end_src
 
-#+BEGIN_SRC html  :tangle templates/main.html :noweb yes
+* Base CSS
+
+  We know construct piece by piece the “base” CSS layout which we will
+  inject inside a ~<style>~ tag in each web page.
+
+** Layout
+
+   Our goal is to have a three columns layout: one aside menu, with
+   the top-level navigation links (technical articles, news, etc.) and
+   the table of contents of the current pages if relevant, one main
+   area for the webpage content, and a margin column with side notes
+   and margin notes.
+
+   #+begin_src css :tangle style.css
+:root {
+    --main-width: 30rem;
+    --gutter-width: 5rem;
+    --margin-width: 15rem;
+    --body-width: calc(var(--main-width) + var(--gutter-width) + var(--margin-width));
+}
+
+@media (max-width: 55rem) {
+    :root {
+        --body-width: var(--main-width);
+    }
+}
+   #+end_src
+
+   #+begin_src css :tangle style.css
+,* {
+    box-sizing: border-box;
+}
+
+.fullwidth {
+    width: var(--body-width);
+}
+
+html {
+    font-size: 1.1rem;
+}
+
+body {
+    line-height: 1.3;
+    max-width: var(--body-width);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+aside {
+    background: var(--bg);
+    z-index: 9999;
+    width: var(--body-width);
+    align-self: flex-start;
+    position: sticky;
+    top: 0;
+}
+
+aside nav {
+    text-align: center;
+    border-bottom: 1px solid var(--fade);
+}
+
+aside nav ul {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+aside nav li {
+    display: inline;
+}
+
+aside nav li:not(:first-of-type)::before {
+    content: " · ";
+}
+
+main {
+    counter-reset: sidenote-counter;
+    max-width: var(--main-width);
+}
+
+main nav {
+    font-style: italic;
+    font-size: smaller;
+    color: var(--fg-plus);
+    background: var(--current-line);
+    padding: .5rem 1rem;
+}
+
+main nav .series-next {
+    text-align: right;
+}
+
+main nav p.series-next::after {
+    content: " →";
+}
+
+main nav p.series-prev::before {
+    content: "← ";
+}
+
+img {
+    max-width: 100%;
+}
+
+.sidenote,
+.marginnote {
+    font-size: smaller;
+    float: right;
+    clear: right;
+    margin-right: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+    width: var(--margin-width);
+    position: relative;
+}
+
+input.margin-toggle {
+    display: none;
+}
+
+label.sidenote-number {
+    display: inline;
+}
+
+label.margin-toggle:not(.sidenote-number) {
+    display: none;
+}
+
+.sidenote-number:after,
+.sidenote:before {
+    position: relative;
+    vertical-align: baseline;
+}
+
+.sidenote-number {
+    counter-increment: sidenote-counter;
+}
+
+.sidenote-number::after {
+    content: "(" counter(sidenote-counter, lower-greek) ")";
+    font-size: 60%;
+    top: -0.4rem;
+    left: 0.1rem;
+}
+
+.sidenote::before {
+    content: "(" counter(sidenote-counter, lower-greek) ")";
+    font-size: 70%;
+    top: -0.5rem;
+    right: 0.1rem;
+}
+
+div.code,
+pre {
+    width: var(--body-width);
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 1rem 2rem;
+}
+
+main {
+    padding-top: 4.2rem;
+}
+
+h1 {
+    text-align: center;
+}
+
+h2, h3, h4 {
+    font-style: italic;
+}
+
+h1, h2, h3, h4 {
+    font-weight: normal;
+}
+
+dt {
+    font-weight: bold;
+}
+
+div.code,
+span.inlinecode,
+code,
+.doc pre,
+tt,
+.dmath,
+.imath {
+    font-family: monospace;
+    font-size: 80%;
+}
+
+details {
+    margin: 1.5rem 0;
+}
+
+table {
+    border-top: 2px solid var(--fg);
+    border-bottom: 2px solid var(--fg);
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+td,
+th {
+    border-top: 1px solid var(--fade);
+    height: 2em;
+    padding: 0 1em;
+}
+
+td.date,
+td.commit {
+    text-align: center;
+    font-size: 0.75em;
+    font-family: monospace;
+}
+
+/* max-width has to be equal to --body-width */
+@media (max-width: 55rem) {
+    body {
+        padding: 2rem;
+        margin: auto;
+        display: block;
+    }
+
+    aside {
+       width: var(--main-width);
+       margin: auto;
+    }
+
+    label.margin-toggle:not(.sidenote-number) {
+        display: inline;
+    }
+
+    .sidenote,
+    .marginnote {
+        display: none;
+    }
+
+    .margin-toggle:checked + .sidenote,
+    .margin-toggle:checked + .marginnote {
+        display: block;
+        float: left;
+        left: 1rem;
+        clear: both;
+        width: 95%;
+        margin: 1rem 2.5%;
+        vertical-align: baseline;
+        position: relative;
+    }
+
+    label {
+        cursor: pointer;
+    }
+
+    pre, aside {
+        width: 100%;
+    }
+}
+   #+end_src
+
+** Colors
+
+   #+begin_src css :tangle style.css
+:root {
+    --bg: white;
+    --bg-plus: #f9f8f4;
+    --current-line: #fbfbfb;
+    --fade: #cfcecb;
+    --fg: #3c3c3c;
+    --fg-plus: #575757;
+    --doc: #ff4c99;
+    --warning: #bd745e;
+    --red: #b3534b;
+    --green: #6d9319;
+    --yellow: #d4b100;
+}
+   #+end_src
+
+   #+begin_src css :tangle style.css
+body {
+    font-family: serif;
+    color: var(--fg);
+    background: var(--bg);
+}
+
+a[href] {
+    color: inherit;
+    text-decoration-color: var(--doc);
+}
+
+h2 a.anchor-link,
+h3 a.anchor-link,
+h4 a.anchor-link {
+    display: none;
+    font-style: normal;
+    text-decoration: none;
+    font-family: monospace;
+    font-size: smaller;
+    color: var(--doc);
+}
+
+[id] {
+    scroll-margin-top: 4rem;
+}
+
+h2:hover a.anchor-link,
+h3:hover a.anchor-link,
+h4:hover a.anchor-link {
+    display: inline;
+}
+
+.sidenote,
+.marginnote {
+    color: var(--fg-plus);
+}
+
+.sidenote-number:after,
+.sidenote:before,
+pre,
+code,
+div.code,
+span.inlinecode,
+tt {
+    color: var(--doc);
+}
+   #+end_src
+
+** Coq
+
+   #+begin_src css :tangle style.css
+div.code {
+    white-space: nowrap;
+}
+
+div.code,
+span.inlinecode {
+    font-family : monospace;
+}
+
+.paragraph {
+    margin-bottom : .8em;
+}
+
+.code a[href] {
+    color : inherit;
+    text-decoration : none;
+    background : var(--bg-plus);
+    padding : .1rem .15rem .1rem .15rem;
+    border-radius : 15%;
+}
+
+.code .icon {
+    display: none;
+}
+#+END_SRC
+
+** Icons
+
+   #+begin_src css :tangle style.css
+.icon svg {
+    fill: var(--doc);
+    display: inline;
+    width: 1em;
+    height: .9em;
+    vertical-align: text-top;
+}
+
+.url-mark.fa {
+    display: inline;
+    font-size: 90%;
+    width: 1em;
+}
+
+.url-mark.fa-github::before {
+    content: "\00a0\f09b";
+}
+
+.url-mark.fa-external-link::before {
+    content: "\00a0\f08e";
+}
+   #+end_src
+
+** Minify CSS
+
+   #+begin_src shell :shebang #!/bin/bash :tangle scripts/css.sh
+minify="$(npm bin)/minify"
+normalize="$(npm root)/normalize.css/normalize.css"
+style="style.css"
+
+# minify add a newline character at the end of its input
+# we remove it using `head'
+echo "
+@charset \"UTF-8\";
+$(cat ${normalize})
+$(cat ${style})
+" | ${minify} --css | head -c -1 > style.min.css
+   #+end_src
+
+   #+begin_src makefile :tangle theme.mk
+style.min.css : style.css
+	@cleopatra echo "Minifying" "CSS"
+	@scripts/css.sh
+
+ARTIFACTS += style.min.css
+
+theme-build : style.min.css
+   #+end_src
+
+* HTML Templates
+
+  It would be best if we had a preprocessing step to inject the
+  minified style, rather than using ~soupault~ to do the work once per
+  page.
+
+  #+begin_src html :tangle templates/main.html :noweb yes
 <html lang="en">
   <head>
-    <<meta-tags>>
-    <title><!-- page title will be inserted here --></title>
-    <<syncloading_html>>
-    <<asyncloading_html>>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style></style>
+    <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css" rel="stylesheet" media="none" onload="if(media!='all')media='all'">
+    <title></title>
   </head>
-  <<body>>
+  <body>
+    <aside>
+      <nav>
+        <ul>
+          <li>
+            <a href="/">Technical Posts</a>
+          </li>
+          <li>
+            <a href="/opinions">Opinions</a>
+          </li>
+          <li>
+            <a href="/news">News</a>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <main>
+    </main>
+  </body>
 </html>
-#+END_SRC
-
-** ~<head>~
-
-#+NAME: meta-tags
-#+BEGIN_SRC html :noweb no-export
-<meta charset="utf-8">
-<meta name="viewport"
-      content="width=device-width, initial-scale=1.0">
-#+END_SRC
-
-*** Assets Loading
-
-#+NAME: syncloading_html
-#+BEGIN_SRC html
-<link href="https://soap.coffee/+vendors/normalize.css.8.0.1/normalize.css"
-      rel="stylesheet">
-<link rel="stylesheet" href="/style/main.css">
-<link rel="icon" type="image/ico" href="/img/merida.webp">
-#+END_SRC
-
-#+NAME: asyncloading_js
-#+BEGIN_SRC js
-let noscript = document.getElementById('asyncloading');
-noscript.insertAdjacentHTML('beforebegin', noscript.innerText);
-noscript.parentNode.removeChild(noscript);
-#+END_SRC
-
-#+NAME: asyncloading_html
-#+BEGIN_SRC html
-<noscript id="asyncloading">
-  <link href="https://soap.coffee/+vendors/fira-code.2+swap/font.css"
-        rel="stylesheet">
-  <link href="https://soap.coffee/+vendors/katex.0.11.1+swap/katex.css"
-        rel="stylesheet">
-  <link href="https://soap.coffee/+vendors/fork-awesome.1.1.7+swap/css/fork-awesome.min.css"
-        rel="stylesheet">
-</noscript>
-#+END_SRC
-
-** ~body~
-
-#+NAME: body
-#+BEGIN_SRC html :noweb no-export
-<body>
-  <header>
-    <a href="/">Technical Articles</a> /
-    <a href="/opinions">Opinions</a> /
-    <a href="/news">News</a> /
-    <a href="/projects">Projects</a>
-  </header>
-  <main>
-  <!-- page content will be inserted here -->
-  </main>
-  <footer>
-    <img src="https://soap.coffee/~lthms/img/merida.webp"
-         alt="Merida from the movie Ralph 2.0 from Disney is the
-              avatar I use most of the time on the Internet"
-         title="lthms’ avatar" />
-
-    <p>
-      Hi, I’m <strong>lthms</strong>, and this is my humble corner of the
-      Internet. You are very welcome here! If you are interested in
-      <em>functional programming</em>, <em>formal verification</em>, or <em>free
-      software projects in the making</em>, you may even enjoy your stay!
-    </p>
-
-    <p>
-      This website has been generated using a collection of <a
-      href="/posts/Thanks.html">awesome free software projects</a>. You can have
-      a look at <a href="https://code.soap.coffee/writing/lthms.git/">the source
-      of this website</a> or <a href="/cleopatra.html">how it is being
-      generated</a>, and if you run into an error, feel free to <a
-      href="mailto:lthms@soap.coffee">shoot me a friendly email</a>.
-    </p>
-  </footer>
-  <script>
-    <<asyncloading_js>>
-  </script>
-</body>
-#+END_SRC
-
-* Main SASS File
-
-First, we introduce a set of variables.
-
-#+BEGIN_SRC sass :tangle site/style/main.sass
-$content-width : 30rem
-$large-side-margin : 7rem
-$small-side-margin : 2rem
-$monospace-color : #FF006D
-#+END_SRC
-
-Then, we introduce a key CSS variable whose definition will change according to
-the current width of the page (something we cannot achieve with SASS variables,
-whose behavior is purely static).
-
-#+BEGIN_SRC sass :tangle site/style/main.sass
-\:root
-    @media screen and (min-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
-        --side-margin : #{$large-side-margin}
-    @media screen and (max-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
-        --side-margin : #{$small-side-margin}
-#+END_SRC
-
-Then, we style!
-
-#+BEGIN_SRC sass :tangle site/style/main.sass
-*
-    box-sizing : border-box
-
-html
-    width : 100%
-    height : 100%
-    font-size : 100%
-    font-weight : normal
-    color : #222
-
-a
-    color : black
-
-a:visited
-    color : #222
-
-body
-    font-family : serif
-    margin : 0 var(--side-margin) 0 calc(var(--side-margin) - 2rem) !important
-    padding : 2rem
-    @media screen and (min-width: calc(#{$content-width} + 2 * #{$large-side-margin}))
-        border-left : 1px solid #ccc
-
-main p,
-main h1,
-main h2,
-main h3,
-main h4,
-main h5,
-main h6,
-main ul,
-main dl,
-main ol,
-header,
-footer
-    max-width : $content-width
-    line-height : 140%
-
-main h1,
-main h2,
-main h3,
-main h4,
-main h5,
-main h6
-    font-weight : bold
-    color : #0c0016
-
-header a,
-footer p
-    font-size : 90%
-
-main
-    padding-top : 4rem
-    padding-bottom : 4rem
-
-    dl dd
-        margin-left : 0
-
-    dl dt
-        font-weight : bold
-
-    dl dt:not(:first-child)
-        padding-top : .5rem
-
-    details
-        font-size : 90%
-        filter : opacity(0.8)
-
-footer img
-    border-radius : 100%
-    max-width : 7rem
-    float : right
-    margin-left : 1rem
-    margin-bottom : 1rem
-
-pre
-    padding-left : 1.5rem
-    padding-right : 1.5rem
-    overflow-x : auto
-
-code,
-tt,
-pre
-    font-family : 'Fira Code', monospace
-    font-size : 80%
-    line-height : 140%
-    color : $monospace-color
-
-#gallery
-    display : flex
-    flex-wrap : wrap
-    align-content : flex-start
-
-    img
-        max-width : 20rem
-
-@import plugins
-@import org
-@import coq
-#+END_SRC
-
-* Build Instructions
-
-The build instruction are pretty straightforward. We start by how to compile the
-main CSS file.
-
-#+BEGIN_SRC makefile :tangle theme.mk
-SASS := $(wildcard site/style/*.sass)
-MAIN_SASS := site/style/main.sass
-CSS := $(MAIN_SASS:.sass=.css)
-
-${CSS} : ${SASS}
-	@cleopatra echo Compiling  "${CSS}"
-	@sassc --style=compressed --sass ${MAIN_SASS} ${CSS}
-#+END_SRC
-
-Since the HTML template does not need any particular processing, the
-=theme-build= phase is only responsible for generating the main CSS file.  The
-[[./soupault.org][=soupault= build phase]] needs to start after the CSS file is
-compiled (since it copies all relevant files to the ~build/~ directory), so we
-explicit this dependency.
-
-#+BEGIN_SRC makefile :tangle theme.mk
-theme-build : ${CSS}
-soupault-build : theme-build
-#+END_SRC
-
-Therefore, at the end of this generation process only one file has been
-generated.
-
-#+BEGIN_SRC makefile :tangle theme.mk
-ARTIFACTS += ${CSS}
-#+END_SRC
+  #+end_src

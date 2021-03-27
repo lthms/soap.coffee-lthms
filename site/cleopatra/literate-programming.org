@@ -1,6 +1,8 @@
-#+BEGIN_EXPORT html
-<h1>Literate Programming Projects</h1>
-#+END_EXPORT
+#+TITLE: Literate Programming Projects
+
+#+SERIES: ../cleopatra.html
+#+SERIES_PREV: ./org.html
+#+SERIES_NEXT: ./theme.html
 
 Literate programming is an interesting exercice. It forces programmers
 to think about how to present their code for other people to
@@ -12,18 +14,27 @@ That being said, literate programming is particularly well-suited for
 blog posts, since at the very least it provides the tool to enforce
 the code presented to readers is correct.
 
+#+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
+<div id="history">site/cleopatra/literate-programming.org</div>
+#+END_EXPORT
+
+* Tangling
+
 We use Emacs and ~org-mode~ to tangle the literate programming
 projects present in the ~posts/~ directory of this website. This is
 done with the following emacs lisp script.
 
 #+BEGIN_SRC emacs-lisp :tangle export-lp.el
-(cleopatra:configure) ; opinionated configuration provided by cleopatra
+;; opinionated configuration provided by cleopatra
+(cleopatra:configure)
 
+;; allow the execution of shell block code
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((shell . t))) ; allow the execution of shell block code
+ '((shell . t)))
 
- ;; scan the posts/ directory and tangled it into lp/
+;; scan the posts/ directory and tangled it into lp/
 (setq org-publish-project-alist
       '(("lp"
          :base-directory "site/posts"
@@ -46,6 +57,8 @@ literate-programming-prebuild :
 ARTIFACTS += lp/ site/posts/deps.svg
 #+END_SRC
 
+* Building
+
 In the =build= phase, we actually try to compile the tangled projects.
 As of now, there is only one literate program: [[../posts/CoqffiEcho.org][the Echo server
 implemented in Coq]] which demonstrates how ~coqffi~ can be used to
@@ -54,7 +67,7 @@ implement realistic software projects.
 #+BEGIN_SRC makefile :tangle literate-programming.mk
 COQFFI_ARCHIVE := site/files/coqffi-tutorial.tar.gz
 
-coqffi-tutorial-build : literate-programming-prebuild
+coqffi-tutorial-build : literate-programming-prebuild _opam/init
 	@cleopatra echo "Building" "coqffi tutorial"
 	@cd lp/coqffi-tutorial; dune build --display quiet
 	@cleopatra echo "Archiving" "coqffi tutorial"

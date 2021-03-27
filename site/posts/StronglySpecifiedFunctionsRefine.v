@@ -19,7 +19,7 @@
     return value is the list passed in argument in which the first
     element has been removed for example.
 
-    #<div id="generate-toc"></div>#
+    #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/StronglySpecifiedFunctionsRefine.v</div># *)
 
@@ -54,7 +54,8 @@ Import ListNotations.
 <<
 Definition predicate_b (args) :=
   if predicate_dec args then true else false.
->> *)
+>>
+    *)
 
 (** *** Defining the <<empty>> predicate *)
 
@@ -174,7 +175,8 @@ Definition pop {a} (l : list a) (h : ~ empty l)
   h : ~ empty l
   ============================
   list a
->> *)
+>>
+    *)
 
 (** Using the [refine] tactic naively, for instance this way:  *)
 
@@ -280,7 +282,8 @@ Definition pop {a} (l : list a | ~ empty l)
   equ : proj1_sig l = []
   ============================
   {l' : list a | exists a0 : a, proj1_sig l = a0 :: l'}
->> *)
+>>
+    *)
 
   + destruct l as [l nempty]; cbn in *.
     rewrite equ in nempty.
@@ -299,7 +302,8 @@ Definition pop {a} (l : list a | ~ empty l)
   equ : proj1_sig l = a0 :: rst
   ============================
   exists a1 : a, proj1_sig l = a1 :: rst
->> *)
+>>
+    *)
 
   + destruct l as [l nempty]; cbn in *.
     rewrite equ.
@@ -339,7 +343,8 @@ Definition push {a} (l : list a) (x : a)
 <<
 let push l a =
   Cons (a, l)
->> *)
+>>
+    *)
 
 (** ** Defining [head] *)
 
@@ -376,7 +381,8 @@ Defined.
 let head = function
 | Nil -> assert false (* absurd case *)
 | Cons (a, l0) -> a
->> *)
+>>
+    *)
 
 (** ** Conclusion & Moving Forward *)
 

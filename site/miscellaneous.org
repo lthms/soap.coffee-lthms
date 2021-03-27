@@ -1,0 +1,14 @@
+#+SERIES: index.html
+#+SERIES_PREV: haskell.html
+#+SERIES_NEXT: meta.html
+
+#+TITLE: Miscellaneous
+
+Over the years, I have made a habit of learning new programming
+languages, out of curiosity, and I intend to continue this way for the
+time being.
+
+- [[./posts/DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::
+  Common Lisp is a venerable programming languages like no other I
+  know.  From the creation of a Lisp package up to the creation of a
+  standalone executable, we explore the shore of this strange beast.

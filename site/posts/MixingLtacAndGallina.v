@@ -1,3 +1,6 @@
+(** #<nav><p class="series">Ltac.html</p>
+     <p class="series-prev">./LtacPatternMatching.html</p></nav># *)
+
 (** * Mixing Ltac and Gallina for Fun and Profit *)
 
 (** One of the most misleading introduction to Coq is to say that “Gallina is
@@ -20,7 +23,7 @@
     It turns out these features are more than handy when it comes to
     metaprogramming (that is, the generation of programs by programs). *)
 
-(** #<div id="generate-toc"></div>#
+(** #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/MixingLtacAndGallina.v</div># *)
 

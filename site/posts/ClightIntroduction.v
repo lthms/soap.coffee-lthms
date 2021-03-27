@@ -1,3 +1,7 @@
+(** #<nav><p class="series">../coq.html</p>
+     <p class="series-prev">./RewritingInCoq.html</p>
+     <p class="series-next">./AlgebraicDatatypes.html</p></nav># *)
+
 (** * A Study of Clight and its Semantics *)
 (* begin hide *)
 From Coq Require Import List.
@@ -12,7 +16,7 @@ Import ListNotations.
     challenged myself to study Clight and its semantics. This write-up is the
     result of this challenge, written as I was progressing.
 
-    #<div id="generate-toc"></div>#
+    #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/ClightIntroduction.v</div># *)
 

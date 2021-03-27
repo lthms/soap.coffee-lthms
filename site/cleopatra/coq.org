@@ -1,3 +1,15 @@
+#+TITLE: Authoring Content with Coq
+
+#+SERIES: ../cleopatra.html
+#+SERIES_PREV: ./dependencies.html
+#+SERIES_NEXT: ./org.html
+
+#+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
+<div id="history">site/cleopatra/coq.org</div>
+#+END_EXPORT
+
+
 * Author Guidelines
 
 * Under the Hood
@@ -13,7 +25,6 @@ COQ_ARTIFACTS := $(COQ_POSTS:.v=.vo) \
 
 coq-build : ${COQ_HTML}
 
-theme-build : site/style/coq.sass
 soupault-build : coq-build
 
 ARTIFACTS += ${COQ_ARTIFACTS} .lia.cache
@@ -28,52 +39,9 @@ COQDOCARG := --no-index --charset utf8 --short \
              --external "https://compcert.org/doc/html" compcert \
              --external "https://lysxia.github.io/coq-simple-io" SimpleIO
 
-%.html : %.v coq.mk
-	@cleopatra echo Exporting "$*.v"
+%.html : %.v coq.mk _opam/init
+	@cleopatra echo Exporting  "$*.v"
 	@coqc ${COQCARG} $<
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
 	@rm -f $(shell dirname $<)/coqdoc.css
 #+END_SRC
-
-#+BEGIN_SRC sass :tangle site/style/coq.sass
-div.code
-    padding-left : 1.5rem
-    padding-left : 1.5rem
-    white-space: nowrap
-    line-height : 140%
-
-div.code,
-span.inlinecode
-    font-family : 'Fira Code', monospace
-    color : $monospace-color
-    font-size : 80%
-    overflow-x : auto
-
-div.doc
-    max-width : $content-width
-    line-height : 140%
-
-    /* dirty patch to get the code in full page width */
-    pre
-        width : calc(100vw - 2*var(--side-margin))
-
-.paragraph
-    margin-bottom : .8em
-#+END_SRC
-
-#+BEGIN_SRC sass :tangle site/style/coq.sass
-.code
-    a[href]
-        color : inherit
-        text-decoration : none
-        background : #f7f7f7
-        padding : .1rem .15rem .1rem .15rem
-        border-radius : 15%
-
-        .url-mark
-            display: none
-#+END_SRC
-
-# Local Variables:
-# org-src-preserve-indentation: t
-# End:

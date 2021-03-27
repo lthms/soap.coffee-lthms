@@ -1,8 +1,7 @@
-#+OPTIONS: toc:nil num:nil
+#+TITLE: A Series on Strongly-Specified Functions in Coq
 
-#+BEGIN_EXPORT html
-<h1>A Series on Strongly-Specified Functions in Coq</h1>
-#+END_EXPORT
+#+SERIES: ../coq.html
+#+SERIES_NEXT: ./Ltac.html
 
 Using dependent types and the ~Prop~ sort, it becomes possible to specify
 functions whose arguments and results are constrained by properties.  Using such

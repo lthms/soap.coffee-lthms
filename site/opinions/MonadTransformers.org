@@ -1,11 +1,11 @@
-#+BEGIN_EXPORT html
-<h1>Monad Transformers are a Great Abstraction</h1>
+#+TITLE: Monad Transformers are a Great Abstraction
 
+#+SERIES: ../opinions/index.html
+
+#+BEGIN_EXPORT html
 <p>This article has originally been published on <span
 id="original-created-at">July 15, 2017</span>.</p>
 #+END_EXPORT
-
-#+OPTIONS: toc:nil
 
 #+BEGIN_EXPORT html
 <div id="history">site/opinions/MonadTransformers.org</div>
@@ -14,8 +14,8 @@ id="original-created-at">July 15, 2017</span>.</p>
 Monads are hard to get right. I think it took me around a year of Haskelling to
 feel like I understood them. The reason is, to my opinion, there is not such
 thing as /the/ Monad. It is even the contrary. When someone asks me how I would
-define Monads in only a few words, [[https://techn.ical.ist/@lthms/590439][I say Monad is a convenient formalism to
-chain specific computations]]. Once I’ve got that, I started noticing “monadic
+define Monads in only a few words, I say monads are a convenient formalism to
+chain specific computations. Once I’ve got that, I started noticing “monadic
 construction” everywhere, from the Rust ~?~ operator to the [[https://blog.drewolson.org/elixirs-secret-weapon/][Elixir ~with~
 keyword]].
 
@@ -46,7 +46,6 @@ issue with the Monad Transformers.
 #+BEGIN_SRC diff
 -type Builder = StateT Text IO
 +type Builder = StateT Text (ReaderT Language IO)
-
 #+END_SRC
 
 As you may have already understood, I wasn't using the “raw” ~State~ Monad, but

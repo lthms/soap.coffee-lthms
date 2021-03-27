@@ -1,76 +1,27 @@
-#+OPTIONS: toc:nil num:nil
-
-#+BEGIN_EXPORT html
-<h1>Technical Articles</h1>
-#+END_EXPORT
+#+TITLE: Technical Articles
 
 Over the past years, I have tried to capitalize on my findings. What I have
 lacked in regularity I made up for in subject exoticism.
 
-If you like what you read, have a question or for any other reasons really, you
-can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on
-whichever site you like (I personnaly enjoy
-[[https://lobste.rs/search?q=domain%3Asoap.coffee&what=stories&order=relevance][Lobste.rs]]
-very much).
+If you like what you read, have a question or for any other reasons
+really, you can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on whichever
+site you like[fn::I personnaly enjoy [[https://lobste.rs/search?q=domain%3Asoap.coffee&what=stories&order=relevance][Lobste.rs]] very much].
 
 * About Coq
-:PROPERTIES:
-:CUSTOM_ID: coq
-:END:
+  :PROPERTIES:
+  :CUSTOM_ID: coq
+  :END:
 
-Coq is a formal proof management system which provides a pure functional
-language with nice dependent types together with an environment for writing
-machine-checked proofs.
-
-- [[./posts/StronglySpecifiedFunctions.org][A Series on Strongly-Specified Funcions in Coq]] ::
-  Using dependent types and the ~Prop~ sort, it becomes possible to specify
-  functions whose arguments and results are constrained by properties.
-  Using such a “strongly-specified” function requires to provide a proof that
-  the supplied arguments satisfy the expected properties, and allows for soundly
-  assuming the results are correct too. However, implementing dependently-typed
-  functions can be challenging.
-
-- [[./posts/Ltac.org][A Series on Ltac]] ::
-  Ltac is the “tactic language” of Coq. It is commonly advertised as the common
-  approach to write proofs, which tends to bias how it is introduced to new Coq
-  users (/e.g./, in Master courses). In this series, we present Ltac as the
-  metaprogramming tool it is, since fundamentally it is an imperative language
-  which allows for constructing Coq terms interactively and incrementally.
-
-- [[./posts/RewritingInCoq.html][Rewriting in Coq]] ::
-  The ~rewrite~ tactics are really useful, since they are not limited to the Coq
-  built-in equality relation.
-
-- [[./posts/ClightIntroduction.html][A Study of Clight and its Semantics]] ::
-  Clight is a “simplified” C AST used by CompCert, the certified C compiler. In
-  this write-up, we prove a straighforward functional property of a small C
-  function, as an exercise to discover the Clight semantics.
-
-- [[./posts/AlgebraicDatatypes.html][Proving Algebraic Datatypes are “Algebraic”]] ::
-  The set of types which can be defined in a language together with ~+~ and ~*~
-  form an “algebraic structure” in the mathematical sense, hence the name. It
-  means the definitions of ~+~ and ~*~ have to satisfy properties such as
-  commutativity or the existence of neutral elements.
-
-- [[./posts/Coqffi.org][A Series on ~coqffi~]] ::
-  ~coqffi~ generates Coq FFI modules from compiled OCaml interface
-  modules (~.cmi~). In practice, it greatly reduces the hassle to
-  together OCaml and Coq modules within the same codebase, especially
-  when used together with the ~dune~ build system.
+  #+include: ./coq.org
 
 * About Haskell
 
-Haskell is a pure, lazy, functional programming language with a very expressive
-type system.
-
-- [[./posts/ExtensibleTypeSafeErrorHandling.html][Extensible, Type-Safe Error Handling In Haskell]] ::
-  Ever heard of “extensible effects?” By applying the same principle, but for
-  error handling, the result is nice, type-safe API for Haskell, with a lot of
-  GHC magic under the hood.
+  #+include: ./haskell.org
 
 * Miscellaneous
 
-- [[./posts/DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::
-  Common Lisp is a venerable programming languages like no other I know.  From
-  the creation of a Lisp package up to the creation of a standalone executable,
-  we explore the shore of this strange beast.
+  #+include: ./miscellaneous.org
+
+* About this Website
+
+  #+include: ./meta.org

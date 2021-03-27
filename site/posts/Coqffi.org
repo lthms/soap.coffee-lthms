@@ -1,6 +1,7 @@
-#+BEGIN_EXPORT html
-<h1>A Series on <code>coqffi</code></h1>
-#+END_EXPORT
+#+TITLE: A series on ~coqffi~
+
+#+SERIES: ../coq.html
+#+SERIES_PREV: AlgebraicDatatypes.html
 
 ~coqffi~ generates Coq FFI modules from compiled OCaml interface
 modules (~.cmi~). In practice, it greatly reduces the hassle to mix

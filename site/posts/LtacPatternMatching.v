@@ -1,3 +1,7 @@
+(** #<nav><p class="series">Ltac.html</p>
+     <p class="series-prev">./LtacMetaprogramming.html</p>
+     <p class="series-next">./MixingLtacAndGallina.html</p></nav># *)
+
 (** * Pattern Matching on Types and Contexts  *)
 
 (** In the #<a href="LtacMetaprogramming.html">#previous article#</a># of our
@@ -11,7 +15,7 @@
     contexts. In this article, we give a short introduction on this feature of
     key importance. *)
 
-(** #<div id="generate-toc"></div>#
+(** #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/LtacPatternMatching.v</div># *)
 
@@ -137,8 +141,8 @@ Ltac not_param_type x :=
   | _ => idtac
   end.
 
-(** Both <<not_param_type (@nil nat)>> of type [list nat] and <<(@eq_refl nat
-    0)>> of type [0 = 0] fail, but <<not_param_type 0>> of type [nat]
+(** Both <<not_param_type (@nil nat)>> of type [list nat] and
+    <<(@eq_refl nat 0)>> of type [0 = 0] fail, but <<not_param_type 0>> of type [nat]
     succeeds. *)
 
 (** ** Pattern Matching on the Context with [goal] *)

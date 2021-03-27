@@ -1,3 +1,7 @@
+(** #<nav><p class="series">../coq.html</p>
+     <p class="series-prev">./ClightIntroduction.html</p>
+     <p class="series-next">./Coqffi.html</p></nav># *)
+
 (** * Proving Algebraic Datatypes are “Algebraic” *)
 
 (** Several programming languages allow programmers to define (potentially
@@ -93,7 +97,7 @@ Inductive prod (A B : Type) : Type :=
 | pair : A -> B -> prod A B
 >>
 
-    #<div id="generate-toc"></div>#
+    #<nav id="generate-toc"></nav>#
 
     #<div id="history">site/posts/AlgebraicDatatypes.v</div># *)
 
