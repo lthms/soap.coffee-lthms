@@ -29,7 +29,7 @@ the most significant ones.
 
 * Static Website Generation
 
-- [[https://soupault.neocities.org][soupault]] ::
+- [[https://soupault.app][soupault]] ::
   Soupault is a static website generator and HTML processor written by [[https://www.baturin.org/][Daniil
   Baturin]].
 - [[https://cleopatra.soap.coffee][~cleopatra~]] ::
