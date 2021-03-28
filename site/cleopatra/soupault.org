@@ -244,9 +244,10 @@ heading_links_append = true
 heading_link_class = "anchor-link"
 
 [widgets.append-toc-title]
-widget = "preprocess_element"
+widget = "insert_html"
 selector = "#generate-toc"
-command = 'echo "<h2>Table of Contents</h2> $(cat)"'
+action = "prepend_child"
+html = '<h2>Table of Contents</h2>'
 after = "table-of-contents"
    #+end_src
 
