@@ -13,11 +13,11 @@
 
 <h2>during the past 10 days</h2>
 
-<div id="heatmap-weeks"></div>
+<div id="heatmap-weeks" class="fullwidth"></div>
 
 <h2>during the past 6 months</h2>
 
-<div id="heatmap-year"></div>
+<div id="heatmap-year" class="fullwidth"></div>
 
 <script src="https://soap.coffee/+vendors/d3.js/d3.v3.min.js"></script>
 <script src="https://soap.coffee/+vendors/cal-heatmap/cal-heatmap.3.3.10.min.js"></script>
@@ -31,7 +31,7 @@
 
 <script type="text/javascript">
   // First, we load the necessary CSS
-  document.getElementById('asyncloading')
+  document.getElementsByTagName('style')[0]
     .insertAdjacentHTML(
       'beforebegin',
       '<link rel="stylesheet" href="https://soap.coffee/+vendors/cal-heatmap/cal-heatmap.3.3.10.css" />'
