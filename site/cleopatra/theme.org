@@ -295,7 +295,7 @@ td.commit {
     --fade: #cfcecb;
     --fg: #3c3c3c;
     --fg-plus: #575757;
-    --doc: #ff4c99;
+    --doc: #91003e;
     --warning: #bd745e;
     --red: #b3534b;
     --green: #6d9319;
