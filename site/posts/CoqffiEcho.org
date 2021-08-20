@@ -333,7 +333,7 @@ typeclass.
 #+BEGIN_SRC coq :tangle coqffi-tutorial/src/Server.v
 Notation "'let_rec*' f x ':=' p 'in' q" :=
   (let f := mfix (fun f x => p) in q)
-    (at level 61, x pattern, f ident, q at next level, right associativity).
+    (at level 61, x pattern, f name, q at next level, right associativity).
 #+END_SRC
 
 Note that ~mfix~ does /not/ check whether or not the defined function
