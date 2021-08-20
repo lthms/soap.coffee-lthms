@@ -19,9 +19,6 @@ generation. You should definitely [[https://soupault.app][check out their websit
   created during a previous invocation of *~cleopatra~*.
 
   #+begin_src makefile :tangle soupault.mk
-OCAML_VERSION := 4.11.2
-OCAML := ocaml-base-compiler.${OCAML_VERSION}
-
 CONFIGURE += _opam rss.json
 ARTIFACTS += out
 
@@ -32,7 +29,7 @@ soupault-prebuild : _opam/init
   command-line arguments.
 
   #+begin_src makefile :tangle soupault.mk
-soupault-build : package-lock.json style.min.css
+soupault-build : dependencies-prebuild style.min.css
 	@cleopatra echo "Executing" "soupault"
 	@soupault
   #+end_src
@@ -579,17 +576,9 @@ dump_json = "rss.json"
 extract_after_widgets = ["urls-rewriting"]
 
 [index.fields]
-title = {
-  selector = ["h1"]
-}
-
-modified-at = {
-  selector = ["#modified-at"]
-}
-
-created-at = {
-  selector = ["#created-at"]
-}
+title = { selector = ["h1"] }
+modified-at = { selector = ["#modified-at"] }
+created-at = { selector = ["#created-at"] }
    #+end_src
 
 ** Series Navigation

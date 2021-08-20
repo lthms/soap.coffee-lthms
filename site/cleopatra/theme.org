@@ -424,7 +424,7 @@ $(cat ${style})
    #+end_src
 
    #+begin_src makefile :tangle theme.mk
-style.min.css : style.css
+style.min.css : style.css dependencies-prebuild
 	@cleopatra echo "Minifying" "CSS"
 	@scripts/css.sh
 

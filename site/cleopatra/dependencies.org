@@ -9,22 +9,22 @@
   #+name: coq-deps
   | Package      | Version |
   |--------------+---------|
-  | coq          |  8.13.1 |
+  | coq          |  8.13.2 |
   | coq-compcert |     3.8 |
 
   #+caption: Dependencies for the ~coqffi~ series
   #+name: lp-deps
   | Package       |     Version |
   |---------------+-------------|
-  | dune          |       2.8.4 |
-  | coq-coqffi    | 1.0.0~beta5 |
+  | dune          |       2.9.0 |
+  | coq-coqffi    | 1.0.0~beta7 |
   | coq-simple-io |       1.5.0 |
 
   #+caption: Soupault
   #+name: soupault-deps
   | Package  | Version |
   |----------+---------|
-  | soupault |   2.5.0 |
+  | soupault |   3.1.0 |
 
   #+name: deps-listing
   #+begin_src emacs-lisp :noweb yes :var coq-deps=coq-deps :var lp-deps=lp-deps :var soupault-deps=soupault-deps :results value raw :exports none
@@ -41,7 +41,7 @@
   #+end_src
 
   #+begin_src makefile :tangle dependencies.mk :noweb yes
-OCAML_VERSION := 4.11.2
+OCAML_VERSION := 4.12.0
 OCAML := ocaml-base-compiler.${OCAML_VERSION}
 
 _opam/init :
@@ -60,8 +60,8 @@ CONFIGURE += _opam
   #+name: frontend-deps
   | Package       | Version |
   |---------------+---------|
-  | katex         |  0.13.0 |
-  | minify        |   7.0.1 |
+  | katex         | 0.13.13 |
+  | minify        |   7.0.2 |
   | normalize.css |   8.0.1 |
 
   #+name: frontend-listing
@@ -86,4 +86,10 @@ CONFIGURE += _opam
 package-lock.json : package.json
 	@cleopatra echo "Installing" "frontend dependencies"
 	@npm install
+
+CONFIGURE += package-lock.json
+  #+end_src
+
+  #+begin_src makefile :tangle dependencies.mk :noweb yes
+dependencies-prebuild : _opam/init package-lock.json
   #+end_src
