@@ -277,7 +277,7 @@ after = "table-of-contents"
 
     #+name: repo
     #+begin_src verbatim :exports none
-https://code.soap.coffee/writing/lthms.git
+https://labs.soap.coffee/soap.coffee/lthms.git
     #+end_src
 
     The template used to generate the revision table is the following.
