@@ -112,7 +112,6 @@ main {
 
 main nav {
     font-style: italic;
-    font-size: smaller;
     color: var(--fg-plus);
     background: var(--current-line);
     padding: .5rem 1rem;
