@@ -35,15 +35,17 @@ CONFIGURE += package.json package-lock.json node_modules
 
    #+begin_src css :tangle style.css
 :root {
-    --main-width: 30rem;
-    --gutter-width: 5rem;
-    --margin-width: 15rem;
-    --body-width: calc(var(--main-width) + var(--gutter-width) + var(--margin-width));
+    --main-width: 32rem;
+    --gutter-width: 3rem;
+    --margin-width: 13rem;
+    --code-width: calc(var(--main-width) + var(--gutter-width) + var(--margin-width));
+    --body-width: calc(var(--main-width) + 2 * (var(--gutter-width) + var(--margin-width)));
 }
 
 @media (max-width: 55rem) {
     :root {
         --body-width: var(--main-width);
+        --code-width: var(--main-width);
     }
 }
    #+end_src
@@ -51,6 +53,12 @@ CONFIGURE += package.json package-lock.json node_modules
    #+begin_src css :tangle style.css
 ,* {
     box-sizing: border-box;
+}
+
+@media (min-width: 55rem) {
+    .fullwidth {
+        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+    }
 }
 
 .fullwidth {
@@ -62,7 +70,7 @@ html {
 }
 
 body {
-    line-height: 1.3;
+    line-height: 1.4;
     max-width: var(--body-width);
     margin-left: auto;
     margin-right: auto;
@@ -99,6 +107,7 @@ aside nav li:not(:first-of-type)::before {
 main {
     counter-reset: sidenote-counter;
     max-width: var(--main-width);
+    margin: auto;
 }
 
 main nav {
@@ -128,11 +137,20 @@ img {
 .sidenote,
 .marginnote {
     font-size: smaller;
+    position: relative;
+    width: var(--margin-width);
+}
+
+.sidenote {
+    margin-right: calc(-1 * (var(--margin-width) + var(--gutter-width)));
     float: right;
     clear: right;
-    margin-right: calc(-1 * (var(--margin-width) + var(--gutter-width)));
-    width: var(--margin-width);
-    position: relative;
+}
+
+.marginnote {
+    float: left;
+    clear: left;
+    margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
 }
 
 input.margin-toggle {
@@ -173,7 +191,7 @@ label.margin-toggle:not(.sidenote-number) {
 
 div.code,
 pre {
-    width: var(--body-width);
+    width: var(--code-width);
     overflow-x: auto;
     overflow-y: hidden;
     padding: 1rem 2rem;
@@ -181,6 +199,7 @@ pre {
 
 main {
     padding-top: 4.2rem;
+    padding-bottom: 4.2rem;
 }
 
 h1 {
@@ -250,8 +269,8 @@ td.commit {
     }
 
     aside {
-       width: var(--main-width);
-       margin: auto;
+        width: var(--main-width);
+        margin: auto;
     }
 
     label.margin-toggle:not(.sidenote-number) {
