@@ -33,16 +33,53 @@ CONFIGURE += package.json package-lock.json node_modules
    area for the webpage content, and a margin column with side notes
    and margin notes.
 
-   #+begin_src css :tangle style.css
+   #+caption: Widths of page components (in ~rem~)
+   #+name: widths
+   | Content | 35 |
+   | Gutter  |  3 |
+   | Margin  | 13 |
+
+   #+name: main-width
+   #+begin_src emacs-lisp :exports none :noweb yes :var widths=widths[,1]
+(nth 0 widths)
+   #+end_src
+
+   #+name: gutter-width
+   #+begin_src emacs-lisp :exports none :noweb yes :var widths=widths[,1]
+(nth 1 widths)
+   #+end_src
+
+   #+name: margin-width
+   #+begin_src emacs-lisp :exports none :noweb yes :var widths=widths[,1]
+(nth 2 widths)
+   #+end_src
+
+   #+begin_src css :tangle style.css :noweb yes
 :root {
-    --main-width: 32rem;
-    --gutter-width: 3rem;
-    --margin-width: 13rem;
+    --main-width: <<main-width()>>rem;
+    --gutter-width: <<gutter-width()>>rem;
+    --margin-width: <<margin-width()>>rem;
     --code-width: calc(var(--main-width) + var(--gutter-width) + var(--margin-width));
     --body-width: calc(var(--main-width) + 2 * (var(--gutter-width) + var(--margin-width)));
 }
+   #+end_src
 
-@media (max-width: 55rem) {
+   According to CSS’ own [[https://www.w3.org/TR/css-variables-1/#using-variables][specification]], you cannot use ~var()~ inside
+   media queries.  As a consequnece, for our theme to be responsive,
+   the full width of the page content (\im 2 \times (that is,
+   \mathrm{margin\_width} + \mathrm{gutter\_width}) +
+   \mathrm{content\_width} \mi or call_body-width[:results raw]()rem)
+   has to be hard-coded[fn::Fortunately, this is a literate
+   program. This value is actually programmatically computed, so that
+   we do not have to worry about forgetting to update it].
+
+   #+name: body-width
+   #+begin_src bash :exports none :noweb yes
+echo $((2 * (<<margin-width()>> + <<gutter-width()>>) + <<main-width()>>))
+   #+end_src
+
+   #+begin_src css :tangle style.css :noweb yes
+@media (max-width: <<body-width()>>rem) {
     :root {
         --body-width: var(--main-width);
         --code-width: var(--main-width);
@@ -50,23 +87,25 @@ CONFIGURE += package.json package-lock.json node_modules
 }
    #+end_src
 
-   #+begin_src css :tangle style.css
+   And now, we are free to actually implement the layout.
+
+   #+begin_src css :tangle style.css :noweb yes
 ,* {
     box-sizing: border-box;
-}
-
-@media (min-width: 55rem) {
-    .fullwidth {
-        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
-    }
 }
 
 .fullwidth {
     width: var(--body-width);
 }
 
+@media (min-width: <<body-width()>>rem) {
+    .fullwidth {
+        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+    }
+}
+
 html {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
 }
 
 body {
@@ -131,6 +170,11 @@ main nav p.series-prev::before {
 
 img {
     max-width: 100%;
+}
+
+dd {
+    margin-left: 0;
+    margin-bottom: 0.5rem;
 }
 
 .sidenote,
@@ -260,7 +304,7 @@ td.commit {
 }
 
 /* max-width has to be equal to --body-width */
-@media (max-width: 55rem) {
+@media (max-width: <<body-width()>>rem) {
     body {
         padding: 2rem;
         margin: auto;

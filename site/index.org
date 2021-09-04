@@ -1,11 +1,10 @@
 #+TITLE: Technical Articles
 
-Over the past years, I have tried to capitalize on my findings. What I have
-lacked in regularity I made up for in subject exoticism.
-
-If you like what you read, have a question or for any other reasons
-really, you can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on whichever
-site you like[fn::I personnaly enjoy [[https://lobste.rs/search?q=domain%3Asoap.coffee&what=stories&order=relevance][Lobste.rs]] very much].
+Over the past years, I have tried to capitalize on my findings. What I
+have lacked in regularity I made up for in subject exoticism.  If you
+like what you read, have a question or for any other reasons really,
+you can shoot an [[mailto:lthms@soap.coffee][email]], or start a discussion on whichever site you
+like[fn::I personnaly enjoy [[https://lobste.rs/search?q=domain%3Asoap.coffee&what=stories&order=relevance][Lobste.rs]] very much].
 
 * About Coq
   :PROPERTIES:
