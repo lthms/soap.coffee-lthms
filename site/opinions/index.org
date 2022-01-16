@@ -7,6 +7,12 @@ separate indexes.
 
 I would encourage you to use your critical mind while reading these write-ups.
 
+** 2022
+
+   - [[./StackedGit.org][How I Use Stacked Git at ~$WORK~]] ::
+     I’ve been using Stacked Git at ~work~ for a few months, and as of
+     January 2022,
+
 ** 2017
 
 - [[./MonadTransformers.org][Monad Transformers are a Great Abstraction]] ::

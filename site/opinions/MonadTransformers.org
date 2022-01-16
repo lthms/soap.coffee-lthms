@@ -1,6 +1,7 @@
 #+TITLE: Monad Transformers are a Great Abstraction
 
-#+SERIES: ../opinions/index.html
+#+SERIES: index.html
+#+SERIES_NEXT: StackedGit.html
 
 [[mn:1][Time has passed since the publication of this article. Whether
 or not I remain in sync with its conclusions is an open
