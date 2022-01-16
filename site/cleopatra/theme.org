@@ -105,7 +105,7 @@ echo $((2 * (<<margin-width()>> + <<gutter-width()>>) + <<main-width()>>))
 }
 
 html {
-    font-size: 1.2rem;
+    font-size: 1rem;
 }
 
 body {
@@ -254,6 +254,7 @@ h2, h3, h4 {
 }
 
 h1, h2, h3, h4 {
+    font-family: serif;
     font-weight: normal;
 }
 
@@ -367,7 +368,7 @@ td.commit {
 
    #+begin_src css :tangle style.css
 body {
-    font-family: serif;
+    font-family: sans-serif;
     color: var(--fg);
     background: var(--bg);
 }
