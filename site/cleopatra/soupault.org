@@ -59,6 +59,7 @@ clean_urls = false
 generator_mode = true
 complete_page_selector = "html"
 default_content_selector = "main"
+default_content_action = "append_child"
 page_file_extensions = ["html"]
 ignore_extensions = [
   "v", "vo", "vok", "vos", "glob",

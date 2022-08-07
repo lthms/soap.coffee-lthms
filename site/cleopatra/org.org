@@ -50,13 +50,23 @@ INIT := --batch --load="${ROOT}/scripts/packages.el" \
 (use-package ox-tufte :ensure t)
 #+end_src
 
+We also use the OCaml backend for ~org-babel~ to ensure our OCaml
+snippets are well-typed, among other things.
+
+#+begin_src emacs-lisp :tangle scripts/packages.el
+(use-package tuareg :ensure t
+  :config
+  (require 'ob-ocaml))
+#+end_src
+
 #+begin_src emacs-lisp :tangle scripts/export-org.el
 (cleopatra:configure)
 
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((dot . t)
-   (shell . t)))
+   (shell . t)
+   (ocaml . t)))
 
 (setq org-export-with-toc nil
       org-html-htmlize-output-type nil

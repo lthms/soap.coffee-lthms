@@ -1,0 +1,121 @@
+#+TITLE: Rank-N Types in OCaml
+
+#+SERIES: ../miscellaneous.html
+#+SERIES_PREV: ./DiscoveringCommonLisp.html
+
+#+BEGIN_EXPORT html
+<div id="history">site/posts/RankNTypesInOCaml.org</div>
+#+END_EXPORT
+
+Programmers learning a strongly typed, functional programming
+languages like OCaml are quickly introduced to the notion of
+/polymorphism/ as a way to generalize types over types.
+
+Lists are /polymorphic/: you implement them once, and they work for
+any type they can throw at them. Functions over lists are
+/polymorphic/: you can fold over a list containing values of any type
+\im t \mi as long as you provide a consistent function (that is, a
+function whose domain is \im t \mi
+
+The ~list~ type and the types of the functions you expect to find in a
+~List~ module are called /rank-1 types/ in the Haskell
+community[fn::And first order polymorphism in the OCaml community? I
+am not totally sure, so I will stick to the rank terminology.]. As the
+name suggests, (1) yes [[https://wiki.haskell.org/Rank-N_types/][/rank-N types/]] exist (for \im N > 1 \mi), and
+(2) /rank-N types/ are more expressive.
+
+Consider a function that takes a identity function, uses it on its
+input, and returns the output as its result. A straightforward
+implementation for said function is
+
+#+begin_src ocaml :results both
+let f x id = id x
+#+end_src
+
+Now, consider a function that a second function which also takes the
+identify function as its input, but uses it on values of two different
+types. This time, the implementation in OCaml is not that easy, and
+the “naive” attempt will fail.
+
+#+begin_src ocaml :results verbatim :exports both
+let g (type a b) id (x : a) (y : b) = (id x, id y)
+#+end_src
+
+#+RESULTS:
+: Line 1, characters 56-57:
+: 1 | let g (type a b) id (x : a) (y : b) = (id x, id y);;
+:                                                             ^
+: Error: This expression has type b but an expression was expected of type a
+
+When OCaml tries to type-check ~g~, it first wrongly deduces ~id~ is a
+function of type ~a -> ?~ because of ~id x~, then fails when trying to
+type-check ~id y~.
+
+In a nutshell, ~g~ can be polymorphic, but ~id~ (within ~g~'s
+definition) can’t. This is because ~g~'s type is a rank-1 type, while
+we want a rank-2 type.
+
+In Haskell, it is possible to write rank-N types using the
+~RankNTypes~ language extension[fn::As often is Haskell, “there is a
+pragma for this.”]. On the contrary, the OCaml type system’s support
+for rank-N type functions is a bit lacking. For instance, it is not
+possible to annotate the type of ~id~ with something akin to ~type
+c. c -> c~.
+
+Now, it /is/ possible to write ~g~ in OCaml, by encompassing ~id~
+inside either a record, a first class module, or an object. This
+indirection is necessary to hide the additional order of polymorphism,
+effectively turning ~g~ into a rank-1 type function.
+
+The most efficient way is probably to define a record with one field,
+because it is possible to tell OCaml to remove the introduced
+indirection with the ~unboxed~ annotation.
+
+#+begin_src ocaml :results verbatim :exports both
+type id = {id : 'a. 'a -> 'a} [@@unboxed]
+
+let g {id} x y  =
+  (id x, id y)
+#+end_src
+
+#+RESULTS:
+: type id = { id : 'a. 'a -> 'a; } [@@unboxed]
+: val g : id -> 'a -> 'b -> 'a * 'b = <fun>
+
+To call ~g~, one now needs to wrap the identify function in the ~id~
+record.
+
+#+begin_src ocaml :exports code
+g {id = fun x -> x}
+#+end_src
+
+When you find yourself in a situation where you have to
+compose rank-N type functions together, this can impact readability
+(and —arguably— writability too).
+
+A first class module is also a sensible choice, but it is not possible
+to “unbox” it as for the single-field record, and it is a bit more
+verbose too.
+
+#+begin_src ocaml :results verbatim :exports code
+module type S = sig
+  val f : 'a -> 'a
+end
+
+type id = (module S)
+
+let g : id -> int * bool =
+ fun (module Id) -> (Id.f 1, Id.f true)
+
+let id : id = (module struct let f x = x end : S)
+
+let (x, y) = g id
+#+end_src
+
+#+RESULTS:
+: module type S = sig val f : 'a -> 'a end
+: type id = (module S)
+: val g : id -> int * bool = <fun>
+: val id : id = <module>
+: val x : int = 1
+: val y : bool = true

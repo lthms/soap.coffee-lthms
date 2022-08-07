@@ -1,6 +1,9 @@
-#+BEGIN_EXPORT html
-<h1>Discovering Common Lisp with <code>trivial-gamekit</code></h1>
+#+TITLE: Discovering Common Lisp with ~trivial-gamekit~
 
+#+SERIES: ../miscellaneous.html
+#+SERIES_NEXT: ./RankNTypesInOCaml.html
+
+#+BEGIN_EXPORT html
 <p>This article has originally been published on <span class="time">June 17,
 2018</span>.</p>
 #+END_EXPORT
