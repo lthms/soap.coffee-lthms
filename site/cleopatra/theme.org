@@ -172,6 +172,18 @@ img {
     max-width: 100%;
 }
 
+#whoami.marginnote {
+    color: var(--fg);
+    margin-bottom: 2em;
+}
+
+img.avatar {
+    border-radius: 20px;
+    display: block;
+    max-width: 90%;
+    margin: auto;
+}
+
 dd {
     margin-left: 0;
     margin-bottom: 0.5rem;
@@ -264,13 +276,12 @@ dt {
 
 div.code,
 span.inlinecode,
-code,
-.doc pre,
+pre,
 tt,
 .dmath,
 .imath {
     font-family: monospace;
-    font-size: 80%;
+    font-size: 85%;
 }
 
 details {
@@ -342,7 +353,7 @@ td.commit {
         cursor: pointer;
     }
 
-    pre, aside {
+    pre, aside, div.code {
         width: 100%;
     }
 }
@@ -353,12 +364,12 @@ td.commit {
    #+begin_src css :tangle style.css
 :root {
     --bg: white;
-    --bg-plus: #f9f8f4;
+    --bg-plus: #f7f7f7;
     --current-line: #fbfbfb;
     --fade: #cfcecb;
     --fg: #3c3c3c;
     --fg-plus: #575757;
-    --doc: #91003e;
+    --doc: black;
     --warning: #bd745e;
     --red: #b3534b;
     --green: #6d9319;
@@ -528,6 +539,19 @@ theme-build : style.min.css
       </nav>
     </aside>
     <main>
+      <span id="whoami" class="marginnote">
+        <img class="avatar" src="/img/vampy.jpg" />
+
+        <p>
+          Hi, I’m <strong>lthms</strong>.
+        </p>
+
+        <p>
+          I don’t like syntax highlighting, but I like
+          types and functional programming languages.
+          He/him.
+        </p>
+      </span>
     </main>
   </body>
 </html>
