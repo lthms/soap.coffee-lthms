@@ -24,7 +24,7 @@
   #+name: soupault-deps
   | Package  | Version |
   |----------+---------|
-  | soupault |   3.1.0 |
+  | soupault |   4.0.1 |
 
   #+name: deps-listing
   #+begin_src emacs-lisp :noweb yes :var coq-deps=coq-deps :var lp-deps=lp-deps :var soupault-deps=soupault-deps :results value raw :exports none
