@@ -3,12 +3,12 @@
 #+SERIES: index.html
 #+SERIES_NEXT: StackedGit.html
 
-[[mn:1][Time has passed since the publication of this article. Whether
-or not I remain in sync with its conclusions is an open
-question. Monad Transformers are a great abstraction, but given the
-choice, I would probably choose another approach, namely extensible
-effects.]] This article has originally been published on @@html:<span
-id="original-created-at">@@July 15, 2017@@html:</span>@@.
+This article has originally been published on @@html:<span
+id="original-created-at">@@July 15, 2017@@html:</span>@@. [[mn:doubts][Time has
+passed since the publication of this article. Whether or not I remain
+in sync with its conclusions is an open question. Monad Transformers
+are a great abstraction, but given the choice, I would probably choose
+another approach.]]
 
 #+BEGIN_EXPORT html
 <div id="history">site/opinions/MonadTransformers.org</div>

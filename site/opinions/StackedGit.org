@@ -28,8 +28,8 @@ become a cornerstone of my development workflow.
   There is a few things to unpack here.
   First and as its name suggests, Stacked Git is a tool built on top
   of Git.
-  [[mn:1][My main takeaway from my Pijul adventure is connected to this.
-  Git is not limited to the ~git~ binary.
+  [[mn:pijul][My main takeaway from my Pijul adventure is connected to
+  this.  Git is not limited to the ~git~ binary.
   Git comes with a collection of powerful forges, nice editor plugins,
   and years of good practices.
   To this day, it’s neither the bugs nor the breaking changes that
@@ -115,7 +115,7 @@ become a cornerstone of my development workflow.
  the wrong patch).
  But when used carefully, it can be very handy.
 
- [[mn:3][Stacked Git is supposedly able to detect, during a rebase,
+ [[mn:rebase][Stacked Git is supposedly able to detect, during a rebase,
  which of your patches have been applied to your target branch.
  I’d rather use ~stg uncommit~ before do the rebase, though.]]
  Finally, ~stg rebase REF~ moves your stack of patches on top of
@@ -309,7 +309,7 @@ become a cornerstone of my development workflow.
    that you can pass to ~git cherry-pick~ and ~git rebase~.
    Not really.
 
-   [[mn:2][I don’t want to be unfair to Stacked Git here. Maybe the
+   [[mn:doubts][I don’t want to be unfair to Stacked Git here. Maybe the
    documentation of Stacked Git provides useful tips to deal with this
    issue, and I have just overlooked it.]]
    Stacked Git has a command called ~stg undo~, which can achieve this
