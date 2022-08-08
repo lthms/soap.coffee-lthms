@@ -266,6 +266,7 @@ h2, h3, h4 {
 }
 
 h1, h2, h3, h4 {
+    color: var(--doc);
     font-family: serif;
     font-weight: normal;
 }
@@ -385,8 +386,7 @@ body {
 }
 
 a[href] {
-    color: inherit;
-    text-decoration-color: var(--doc);
+    color: var(--doc);
 }
 
 h2 a.anchor-link,
