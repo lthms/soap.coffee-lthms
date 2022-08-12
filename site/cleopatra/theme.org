@@ -551,6 +551,12 @@ theme-build : style.min.css
           types and functional programming languages.
           He/him.
         </p>
+
+        <p>
+          Interested in starting a discussion? Don’t hesitate to <a
+          href="mailto:~lthms/public-inbox@lists.sr.ht">shoot me an
+          email</a>.
+        </p>
       </span>
     </main>
   </body>
