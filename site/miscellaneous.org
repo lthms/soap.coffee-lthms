@@ -13,9 +13,8 @@ time being.
   know.  From the creation of a Lisp package up to the creation of a
   standalone executable, we explore the shore of this strange beast.
 
-- [[./posts/RankNTypesInOCaml.html][Rank-N Types in OCaml]] ::
-  Programmers learning a strongly typed, functional programming
-  languages like OCaml are quickly introduced to the notion of
-  /polymorphism/ as a way to generalize types over types. Rank-N types
-  are a class of polymorphic types that are cumbersome to write in
-  OCaml, and we explore how it can be done in this article.
+- [[./posts/RankNTypesInOCaml.html][Writing a Function Whose Argument is a Polymorphic Function in OCaml]] ::
+  In OCaml, it is not possible to write a function whose argument is a
+  polymorphic function. Trying to write such a function results in the
+  type-checker complaining back at you. The trick to be able to write
+  such a function is to use records.
