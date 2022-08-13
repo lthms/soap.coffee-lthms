@@ -1,4 +1,4 @@
-#+TITLE: An Unfinished Series on How This Static Website Used to be Generating
+#+TITLE: An Unfinished Series on How This Static Website Used to be Generated
 
 #+SERIES: ./meta.html
 #+SERIES_PREV: ./posts/Thanks.html
