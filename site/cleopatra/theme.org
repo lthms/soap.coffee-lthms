@@ -385,10 +385,6 @@ body {
     background: var(--bg);
 }
 
-a[href] {
-    color: var(--doc);
-}
-
 h2 a.anchor-link,
 h3 a.anchor-link,
 h4 a.anchor-link {
@@ -415,8 +411,6 @@ h4:hover a.anchor-link {
     color: var(--fg-plus);
 }
 
-.sidenote-number:after,
-.sidenote:before,
 pre,
 code,
 div.code,
@@ -459,11 +453,26 @@ span.inlinecode {
 
    #+begin_src css :tangle style.css
 .icon svg {
-    fill: var(--doc);
     display: inline;
     width: 1em;
     height: .9em;
     vertical-align: text-top;
+}
+
+a[href], .margin-toggle {
+    color: #0000ee;
+}
+
+a[href] .icon svg {
+    fill: #0000ee;
+}
+
+a[href]:visited {
+    color: #25008b;
+}
+
+a[href]:visited .icon svg {
+    fill: #25008b;
 }
 
 .url-mark.fa {
