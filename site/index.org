@@ -1,8 +1,11 @@
 #+TITLE: Technical Articles
 
 Over the past years, I have tried to capitalize on my findings. I have
-lacked in regularity, but I hope I I made up for it in subject
-exoticism.
+lacked in regularity, but I hope I I made up for it in exoticism.
+
+#+begin_export html
+<nav id="generate-toc"></nav>
+#+end_export
 
 * About Coq
   :PROPERTIES:
