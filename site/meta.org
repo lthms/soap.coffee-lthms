@@ -14,12 +14,3 @@ pages you read.
   projects. Although I could not list them all even if I wanted, my
   desire is at least to try keeping up-to-date a curated description
   of the most significant ones.
-
-- [[./cleopatra.org][An Unfinished Series on How This Static Website Used to be Generated]] ::
-  At some point, I felt like the whole process of generating this
-  website was interesting enough so that it would deserve a write-up
-  of its own.  As a result, I spent quite some time turning my custom
-  toolchain into a literate program, so that its actual code source
-  would actually be the write-ups I wanted to add to my website. I
-  don’t use said toolchain anymore, but the article remains, though
-  they are doomed to become more and more outdated.
