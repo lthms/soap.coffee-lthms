@@ -130,7 +130,7 @@ Qed.
 
 (** I want to highlight several things here:
 
-      - We return [x] (of type [a]) rather than a gigma-type, then <<Program>> is smart
+      - We return [x] (of type [a]) rather than a sigma-type, then <<Program>> is smart
         enough to wrap it. To do so, it tries to prove the post condition and because
         it fails, we have to do it ourselves (this is the Obligation we solve after
         the function definition.)
@@ -169,7 +169,7 @@ Arguments vnil {a}.
 
 (** I had three functions in mind: [take], [drop] and [extract]. I
     learned few lessons. My main take-away remains: do not use
-    gigma-types, <<Program>> and dependent-types together. From my
+    sigma-types, <<Program>> and dependent-types together. From my
     point of view, Coq is not yet ready for this. Maybe it is possible
     to make those three work together, but I have to admit I did not
     find out how. As a consequence, my preconditions are defined as
