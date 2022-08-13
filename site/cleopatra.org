@@ -1,4 +1,4 @@
-#+TITLE: A Series on Generating this Static Website
+#+TITLE: An Unfinished Series on How This Static Website Used to be Generating
 
 #+SERIES: ./meta.html
 #+SERIES_PREV: ./posts/Thanks.html
@@ -10,11 +10,12 @@ become out-dated. This is reminescent of documenting any software
 project, and I was aware at that time of a dedicated paradigm to
 prevent these kind of issues: [[http://www.literateprogramming.com/][literate programming]].
 
-I spent quite some time turning my custom toolchain into a literate program, so
-that its actual code source would actually be the write-ups I wanted to add to
-my website. This was an interesting challenge, since it meant *~cleopatra~*
-would have to generate itself before it could build my website. In other words,
-*~cleopatra~* achieves the bootstsrapping challenge!
+I spent quite some time turning my custom toolchain into a literate
+program, so that its actual code source would actually be the
+write-ups I wanted to add to my website. This was an interesting
+challenge, since it meant *~cleopatra~* would have to generate itself
+before it could build my website. In other words, *~cleopatra~*
+achieves the bootstsrapping challenge!
 
 I really enjoyed this first experiment with literate programming, and
 I started using *~cleopatra~* for other projects of mine where
@@ -28,9 +29,17 @@ bootstrap jump.”]. But the so-called generation processes I had
 written for *~cleopatra~* the first basically “just worked” with
 *~cleopatra~* the second.
 
-So, coming back to this series, it is just the very reason why I started using
-*~cleopatra~* in the first place: the generation processes used by this website,
-written as literate programs.
+Now, I don’t use *~cleopatra~* anymore. Literate programming is a fun
+paradigm, but I never took the time to actually document in depth most
+of the bits on how this website is built. So I took the various
+scripts extracted by *~cleopatra~*, and recreated a straightforward
+~makefile~ file on top of it. The nice thing is, it now takes way less
+time to build!
+
+Anyway, coming back to this series, it is just the very reason why I
+started using *~cleopatra~* in the first place: the generation
+processes I was using to generate this website, written as literate
+programs. If you are curious, you can have a look.
 
 - [[./cleopatra/dependencies.org][Installing Dependencies]] ::
 

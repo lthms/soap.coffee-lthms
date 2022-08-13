@@ -1,0 +1,33 @@
+<details id="history">
+  <summary>Revisions</summary>
+  <p>
+    This revisions table has been automatically generated
+    from <a href="https://src.soap.coffee/soap.coffee/lthms.git">the
+    <code>git</code> history of this website repository</a>, and the
+    change descriptions may not always be as useful as they should.
+  </p>
+
+  <p>
+    You can consult the source of this file in its current version
+    <a href="https://src.soap.coffee/soap.coffee/lthms.git/tree/{{file}}">here</a>.
+  </p>
+
+  <table class="fullwidth">
+  {{#history}}
+  <tr>
+    <td class="date"
+{{#created}}
+        id="created-at"
+{{/created}}
+{{#modified}}
+        id="modified-at"
+{{/modified}}
+        >{{date}}</td>
+    <td class="subject">{{subject}}</td>
+    <td class="commit">
+      <a href="https://src.soap.coffee/soap.coffee/lthms.git/commit/{{filename}}/?id={{hash}}">{{abbr_hash}}</a>
+    </td>
+  </tr>
+  {{/history}}
+  </table>
+</details>

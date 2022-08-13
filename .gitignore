@@ -1,33 +1,23 @@
 *~
 
 # begin generated files
-.cleopatra
+.commands.deps
+.coq.deps
+.dependencies.deps
 .emacs
+.emacs.d
+.emacs.d/cache
 .lia.cache
+.literate-programming.deps
+.org.deps
+.soupault.deps
+.theme.deps
 _opam
-build.log
-commands.mk
-coq.mk
-dependencies.mk
-export-lp.el
-literate-programming.mk
 lp/
 node_modules
-org.mk
 out
 package-lock.json
-package.json
-plugins/clean-up.lua
-plugins/css.lua
-plugins/external-urls.lua
-plugins/series.lua
-plugins/urls-rewriting.lua
 rss.json
-scripts/css.sh
-scripts/export-org.el
-scripts/history.sh
-scripts/packages.el
-scripts/render-equations.js
 site/cleopatra.html
 site/cleopatra/commands.html
 site/cleopatra/coq.html
@@ -106,11 +96,5 @@ site/posts/StronglySpecifiedFunctionsRefine.vos
 site/posts/Thanks.html
 site/posts/deps.svg
 site/projects/index.html
-soupault.conf
-soupault.mk
-style.css
 style.min.css
-templates/history.html
-templates/main.html
-theme.mk
 # end generated files
