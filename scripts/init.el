@@ -70,6 +70,19 @@
 (add-to-list 'org-entities-user
              '("mi" "\\)" nil "</span>" "" "" ""))
 
+;; Borrowed from Stack Exchange
+;; https://emacs.stackexchange.com/questions/9807/org-mode-dont-change-relative-urls
+(defun export-rel-url (path desc format)
+  (cl-case format
+    (html (format "<a href=\"%s\">%s</a>" path (or desc path)))
+    (latex (format "\\href{%s}{%s}" path (or desc path)))
+    (otherwise path)))
+
+(eval-after-load "org"
+  '(org-link-set-parameters "rel" :follow #'browse-url :export #'export-rel-url))
+;; --
+
+
 (defun with-keyword (keyword k)
   "Look-up for keyword KEYWORD, and call continuation K with its value."
   (pcase (org-collect-keywords `(,keyword))

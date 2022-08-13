@@ -19,7 +19,7 @@ opam install coq-coqffi coq-simple-io
 #+END_SRC
 
 Besides, this article is a literate program, and you can download
-[[/files/coqffi-tutorial.tar.gz][the resulting source tree]] if you
+[[rel:/files/coqffi-tutorial.tar.gz][the resulting source tree]] if you
 want to try to read the source directly, or modify it to your taste.
 
 #+BEGIN_EXPORT html
