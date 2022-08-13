@@ -1,6 +1,6 @@
 literate-programming-prebuild : org-prebuild
 	@scripts/pretty-echo.sh "Tangling" "literate programming project"
-	@${EMACS} --"load=scripts/export-lp.el"
+	@${EMACS} --eval "(cleopatra:export-lp)"
 
 ARTIFACTS += lp/ site/posts/deps.svg
 

@@ -4,7 +4,6 @@
 .commands.deps
 .coq.deps
 .dependencies.deps
-.emacs
 .emacs.d
 .emacs.d/cache
 .lia.cache
