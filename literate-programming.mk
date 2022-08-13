@@ -1,4 +1,4 @@
-literate-programming-prebuild : org-prebuild
+literate-programming-prebuild : site/posts/CoqffiEcho.org
 	@scripts/pretty-echo.sh "Tangling" "literate programming project"
 	@capture.sh tangling-lp ${EMACS} --eval "(cleopatra:export-lp)"
 
@@ -13,7 +13,6 @@ coqffi-tutorial-build : literate-programming-prebuild _opam/init
 	@rm -f ${COQFFI_ARCHIVE}
 	@capture.sh coqffi-tutorial tar --exclude="_build" -C lp/ -czvf ${COQFFI_ARCHIVE} coqffi-tutorial
 
-site/posts/CoqffiEcho.html : coqffi-tutorial-build
 literate-programming-build : coqffi-tutorial-build
 
 ARTIFACTS += ${COQFFI_ARCHIVE}
