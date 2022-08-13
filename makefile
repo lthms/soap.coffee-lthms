@@ -1,4 +1,6 @@
-ARTIFACTS :=
+PATH := scripts/:${PATH}
+
+ARTIFACTS := logs/*.stderr logs/*.stdout
 CONFIGURE := .emacs.d
 
 PROCS := $(wildcard *.mk)
@@ -11,12 +13,12 @@ EMACS_NAME=cleopatra
 EMACS := emacsclient -s ${EMACS_NAME}
 
 init : ${PROCS_DEPS} needs-emacs
-	make ${CMD}
+	@make ${CMD}
 
 needs-emacs :
 	@scripts/pretty-echo.sh "Starting" "emacs daemon"
-	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)" || true
-	@ROOT=$(shell pwd) emacs --daemon=${EMACS_NAME} -Q --load="scripts/init.el"
+	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)" 2> /dev/null || true
+	@ROOT=$(shell pwd) capture.sh "start-server" emacs --daemon=${EMACS_NAME} -Q --load="scripts/init.el"
 
 .PHONY : needs-emacs
 
@@ -33,7 +35,7 @@ postbuild :
 	@scripts/pretty-echo.sh "Updating" ".gitignore"
 	@scripts/update-gitignore.sh $(sort ${CONFIGURE} ${ARTIFACTS} ${PROCS_DEPS})
 	@scripts/pretty-echo.sh "Killing" "emacs daemon"
-	${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)"
+	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)"
 	@rm -f $(wildcard .*.deps)
 
 .PHONY: prebuild build postbuild

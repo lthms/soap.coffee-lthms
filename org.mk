@@ -11,4 +11,4 @@ site/index.org : site/haskell.org site/miscellaneous.org site/meta.org site/coq.
 
 %.html : %.org org.mk
 	@scripts/pretty-echo.sh  Exporting "$*.org"
-	@${EMACS} --eval "(cleopatra:export-org \"$<\")"
+	@capture.sh "$@" ${EMACS} --eval "(cleopatra:export-org \"$<\")"
