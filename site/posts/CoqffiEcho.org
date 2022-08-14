@@ -35,8 +35,7 @@ at implementing a program, we draw our inspiration from the idiomatic
 way of organizing a OCaml project.
 
 #+BEGIN_SRC sh :results output :exports results
-cd ${ROOT}/lp/coqffi-tutorial/
-tree --noreport -I "_build"
+cd ${ROOT}/lp/coqffi-tutorial/ ; tree --noreport -I "_build"
 #+END_SRC
 
 We have three directories at the root of the project.
