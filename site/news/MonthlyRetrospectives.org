@@ -1,0 +1,11 @@
+#+TITLE: Monthly Retrospectives
+
+For a year or two now, I have been aware of a trend consisting in
+writing monthly recap in certain developers communities. I have
+enjoyed reading these regular posts, and from time to time, I have
+entertained the idea of writing my own. Never did I actually act on
+this thought. That is, until today.  I anticipate the main audience of
+this post —and hopefully the ones that will come afterwards— will be
+future me, curious to remember what he was up to at that time.
+
+- [[./August2022.html][August 2022]]

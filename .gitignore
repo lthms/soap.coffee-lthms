@@ -26,7 +26,9 @@ logs/site--haskell.html.stderr
 logs/site--index.html.stderr
 logs/site--meta.html.stderr
 logs/site--miscellaneous.html.stderr
+logs/site--news--August2022.html.stderr
 logs/site--news--ColorlessThemes-0.2.html.stderr
+logs/site--news--MonthlyRetrospectives.html.stderr
 logs/site--opinions--index.html.stderr
 logs/site--opinions--MonadTransformers.html.stderr
 logs/site--opinions--StackedGit.html.stderr
@@ -57,7 +59,9 @@ logs/site--haskell.html.stdout
 logs/site--index.html.stdout
 logs/site--meta.html.stdout
 logs/site--miscellaneous.html.stdout
+logs/site--news--August2022.html.stdout
 logs/site--news--ColorlessThemes-0.2.html.stdout
+logs/site--news--MonthlyRetrospectives.html.stdout
 logs/site--opinions--index.html.stdout
 logs/site--opinions--MonadTransformers.html.stdout
 logs/site--opinions--StackedGit.html.stdout
@@ -93,7 +97,9 @@ site/haskell.html
 site/index.html
 site/meta.html
 site/miscellaneous.html
+site/news/August2022.html
 site/news/ColorlessThemes-0.2.html
+site/news/MonthlyRetrospectives.html
 site/opinions/MonadTransformers.html
 site/opinions/StackedGit.html
 site/opinions/index.html
