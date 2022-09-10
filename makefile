@@ -16,14 +16,14 @@ init : ${PROCS_DEPS} needs-emacs
 	@make ${CMD}
 
 needs-emacs :
-	@scripts/pretty-echo.sh "Starting" "emacs daemon"
+	@pretty-echo.sh "Starting" "emacs daemon"
 	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)" 2> /dev/null || true
 	@ROOT=$(shell pwd) capture.sh "start-server" emacs --daemon=${EMACS_NAME} -Q --load="scripts/init.el"
 
 .PHONY : needs-emacs
 
 .%.deps : %.mk makefile
-	@scripts/gen-deps.sh $< $@
+	@gen-deps.sh $< $@
 
 -include ${PROCS_DEPS}
 
@@ -32,9 +32,9 @@ build : prebuild
 postbuild : build
 
 postbuild :
-	@scripts/pretty-echo.sh "Updating" ".gitignore"
-	@scripts/update-gitignore.sh $(sort ${CONFIGURE} ${ARTIFACTS} ${PROCS_DEPS})
-	@scripts/pretty-echo.sh "Killing" "emacs daemon"
+	@pretty-echo.sh "Updating" ".gitignore"
+	@update-gitignore.sh $(sort ${CONFIGURE} ${ARTIFACTS} ${PROCS_DEPS})
+	@pretty-echo.sh "Killing" "emacs daemon"
 	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)"
 	@rm -f $(wildcard .*.deps)
 

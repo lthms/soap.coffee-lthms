@@ -1,8 +1,7 @@
 :root {
-    --main-width: 35rem;
+    --main-width: 42rem;
     --gutter-width: 3rem;
     --margin-width: 13rem;
-    --code-width: calc(var(--main-width) + var(--gutter-width) + var(--margin-width));
     --body-width: calc(var(--main-width) + 2 * (var(--gutter-width) + var(--margin-width)));
 }
 
@@ -14,30 +13,36 @@
     media queries. As a consequnece, for our theme to be responsive,
     the full width of the page content is
 
-       2 * (margin_width + gutter_width) + content_width = 67rem
+       2 * (margin_width + gutter_width) + content_width = 74rem
 
  */
 
 /* See {{Note: width}} */
-@media (max-width: 67rem) {
+@media (max-width: 74rem) {
     :root {
         --body-width: var(--main-width);
-        --code-width: var(--main-width);
+        --width: var(--main-width);
     }
+}
+
+figure, figcaption {
+    text-align: center;
+    margin-left:0;
+    margin-right:0;
 }
 
 * {
     box-sizing: border-box;
 }
 
-.fullwidth {
-    width: var(--body-width);
-}
-
 /* See {{Note: width}} */
-@media (min-width: 67rem) {
-    .fullwidth {
+@media (min-width: 74rem) {
+    .fullwidth, figure {
         margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+    }
+
+    figure, figcaption, .fullwidth {
+        width: var(--body-width);
     }
 }
 
@@ -183,7 +188,6 @@ label.margin-toggle:not(.sidenote-number) {
 
 div.code,
 pre {
-    width: var(--code-width);
     overflow-x: auto;
     overflow-y: hidden;
     padding: 1rem 2rem;
@@ -254,7 +258,7 @@ td.commit {
 }
 
 /* See {{Note: width}} */
-@media (max-width: 67rem) {
+@media (max-width: 74rem) {
     body {
         padding: 2rem;
         margin: auto;
@@ -301,8 +305,8 @@ td.commit {
     --bg-plus: #f7f7f7;
     --current-line: #fbfbfb;
     --fade: #cfcecb;
-    --fg: #3c3c3c;
-    --fg-plus: #575757;
+    --fg: black;
+    --fg-plus: black;
     --doc: black;
     --warning: #bd745e;
     --red: #b3534b;
@@ -348,6 +352,7 @@ div.code,
 span.inlinecode,
 tt {
     color: var(--doc);
+    background: var(--bg-plus);
 }
 
 div.code {
@@ -364,7 +369,7 @@ span.inlinecode {
 }
 
 .code a[href] {
-    color : inherit;
+    color : black !important;
     text-decoration : none;
     background : var(--bg-plus);
     padding : .1rem .15rem .1rem .15rem;
@@ -383,19 +388,19 @@ span.inlinecode {
 }
 
 a[href], .margin-toggle {
-    color: #0000ee;
+    color: black;
 }
 
 a[href] .icon svg {
-    fill: #0000ee;
+    fill: black;
 }
 
 a[href]:visited {
-    color: #25008b;
+    color: #555;
 }
 
 a[href]:visited .icon svg {
-    fill: #25008b;
+    fill: #555;
 }
 
 .url-mark.fa {

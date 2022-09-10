@@ -23,7 +23,7 @@ COQDOCARG := --no-index --charset utf8 --short \
              --external "https://lysxia.github.io/coq-simple-io" SimpleIO
 
 %.html : %.v coq.mk _opam/init
-	@scripts/pretty-echo.sh Exporting  "$*.v"
+	@pretty-echo.sh Exporting  "$*.v"
 	@coqc ${COQCARG} $<
 	@coqdoc ${COQDOCARG} -d $(shell dirname $<) $<
 	@rm -f $(shell dirname $<)/coqdoc.css

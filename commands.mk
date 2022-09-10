@@ -3,6 +3,6 @@ serve :
 	@cd out && python -m http.server
 
 update :
-	@scripts/pretty-echo "Updating" "OCaml dependencies"
+	@pretty-echo.sh "Updating" "OCaml dependencies"
 	@opam update
 	@opam upgrade -y

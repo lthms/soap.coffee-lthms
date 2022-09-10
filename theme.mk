@@ -1,6 +1,6 @@
 style.min.css : style.css dependencies-prebuild
-	@scripts/pretty-echo.sh "Minifying" "CSS"
-	@scripts/css.sh
+	@pretty-echo.sh "Minifying" "CSS"
+	@css.sh
 
 ARTIFACTS += style.min.css
 
