@@ -1,6 +1,6 @@
 #+TITLE: Writing a Function Whose Argument is a Polymorphic Function in OCaml
 
-#+SERIES: ../miscellaneous.html
+#+SERIES: ./miscellaneous.html
 #+SERIES_PREV: ./DiscoveringCommonLisp.html
 
 #+BEGIN_EXPORT html

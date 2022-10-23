@@ -7,7 +7,7 @@ soupault-build : org-build
 
 ARTIFACTS += ${ORG_OUT} .emacs.d/cache
 
-site/index.html : site/haskell.org site/miscellaneous.org site/meta.org site/coq.org
+site/posts/index.html : site/posts/haskell.org site/posts/miscellaneous.org site/posts/meta.org site/posts/coq.org
 
 %.html : %.org org.mk
 	@pretty-echo.sh  Exporting "$*.org"

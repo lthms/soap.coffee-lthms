@@ -1,0 +1,28 @@
+#+TITLE: Technical Articles
+
+Over the past years, I have tried to capitalize on my findings. More
+often than not, I have lacked in regularity, but I hope I have made up
+for it in exoticism.
+
+#+begin_export html
+<nav id="generate-toc"></nav>
+#+end_export
+
+* About Coq
+  :PROPERTIES:
+  :CUSTOM_ID: coq
+  :END:
+
+  #+include: ./coq.org
+
+* About Haskell
+
+  #+include: ./haskell.org
+
+* Miscellaneous
+
+  #+include: ./miscellaneous.org
+
+* About this Website
+
+  #+include: ./meta.org

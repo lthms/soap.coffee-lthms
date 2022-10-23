@@ -1,6 +1,6 @@
 #+TITLE: A Series on Strongly-Specified Functions in Coq
 
-#+SERIES: ../coq.html
+#+SERIES: ./coq.html
 #+SERIES_NEXT: ./Ltac.html
 
 Using dependent types and the ~Prop~ sort, it becomes possible to specify

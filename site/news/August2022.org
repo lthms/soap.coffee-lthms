@@ -1,8 +1,9 @@
 #+TITLE: Monthly Retrospective: August 2022
 
 #+SERIES: ./MonthlyRetrospectives.html
+#+SERIES_NEXT: ./September2022.html
 
-Anyway, without further ado, let’s take a look at what was achieved
+Without further ado, let’s take a look at what was achieved
 for the last thirty days or so.
 
 #+begin_export html

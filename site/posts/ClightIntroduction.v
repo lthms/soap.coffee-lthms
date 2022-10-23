@@ -1,4 +1,4 @@
-(** #<nav><p class="series">../coq.html</p>
+(** #<nav><p class="series">./coq.html</p>
      <p class="series-prev">./RewritingInCoq.html</p>
      <p class="series-next">./AlgebraicDatatypes.html</p></nav># *)
 

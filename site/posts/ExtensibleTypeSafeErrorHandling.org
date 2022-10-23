@@ -1,6 +1,6 @@
 #+TITLE: Extensible Type-Safe Error Handling in Haskell
 
-#+SERIES: ../haskell.html
+#+SERIES: ./haskell.html
 
 #+BEGIN_EXPORT html
 <p>This article has originally been published on <span

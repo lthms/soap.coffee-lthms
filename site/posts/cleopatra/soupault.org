@@ -522,6 +522,9 @@ main "$(cat)" "${1}"
     #+end_src
 
 ** Rendering Equations Offline
+   :PROPERTIES:
+   :CUSTOM_ID: katex
+   :END:
 
 *** Users instructions
 

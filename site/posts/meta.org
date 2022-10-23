@@ -9,7 +9,7 @@ mostly use Org mode for authoring content, most of my write-ups about
 Coq are actually Coq files, and I use ~coqdoc~ to generate the HTML
 pages you read.
 
-- [[./posts/Thanks.org][Thanks!]] ::
+- [[./Thanks.org][Thanks!]] ::
   This website could not exist without many awesome free software
   projects. Although I could not list them all even if I wanted, my
   desire is at least to try keeping up-to-date a curated description

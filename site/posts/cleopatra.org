@@ -1,7 +1,7 @@
 #+TITLE: An Unfinished Series on How This Static Website Used to be Generated
 
 #+SERIES: ./meta.html
-#+SERIES_PREV: ./posts/Thanks.html
+#+SERIES_PREV: ./Thanks.html
 
 At some point, I felt like the whole process of generating this
 website was interesting enough so that it would deserve a write-up of

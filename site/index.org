@@ -1,27 +1,35 @@
-#+TITLE: Technical Articles
+Welcome to my little corner of the Internet.
 
-Over the past years, I have tried to capitalize on my findings. I have
-lacked in regularity, but I hope I I made up for it in exoticism.
+You will find it dusty more often than not, but it’s been there for
+quite a while now, and its contents might be of interest for you. If
+that is the case, I’m thrilled, or I would be if I knew[fn::Please,
+let me know!].
 
-#+begin_export html
-<nav id="generate-toc"></nav>
-#+end_export
+* Last Contents
+  All categories combined, here is the last pieces of contents I have
+  published on this website.
 
-* About Coq
-  :PROPERTIES:
-  :CUSTOM_ID: coq
-  :END:
+  - [[./news/September2022.org][Monthly Retrospective: September 2022]] /(September 18, 2022)/
+  - [[./news/August2022.org][Monthly Retrospective: August 2022]] /(August 15, 2022)/
+  - [[./posts/RankNTypesInOCaml.org][Writing a Function Whose Argument is a Polymorphic Function in
+    OCaml]] /(August 7, 2022)/
+  - [[./opinions/StackedGit.org][How I Use Stacked Git at ~$WORK~]] /(January 15, 2022)/
 
-  #+include: ./coq.org
+  I had an RSS feed once, but it’s long gone, mostly because the
+  toolchain I ended up writing for generating this website does not
+  allow me to generate one easily. I hope it might come back at some
+  point.
 
-* About Haskell
+* Projects
+  Here is a curated list of the free software projects I have most
+  enjoyed writing, and that made an impact on my daily life.
 
-  #+include: ./haskell.org
-
-* Miscellaneous
-
-  #+include: ./miscellaneous.org
-
-* About this Website
-
-  #+include: ./meta.org
+  - [[https://src.soap.coffee/crates/ogam.git/about][ogam]] is a domain-specific markup language intended to free fiction
+    writers from the pain to enforce typographic rules themselves.
+  - [[https://sr.ht/~lthms/keyr][*keyr*]] is a collection of software to know how many keystrokes you
+    have made since you have started using it.
+  - [[https://github.com/coq-community/coqffi][~coqffi~]] is a tool that generates the necessary boilerplate to use
+    OCaml functions in a Coq development, and configure the Coq
+    extraction mechanism accordingly.
+  - [[https://github.com/lthms/spatial-sway][Spatial Sway]] is a daemon that enables a dynamic tiling management
+    workflow a la Material Shell and PaperWM.

@@ -1,6 +1,6 @@
 #+TITLE: A Series on Ltac
 
-#+SERIES: ../coq.html
+#+SERIES: ./coq.html
 #+SERIES_PREV: ./StronglySpecifiedFunctions.html
 #+SERIES_NEXT: ./RewritingInCoq.html
 

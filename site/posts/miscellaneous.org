@@ -8,12 +8,12 @@ Over the years, I have made a habit of learning new programming
 languages, out of curiosity, and I intend to continue this way for the
 time being.
 
-- [[./posts/DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::
+- [[./DiscoveringCommonLisp.html][Discovering Common Lisp with ~trivial-gamekit~]] ::
   Common Lisp is a venerable programming languages like no other I
   know.  From the creation of a Lisp package up to the creation of a
   standalone executable, we explore the shore of this strange beast.
 
-- [[./posts/RankNTypesInOCaml.html][Writing a Function Whose Argument is a Polymorphic Function in OCaml]] ::
+- [[./RankNTypesInOCaml.html][Writing a Function Whose Argument is a Polymorphic Function in OCaml]] ::
   In OCaml, it is not possible to write a function whose argument is a
   polymorphic function. Trying to write such a function results in the
   type-checker complaining back at you. The trick to be able to write

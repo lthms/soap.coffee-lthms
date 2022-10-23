@@ -340,5 +340,4 @@ I’d argue we have seen better UXs.
   and [[https://pijul.org][Pijul]], but without sacrificing the power of Git.
 
   I encourage anyone to at least give it a try, and I really hope I
-  will be able to contribute back to Stacked Git when ~$WORK~ is a bit
-  less crazy.
+  will be able to contribute back to Stacked Git in the near future.

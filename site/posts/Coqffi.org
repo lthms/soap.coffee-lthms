@@ -1,6 +1,6 @@
 #+TITLE: A series on ~coqffi~
 
-#+SERIES: ../coq.html
+#+SERIES: ./coq.html
 #+SERIES_PREV: AlgebraicDatatypes.html
 
 ~coqffi~ generates Coq FFI modules from compiled OCaml interface

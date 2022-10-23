@@ -1,7 +1,7 @@
 #+TITLE: Thanks!
 
-#+SERIES: ../meta.html
-#+SERIES_NEXT: ../cleopatra.html
+#+SERIES: ./meta.html
+#+SERIES_NEXT: ./cleopatra.html
 
 This website could not exist without many awesome free software
 projects. Although I could not list them all even if I wanted, my
@@ -32,10 +32,6 @@ the most significant ones.
 - [[https://soupault.app][soupault]] ::
   Soupault is a static website generator and HTML processor written by [[https://www.baturin.org/][Daniil
   Baturin]].
-- [[https://cleopatra.soap.coffee][~cleopatra~]] ::
-  ~cleopatra~ is a generic, extensible toolchain with facilities for
-  literate programming projects using Org mode and more. I have
-  written it for this very website.
 
 * Frontend
 
