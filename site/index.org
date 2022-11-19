@@ -9,6 +9,7 @@ let me know!].
   All categories combined, here is the last pieces of contents I have
   published on this website.
 
+  - [[./news/November2022.org][Monthly Retrospective: October and November 2022]] /(November 19, 2022)/
   - [[./news/September2022.org][Monthly Retrospective: September 2022]] /(September 18, 2022)/
   - [[./news/August2022.org][Monthly Retrospective: August 2022]] /(August 15, 2022)/
   - [[./posts/RankNTypesInOCaml.org][Writing a Function Whose Argument is a Polymorphic Function in

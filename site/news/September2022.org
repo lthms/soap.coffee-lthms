@@ -2,6 +2,7 @@
 
 #+SERIES: ./MonthlyRetrospectives.html
 #+SERIES_PREV: ./August2022.html
+#+SERIES_NEXT: ./November2022.html
 
 It is September 18 today, and it has already been a month since I
 decided to start these retrospectives. This means it is time to take a

@@ -8,6 +8,8 @@ this thought. That is, until today.  I anticipate the main audience of
 this post —and hopefully the ones that will come afterwards— will be
 future me, curious to remember what he was up to at that time.
 
+- [[./November2022.html][October and November 2022]], when two months pass by way too quickly
+  for me to progress on any side projects.
 - [[./September2022.html][September 2022]], when I talked about Spatial Sway for the first time
   on this website (but not on Twitter/the Fediverse to be honest).
 - [[./August2022.html][August 2022]], when I gave up on *~cleopatra~* and was able to
