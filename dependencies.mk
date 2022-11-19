@@ -5,7 +5,7 @@ _opam/init :
 	@pretty-echo.sh "Creating" "a local Opam switch"
 	@opam switch create . ${OCAML} --repos default,coq-released || true
 	@pretty-echo.sh "Installing" "OCaml dependencies"
-	@opam install dune.2.9.0 coq-coqffi.1.0.0~beta7 coq-simple-io.1.5.0 soupault.4.0.1 coq.8.13.2 coq-compcert.3.8 coq-serapi -y
+	@opam install dune.2.9.0 coq-coqffi.1.0.0~beta7 coq-simple-io.1.5.0 soupault.4.2.0 coq.8.13.2 coq-compcert.3.8 coq-serapi -y
 	@touch $@
 
 CONFIGURE += _opam
