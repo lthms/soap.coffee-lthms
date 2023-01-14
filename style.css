@@ -120,6 +120,7 @@ img {
 
 img.avatar {
     border-radius: 20px;
+    border: 1px solid black;
     display: block;
     max-width: 90%;
     margin: auto;
