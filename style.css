@@ -137,13 +137,13 @@ dd {
     width: var(--margin-width);
 }
 
-.sidenote {
+.note-right {
     margin-right: calc(-1 * (var(--margin-width) + var(--gutter-width)));
     float: right;
     clear: right;
 }
 
-.marginnote {
+.note-left {
     float: left;
     clear: left;
     margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
