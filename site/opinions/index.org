@@ -16,7 +16,7 @@ I would encourage you to use your critical mind while reading these write-ups.
 ** 2022
 
    - [[./StackedGit.org][How I Use Stacked Git at ~$WORK~]] ::
-     I’ve been using Stacked Git at ~work~ for in early 2021, and as
+     I’ve been using Stacked Git at ~work~ since early 2021, and as
      of January 2022, it has become a cornerstone of my daily
      workflow.
 
