@@ -8,15 +8,15 @@ One year ago, I have published an article summarizing
 enough has changed to motivate a spin-off piece.
 
 * Stacked Git is /Fast/
-  Firstly, it is important to state that my main complain is now a
-  thing of the past! In particular, Stacked Git does not feel slow
-  anymore, and far from it. This is because
-  [[https://github.com/stacked-git/stgit/discussions/185][Stacked Git 2.0 has been rewritten in Rust]]. RiiR (/Rewrite it in
-  Rust/) is a running meme on the Internet, but in this particular
+  Firstly, it is important to state that my main complain about
+  Stacked Git is now a thing of the past! Stacked Git does not feel
+  slow anymore, and far from it. This is because
+  [[https://github.com/stacked-git/stgit/discussions/185][Stacked Git 2.0 has been rewritten in Rust]]. While RiiR (/Rewrite it
+  in Rust/) is a running meme on the Internet, in this particular
   case, the result is very exciting.
 
   Thanks to the performance boost, my Zsh prompt does not take 0.1s to
-  appear.
+  appear!
 
   Speaking of Zsh prompt, basically what I ended up displaying is
   ~(<TOP PATCH NAME> <APPLIED PATCHES COUNT>/<PATCHSET SIZE> <HIDDEN
@@ -49,36 +49,36 @@ fi
   worked well, because my typical MR counted 3 to 4 commits in
   average.
 
-  [[mn:onecommit][This approach comes with its set of drawbacks too,
-  it goes without saying. During the past year, I’ve pushed fairly
-  large commits which could have been splitted into several smaller
-  ones. I have also had to manage large stacks of MRs.]]
-
   Fast forward today, and things have changed on this front too. In a
-  nutshell, I have become a “one commit per MR” maximalist of sort. I
-  find this approach very effective to get more focused reviews, and
-  to reduce the time it takes for a given MR to be integrated into the
-  main branch. My previous approach did not scale well with this new
-  mindset, and during the course of the year, I stopped using branches
-  altogether.
+  nutshell, I have become a “one commit per MR” maximalist of
+  sort[[mn:onecommit][It goes without saying that this approach comes
+  with its set of drawbacks too. During the past year, I’ve pushed
+  fairly large commits which could have been splitted into several
+  smaller ones, for the sake of keeping my “one commit per MR”
+  policy. I have also had to manage large stacks of MRs.]]. I find
+  this approach very effective to get more focused reviews, and to
+  reduce the time it takes for a given MR to be integrated into the
+  main branch.
 
-  I did not invent the branchless workflow, of course.
-  After it was first published, someone posted a link to my Stacked
-  Git article on Hacker News, and
-  [[https://news.ycombinator.com/item?id=29959224][*@arxanas* posted a comment about ~git-branchless~]]. I tried the
-  tool, and even if it never clicked for me, I was really compelled by
-  its core ideas. Similarly,
-  [[https://drewdevault.com/2020/04/06/My-weird-branchless-git-workflow.html][Drew DeVault has published a complete article on its own branchless
-  workflow in 2020]].
+  My previous approach based on git branches did not scale well with
+  this new mindset, and during the course of the year, I stopped using
+  branches altogether[fn::I did not invent the branchless workflow, of
+  course.  After it was first published, someone posted a link to my
+  Stacked Git article on Hacker News, and [[https://news.ycombinator.com/item?id=29959224][*@arxanas* posted a comment
+  about ~git-branchless~]]. I tried the tool, and even if it never
+  clicked for me, I was really compelled by its core ideas. Similarly,
+  [[https://drewdevault.com/2020/04/06/My-weird-branchless-git-workflow.html][Drew
+  DeVault has published a complete article on its own branchless
+  workflow in 2020]].].
 
-  In my case, I proceeds as follows.
+  These days, I proceed as follows.
 
   1. I name each patch after the branch to which I will push it on our
      upstream Git remote.
+  2. 99% of the time, I push my work using ~git push -f upstream @:$(stg top)~
   3. I created a small git plugin I called ~git-prepare~ which allows
      me to select one of the patch of my current patchset using ~fzf~,
      and which pops all other patches that are currently applied.
-  2. 99% of the time, I push my work using ~git push -f upstream @:$(stg top)~
 
   ~git-prepare~ is really straightforward:
 
@@ -103,15 +103,14 @@ stg push ${patch}
   these commits, and I need to publish each commit individually using
   ~stg push; git push @:$(stg top)~.
 
-  The pragmatic answer is definitely to come back to git branches for
-  this use case in particular, but it's not the /fun/ answer. So from
-  time to time, I try to experiment new approaches. My current
+  The pragmatic answer is definitely to come back to git branches /for
+  this particular use case/, but it's not the /fun/ answer. So from
+  time to time, I try to experiment alternative approaches. My current
   intuition is that, by adopting a naming convention for my patches, I
   could probably implement a thin tooling on top of Stacked Git to
   deal with dependents commits.
 
 * Conclusion
-
   Putting aside stacked MRs for now, I am really satisfied with my
   workflow. It’s very lightweight and intuitive, and working without
   Stacked Git now feels backward and clunky.
