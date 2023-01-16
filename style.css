@@ -315,7 +315,7 @@ td.commit {
 }
 
 body {
-    font-family: sans-serif;
+    font-family: Roboto, sans-serif;
     color: var(--fg);
     background: var(--bg);
 }
