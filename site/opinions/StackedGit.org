@@ -2,6 +2,7 @@
 
 #+SERIES: index.html
 #+SERIES_PREV: MonadTransformers.html
+#+SERIES_NEXT: StackedGit2.html
 
 According to [[https://lobste.rs/s/s6quvg/stacked_git][my Lobste.rs history]], I have run into [[https://stacked-git.github.io][Stacked Git]] in
 early April, 2021, and I remember its promises hit a soft spot.

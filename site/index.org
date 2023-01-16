@@ -9,12 +9,12 @@ let me know!].
   All categories combined, here is the last pieces of contents I have
   published on this website.
 
+  - [[./opinions/StackedGit2.org][How I Keep Using Stacked Git at ~$WORK~ in 2023]] /(January 15, 2023)/
   - [[./news/November2022.org][Monthly Retrospective: October and November 2022]] /(November 19, 2022)/
   - [[./news/September2022.org][Monthly Retrospective: September 2022]] /(September 18, 2022)/
   - [[./news/August2022.org][Monthly Retrospective: August 2022]] /(August 15, 2022)/
   - [[./posts/RankNTypesInOCaml.org][Writing a Function Whose Argument is a Polymorphic Function in
     OCaml]] /(August 7, 2022)/
-  - [[./opinions/StackedGit.org][How I Use Stacked Git at ~$WORK~]] /(January 15, 2022)/
 
   I had an RSS feed once, but it’s long gone, mostly because the
   toolchain I ended up writing for generating this website does not

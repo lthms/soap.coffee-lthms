@@ -7,6 +7,12 @@ separate indexes.
 
 I would encourage you to use your critical mind while reading these write-ups.
 
+** 2023
+
+   - [[./StackedGit2.org][How I Keep Using Stacked Git at ~$WORK~ in 2023]] ::
+     One year has passed, and I keep using Stacked Git almost
+     daily. /How/ I am using it has slightly changed, though.
+
 ** 2022
 
    - [[./StackedGit.org][How I Use Stacked Git at ~$WORK~]] ::
