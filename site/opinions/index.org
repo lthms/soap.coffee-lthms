@@ -9,6 +9,10 @@ I would encourage you to use your critical mind while reading these write-ups.
 
 ** 2023
 
+   - [[./StackedGitPatchTheory.org][Patch Dependencies for Stacked Git]] ::
+     Could patch dependencies could help reduce the friction my
+     branchless workflow suffers from when it comes to stacked MRs?
+
    - [[./StackedGit2.org][How I Keep Using Stacked Git at ~$WORK~ in 2023]] ::
      One year has passed, and I keep using Stacked Git almost
      daily. /How/ I am using it has slightly changed, though.

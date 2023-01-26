@@ -23,6 +23,7 @@ logs/site--opinions--index.html.stderr
 logs/site--opinions--MonadTransformers.html.stderr
 logs/site--opinions--StackedGit2.html.stderr
 logs/site--opinions--StackedGit.html.stderr
+logs/site--opinions--StackedGitPatchTheory.html.stderr
 logs/site--posts--cleopatra--commands.html.stderr
 logs/site--posts--cleopatra--coq.html.stderr
 logs/site--posts--cleopatra--dependencies.html.stderr
@@ -60,6 +61,7 @@ logs/site--opinions--index.html.stdout
 logs/site--opinions--MonadTransformers.html.stdout
 logs/site--opinions--StackedGit2.html.stdout
 logs/site--opinions--StackedGit.html.stdout
+logs/site--opinions--StackedGitPatchTheory.html.stdout
 logs/site--posts--cleopatra--commands.html.stdout
 logs/site--posts--cleopatra--coq.html.stdout
 logs/site--posts--cleopatra--dependencies.html.stdout
@@ -101,6 +103,7 @@ site/news/September2022.html
 site/opinions/MonadTransformers.html
 site/opinions/StackedGit.html
 site/opinions/StackedGit2.html
+site/opinions/StackedGitPatchTheory.html
 site/opinions/index.html
 site/posts/.AlgebraicDatatypes.aux
 site/posts/.ClightIntroduction.aux

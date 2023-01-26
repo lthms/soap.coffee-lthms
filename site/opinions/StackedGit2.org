@@ -1,5 +1,6 @@
 #+SERIES: index.html
 #+SERIES_PREV: StackedGit.html
+#+SERIES_NEXT: StackedGitPatchTheory.html
 
 #+TITLE: How I Keep Using Stacked Git at ~$WORK~
 
