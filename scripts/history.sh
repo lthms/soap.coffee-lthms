@@ -1,11 +1,12 @@
 #!/usr/bin/bash
+
 function main () {
   local file="${1}"
   local template="${2}"
 
   tmp_file=$(mktemp)
   generate_json ${file} > ${tmp_file}
-  haskell-mustache ${template} ${tmp_file}
+  mustache ${tmp_file} ${template} | tail -n +2
   rm ${tmp_file}
 }
 
