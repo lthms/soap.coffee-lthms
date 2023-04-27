@@ -19,8 +19,7 @@ I can’t help but finding the result rather nice and satisfying, and I hope you
 will enjoy it too! [[https://github.com/lthms/spatial-shell][Spatial Shell]]
 works on my machine, which means it will definitely break on yours. But this is
 where the fun lies, right? At this point, I definitely think the project is
-ready to fall into the hands of (motivated) alpha testers. It works on my
-machine, so it will definitely break on yours!
+ready to fall into the hands of (motivated) alpha testers.
 
 It would be fair to say that Spatial Shell does not bring any novel ideas to
 the table (neither from a user perspective, nor a developer one). Hopefully, it
