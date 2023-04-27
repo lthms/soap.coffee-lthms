@@ -25,6 +25,11 @@
     }
 }
 
+figure {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
 figure, figcaption {
     text-align: center;
     margin-left:0;

@@ -3,9 +3,9 @@
 In August, 2022, I discovered [[https://material-shell.com][Material Shell]]. A
 few weeks later, I had pieced together a working prototype of a dynamic tiling
 management “a la Material Shell” for [[https://swaywm.org][sway]]. By October,
-the project was basically fulfilling my main needs, and I had already started
-to use it on my workstation[fn::I tried so you do not have to: having my
-graphical session going crazy during a work meeting because of a software I had
+the project was basically fulfilling my needs, and I had already started to use
+it on my workstation[fn::I tried so you do not have to: having my graphical
+session going crazy during a work meeting because of a software I had
 written.]. The project sat there for a while, until I rediscovered this thing
 called /holidays/.
 
@@ -15,16 +15,12 @@ missing features that I was aware of. Then, I started to write
 turned out to be the perfect opportunity to clean-up every clunkiness I could
 possibly found.
 
-I can’t help but finding the result rather nice, and I hope you will enjoy it
-too! [[https://github.com/lthms/spatial-shell][Spatial Shell]] works on my
-machine, which means it will definitely break on yours. But this is where the
-fun lies, right? At this point, I definitely think the project is ready to fall
-in the hands of (motivated) alpha testers.
-
-#+BEGIN_EXPORT html
-<nav id="generate-toc"></nav>
-<div id="history">site/news/CFTSpatialShell.org</div>
-#+END_EXPORT
+I can’t help but finding the result rather nice and satisfying, and I hope you
+will enjoy it too! [[https://github.com/lthms/spatial-shell][Spatial Shell]]
+works on my machine, which means it will definitely break on yours. But this is
+where the fun lies, right? At this point, I definitely think the project is
+ready to fall into the hands of (motivated) alpha testers. It works on my
+machine, so it will definitely break on yours!
 
 It would be fair to say that Spatial Shell does not bring any novel ideas to
 the table (neither from a user perspective, nor a developer one). Hopefully, it
@@ -33,12 +29,17 @@ can enjoy Material Shell key ideas without having to install GNOME 3.
 
 Anyway, let me give a tour!
 
+#+BEGIN_EXPORT html
+<nav id="generate-toc"></nav>
+<div id="history">site/news/CFTSpatialShell.org</div>
+#+END_EXPORT
+
 * Spatial Model
 
-At its core, Spatial Shell allows you to navigate a gride of windows, wherein
-each workspace is a row. Each workspace can be configured to determine how many
-windows (cells) you can see at once. More precisely, Spatial Shell supports two
-layouts:
+At its core, Spatial Shell allows you to navigate a grid of windows.
+Workspace are rows which can be individually configured to determine how many
+windows (cells) you can see at once. More precisely, workspaces in Spatial
+Shell can use two layouts:
 
 - *Maximize:* One window is displayed at a time
 - *Column:* Several windows are displayed side by side, to your convenience
@@ -53,14 +54,13 @@ tree workspaces, each configured differently.
 #+NAME:    fig:spatial-shell-example
 [[../img/spatial-shell-example.png]]
 
-- Workspace 1 contains three windows, and is configured to use the *Column*
-  layout to display at most three windows, so every windows are visible, with
-  the focus being on the leftmost one.
-- Workspace 2 contains four windows, and is configured to use the *Column*
-  layout to display at most two windows. As a consequence, two windows are not
-  visible.
-- Workspace 3 contains two windows, and is configured to use the *Maximize*
-  layout so only the focused window is visible.
+- Workspace 1 contains three windows, and uses the *Column* layout to display
+  at most three windows, so every windows are visible, with the focus being on
+  the leftmost one.
+- Workspace 2 contains four windows, and uses the *Column* layout to display at
+  most two windows. As a consequence, two windows are not visible.
+- Workspace 3 contains two windows, and uses the *Maximize* layout so only the
+  focused window is visible.
 
 To help users know which window is currently holding the focus, Spatial Shell
 slightly reduces the opacity of unfocused windows (as poorly hinted by the gray
@@ -107,6 +107,9 @@ bindsym $mod+space exec $spatialmsg "toggle layout"
 # modify the number of windows to display in the Column layout
 bindsym $mod+i exec $spatialmsg "column count decrement"
 bindsym $mod+o exec $spatialmsg "column count increment"
+
+# fully delegate swaybg handling to spatial
+swaybg_command -
 #+end_src
 
 By default, Spatial Shell sets the initial configuration of a workspace to
@@ -135,9 +138,8 @@ using a dedicated IPC protocol inherited from i3 (see
 [[https://lthms.github.io/spatial-shell/sway-ipc.7.html][sway-ipc(5)]]). Not
 only spatial also relies on sway IPC protocol to interact with sway and
 implement its spatial model, it creates a UNIX of its own, and supports its own
-set of commands
+protocol
 ([[https://lthms.github.io/spatial-shell/spatial-ipc.7.html][spatial-ipc.7.html]]).
-spatial does exactly the same thing.
 
 * Waybar Integration
 
@@ -147,14 +149,16 @@ directory of [[https://github.com/lthms/spatial-shell][Spatial Shell
 repository]], interested readers will find a configuration for
 [[https://github.com/Alexays/Waybar][Waybar]][fn::Readers familiar with
 Material Shell design will not be surprised by the general look and feel of
-this screenshot.]. This configuration is somewhat clunky at the moment, due to
-the limitations of the custom widget of Waybar which does not allow to have one
-widget defines several “buttons.” I am interested in investing a bit of time to
-see if I could write a native widget, similarly to sway’s one.
+the screenshot below.]. This configuration is somewhat clunky at the moment,
+due to the limitations of the custom widget of Waybar which does not allow to
+have one widget defines several “buttons.” I am interested in investing a bit
+of time to see if I could write a native widget, similarly to sway’s one.
 
 That being said, the user experience with this integration is already pretty
-neat. As long as you don’t need more
-than 6 workspaces and 8 windows per workspaces, you are good to go!
+neat. As long as you don’t need more than 6 workspaces and 8 windows per
+workspaces[fn::These constants are totally arbitrary and can be increased by
+modifying the Waybar config, but the issue will remain that a limit will
+exist.], you are good to go!
 
 #+CAPTION: Mandatory screenshot of Spatial Shell, with the Waybar configuration.
 #+NAME:    fig:spatial-shell
