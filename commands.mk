@@ -1,5 +1,5 @@
 serve :
-	@cleopatra echo Spwaning "HTTP server"
+	@pretty-echo.sh "Spwaning" "HTTP server"
 	@cd out && python -m http.server
 
 update :
