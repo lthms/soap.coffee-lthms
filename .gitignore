@@ -15,6 +15,7 @@ _opam
 logs/coqffi-tutorial.stderr
 logs/site--index.html.stderr
 logs/site--news--August2022.html.stderr
+logs/site--news--CFTSpatialShell.html.stderr
 logs/site--news--ColorlessThemes-0.2.html.stderr
 logs/site--news--MonthlyRetrospectives.html.stderr
 logs/site--news--November2022.html.stderr
@@ -53,6 +54,7 @@ logs/tangling-lp.stderr
 logs/coqffi-tutorial.stdout
 logs/site--index.html.stdout
 logs/site--news--August2022.html.stdout
+logs/site--news--CFTSpatialShell.html.stdout
 logs/site--news--ColorlessThemes-0.2.html.stdout
 logs/site--news--MonthlyRetrospectives.html.stdout
 logs/site--news--November2022.html.stdout
@@ -96,6 +98,7 @@ rss.json
 site/files/coqffi-tutorial.tar.gz
 site/index.html
 site/news/August2022.html
+site/news/CFTSpatialShell.html
 site/news/ColorlessThemes-0.2.html
 site/news/MonthlyRetrospectives.html
 site/news/November2022.html

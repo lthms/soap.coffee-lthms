@@ -31,5 +31,5 @@ let me know!].
   - [[https://github.com/coq-community/coqffi][~coqffi~]] is a tool that generates the necessary boilerplate to use
     OCaml functions in a Coq development, and configure the Coq
     extraction mechanism accordingly.
-  - [[https://github.com/lthms/spatial-sway][Spatial Sway]] is a daemon that enables a dynamic tiling management
+  - [[https://github.com/lthms/spatial-shell][Spatial Shell]] is a daemon that enables a dynamic tiling management
     workflow a la Material Shell and PaperWM.
