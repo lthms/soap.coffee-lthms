@@ -9,11 +9,11 @@ let me know!].
   All categories combined, here is the last pieces of contents I have
   published on this website.
 
+  - [[./news/CFTSpatialShell.org][Call for Testers: Spatial Shell]] /(April 27, 2023)/
   - [[./opinions/StackedGitPatchTheory.org][Patch Dependencies for Stacked Git]] /(January 25, 2023)/
   - [[./opinions/StackedGit2.org][How I Keep Using Stacked Git at ~$WORK~ in 2023]] /(January 15, 2023)/
   - [[./news/November2022.org][Monthly Retrospective: October and November 2022]] /(November 19, 2022)/
   - [[./news/September2022.org][Monthly Retrospective: September 2022]] /(September 18, 2022)/
-  - [[./news/August2022.org][Monthly Retrospective: August 2022]] /(August 15, 2022)/
 
   I had an RSS feed once, but it’s long gone, mostly because the
   toolchain I ended up writing for generating this website does not
