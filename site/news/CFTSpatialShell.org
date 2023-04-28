@@ -107,8 +107,8 @@ bindsym $mod+space exec $spatialmsg "toggle layout"
 bindsym $mod+i exec $spatialmsg "column count decrement"
 bindsym $mod+o exec $spatialmsg "column count increment"
 
-# fully delegate swaybg handling to spatial
-swaybg_command -
+# start waybar, spatial will take care of the rest
+exec waybar
 #+end_src
 
 By default, Spatial Shell sets the initial configuration of a workspace to
