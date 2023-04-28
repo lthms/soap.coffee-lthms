@@ -115,7 +115,7 @@ By default, Spatial Shell sets the initial configuration of a workspace to
 the Column layout with two columns at most, and sets the opacity of the
 unfocused windows to 75%. This can be customized, either globally or per
 workspace, by creating a configuration file in
-~$XDR_RUNTIME_DIR/spatial/config~[fn::If unset, ~XDG_RUNTIME_DIR~ defaults to
+~$XDG_CONFIG_HOME/spatial/config~[fn::If unset, ~XDG_CONFIG_HOME~ defaults to
 ~$HOME/.config~.].
 
 For instance, my config file looks like that.
