@@ -41,3 +41,7 @@ the most significant ones.
   created by [[https://github.com/xymostech][Emily Eisenberg]] and
   [[https://sophiebits.com/][Sophie Alpert]], with the help of
   [[https://github.com/KaTeX/KaTeX/graphs/contributors][many contributors]].
+- [[https://https://github.com/edwardtufte/tufte-css/][Tufte CSS]] ::
+  Tufte CSS is a project by Dave Liepmann and many contributors intended to
+  recreate Edward Tufte’s distinctive style for HTML document. The CSS of this
+  website borrows several CSS perls from Tufte CSS.
