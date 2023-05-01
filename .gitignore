@@ -46,6 +46,7 @@ logs/site--posts--index.html.stderr
 logs/site--posts--Ltac.html.stderr
 logs/site--posts--meta.html.stderr
 logs/site--posts--miscellaneous.html.stderr
+logs/site--posts--NeoVimOcamlInterfacesAndLSP.html.stderr
 logs/site--posts--RankNTypesInOCaml.html.stderr
 logs/site--posts--StronglySpecifiedFunctions.html.stderr
 logs/site--posts--Thanks.html.stderr
@@ -85,6 +86,7 @@ logs/site--posts--index.html.stdout
 logs/site--posts--Ltac.html.stdout
 logs/site--posts--meta.html.stdout
 logs/site--posts--miscellaneous.html.stdout
+logs/site--posts--NeoVimOcamlInterfacesAndLSP.html.stdout
 logs/site--posts--RankNTypesInOCaml.html.stdout
 logs/site--posts--StronglySpecifiedFunctions.html.stdout
 logs/site--posts--Thanks.html.stdout
@@ -149,6 +151,7 @@ site/posts/MixingLtacAndGallina.html
 site/posts/MixingLtacAndGallina.vo
 site/posts/MixingLtacAndGallina.vok
 site/posts/MixingLtacAndGallina.vos
+site/posts/NeoVimOcamlInterfacesAndLSP.html
 site/posts/RankNTypesInOCaml.html
 site/posts/RewritingInCoq.glob
 site/posts/RewritingInCoq.html
