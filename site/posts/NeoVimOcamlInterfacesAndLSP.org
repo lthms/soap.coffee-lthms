@@ -32,7 +32,6 @@ I had to tweak my configuration a little bit.
 
 #+begin_src lua
 lspconfig.ocamllsp.setup({
-  cmd = { 'ocamllsp', '--fallback-read-dot-merlin' },
   -- Necessary to get tree sitter to work with .mli files
   filetypes = vim.list_extend(
     require('lspconfig.server_configurations.ocamllsp')
