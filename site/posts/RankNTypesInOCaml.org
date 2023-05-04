@@ -2,6 +2,7 @@
 
 #+SERIES: ./miscellaneous.html
 #+SERIES_PREV: ./DiscoveringCommonLisp.html
+#+SERIES_NEXT: ./NeoVimOcamlInterfacesAndLSP.html
 
 #+BEGIN_EXPORT html
 <div id="history">site/posts/RankNTypesInOCaml.org</div>

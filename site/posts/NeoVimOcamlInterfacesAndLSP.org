@@ -1,5 +1,8 @@
 #+TITLE: Neovim, OCaml Interfaces, Tree-Sitter and LSP
 
+#+SERIES: ./miscellaneous.html
+#+SERIES_PREV: ./RankNTypesInOCaml.html
+
 Can we all agree that witnessing syntax highlighting being absolutely off is
 probably the most annoying thing that can happen to anybody?
 
