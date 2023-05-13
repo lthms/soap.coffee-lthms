@@ -6,3 +6,4 @@ package-lock.json
 .soupault-cache/
 style.min.css
 site/img/*.png
+site/styles/highlight.css
