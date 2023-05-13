@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+{% set base = "https://soap.coffee/~lthms" %}
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thomas Letan’s Blog</title>
+    <link>{{ base }}</link>
+    <description>
+      Blogposts in Thomas Letan’s Website
+    </description>
+    <atom:link href="https://soap.coffee/~lthms/posts/index.xml" rel="self" type="application/rss+xml" />
+    {% for article in contents %}
+    <item>
+      <title>{{ article.title | striptags }}</title>
+      <link>{{ base }}{{ article.url }}</link>
+      <guid>{{ base }}{{ article.url }}</guid>
+      <pubDate>{{ article.date_str }}</pubDate>
+      <description>
+        {% if article.contents %}
+        {{ article.contents | escape }}
+        {% endif %}
+      </description>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>

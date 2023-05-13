@@ -73,7 +73,7 @@
   index = true
   index_first = true
   dump_json = "test.json"
-  extract_after_widgets = ["series"]
+  extract_after_widgets = ["series", "urls-rewriting"]
 
 [index.fields.title]
   selector = ["h1"]
@@ -111,6 +111,9 @@
 [index.fields.abstract]
   selector = "#meta-tags .description"
 
+[index.fields.contents]
+  selector = "main article"
+
 [index.views.tags]
   section = "posts/"
   sort_by = "date"
@@ -143,4 +146,5 @@
   index_selector = "#archives-index"
   index_full_template_file = "templates/index_archives_full.html"
   index_short_template_file = "templates/index_archives_short.html"
+  index_rss_template_file = "templates/index.xml"
   file = "plugins/archives-index.lua"

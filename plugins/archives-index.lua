@@ -8,12 +8,19 @@ if Value.is_string(container_content) then
 end
 
 template = nil
+pages = {}
 
 if container_content then
   env['contents'] = Table.take(site_index, container_content)
   template = "index_short_template_file"
 else
   env['contents'] = site_index
+
+  template = Sys.read_file(config['index_rss_template_file'])
+
+  path = Sys.join_path(target_dir, 'index.xml')
+  Sys.write_file(path, String.render_template(template, env))
+
   template = "index_full_template_file"
 end
 

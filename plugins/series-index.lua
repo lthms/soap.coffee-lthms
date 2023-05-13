@@ -1,20 +1,21 @@
+prefix_url = "/" .. soupault_config['widgets']['urls-rewriting']['prefix_url']
+
 env = {}
 current_entry = {}
 
 function append_entry(entry)
   if entry['series_url'] then
-    if build_dir .. entry['series_url'] == target_file then
+    if "out" .. entry['series_url'] == target_file then
       if not entry['series_prev_url'] then
-        current_entry = entry['url']
+        current_entry = prefix_url .. entry['url']
       end
 
-      env[entry['url']] = entry
+      env[prefix_url .. entry['url']] = entry
     end
   end
 end
 
 if site_index and site_index[1] then
-
   index = HTML.select_one(page, config['index_selector'])
 
   if index then
