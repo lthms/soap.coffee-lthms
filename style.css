@@ -1,8 +1,20 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 100%;
+}
+
 :root {
     --main-width: 42rem;
-    --gutter-width: 5rem;
-    --margin-width: 13rem;
+    --gutter-width: 4rem;
+    --margin-width: 16rem;
     --body-width: calc(var(--main-width) + 2 * (var(--gutter-width) + var(--margin-width)));
+}
+
+#meta-tags {
+  display: none;
 }
 
 /*
@@ -13,80 +25,28 @@
     media queries. As a consequnece, for our theme to be responsive,
     the full width of the page content is
 
-       2 * (margin_width + gutter_width) + content_width = 78rem
+       2 * (margin_width + gutter_width) + content_width = 82rem
 
  */
 
 /* See {{Note: width}} */
-@media (max-width: 78rem) {
+@media (max-width: 82rem) {
     :root {
         --body-width: var(--main-width);
         --width: var(--main-width);
     }
 }
 
-figure {
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-}
-
-figure, figcaption {
-    text-align: center;
-    margin-left:0;
-    margin-right:0;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-/* See {{Note: width}} */
-@media (min-width: 78rem) {
-    .fullwidth, figure {
-        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
-    }
-
-    figure, figcaption, .fullwidth {
-        width: var(--body-width);
-    }
-}
-
-html {
-    font-size: 1rem;
-}
-
 body {
-    line-height: 1.4;
+    font-family: Inter, sans-serif;
+    line-height: 1.8;
     max-width: var(--body-width);
+    text-align: justify;
+    padding-top: 1em;
+    padding-bottom: 1em;
     margin-left: auto;
     margin-right: auto;
-}
-
-aside {
-    background: var(--bg);
-    z-index: 9999;
-    width: var(--body-width);
-    align-self: flex-start;
-    position: sticky;
-    top: 0;
-}
-
-aside nav {
-    text-align: center;
-}
-
-aside nav ul {
-    list-style: none;
-    padding: 1rem 0;
-    margin: 0;
-}
-
-aside nav li {
-    display: inline;
-}
-
-aside nav li:not(:first-of-type)::before {
-    content: " · ";
+    color: #0a0a0a;
 }
 
 main {
@@ -95,52 +55,62 @@ main {
     margin: auto;
 }
 
-main nav {
-    font-style: italic;
-    color: var(--fg-plus);
-    background: var(--current-line);
-    padding: .5rem 1rem;
-}
-
-main nav .series-next {
-    text-align: right;
-}
-
-main nav p.series-next::after {
-    content: " →";
-}
-
-main nav p.series-prev::before {
-    content: "← ";
-}
-
 img {
     max-width: 100%;
 }
 
-#whoami.marginnote {
-    color: var(--fg);
-    margin-bottom: 2em;
+figure {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
-img.avatar {
-    border-radius: 20px;
-    border: 1px solid black;
-    display: block;
-    max-width: 90%;
-    margin: auto;
+figure, figcaption {
+    text-align: center;
+    margin-left:0;
+    margin-right:0;
 }
 
-dd {
+figcaption p {
+    margin-top: 0;
     margin-left: 0;
-    margin-bottom: 0.5rem;
+}
+
+/* See {{Note: width}} */
+@media (min-width: 82rem) {
+    .fullwidth, figure {
+        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+    }
+
+    figure, figcaption, .fullwidth {
+        width: var(--body-width);
+    }
+
+
+    .sidenote.note-left {
+      padding-right: 1em;
+      border-right: 1px solid black;
+    }
+
+    .sidenote.note-right {
+      padding-left: 1em;
+      border-left: 1px solid black;
+    }
+
+    ul.tags-list {
+      columns: 2;
+    }
+}
+
+ul.tags-list {
+  list-style-type: none;
 }
 
 .sidenote,
-.marginnote {
+.marginblock {
     font-size: smaller;
     position: relative;
     width: var(--margin-width);
+    margin-bottom: 1em;
 }
 
 .note-right {
@@ -153,6 +123,15 @@ dd {
     float: left;
     clear: left;
     margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+}
+
+.footnote-p:not(:first-child) {
+  display: block;
+  margin-top: .5em;
+}
+
+.footnote-p.narrow:not(:first-child) {
+  margin-top: .15em;
 }
 
 input.margin-toggle {
@@ -178,92 +157,21 @@ label.margin-toggle:not(.sidenote-number) {
 }
 
 .sidenote-number::after {
-    content: "(" counter(sidenote-counter, lower-greek) ")";
+    content: "(" counter(sidenote-counter) ")";
     font-size: 60%;
     top: -0.4rem;
     left: 0.1rem;
 }
 
 .sidenote::before {
-    content: "(" counter(sidenote-counter, lower-greek) ")";
+    content: "(" counter(sidenote-counter) ")";
     font-size: 70%;
     top: -0.5rem;
     right: 0.1rem;
 }
 
-div.code,
-pre {
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 1rem 2rem;
-}
-
-main {
-    padding-top: 4.2rem;
-    padding-bottom: 4.2rem;
-}
-
-h1 {
-    text-align: center;
-}
-
-h2, h3, h4 {
-    font-style: italic;
-}
-
-h1, h2, h3, h4 {
-    color: var(--doc);
-    font-family: serif;
-    font-weight: normal;
-}
-
-dt {
-    font-weight: bold;
-}
-
-div.code,
-span.inlinecode,
-pre,
-tt,
-.dmath,
-.imath {
-    font-family: monospace;
-    font-size: 85%;
-}
-
-details {
-    margin: 1.5rem 0;
-}
-
-table {
-    border-top: 2px solid var(--fg);
-    border-bottom: 2px solid var(--fg);
-    border-collapse: collapse;
-    width: 100%;
-    margin: 1.5rem 0;
-}
-
-th {
-    font-weight: normal;
-    text-transform: uppercase;
-}
-
-td,
-th {
-    border-top: 1px solid var(--fade);
-    height: 2em;
-    padding: 0 1em;
-}
-
-td.date,
-td.commit {
-    text-align: center;
-    font-size: 0.75em;
-    font-family: monospace;
-}
-
 /* See {{Note: width}} */
-@media (max-width: 78rem) {
+@media (max-width: 82rem) {
     body {
         padding: 2rem;
         margin: auto;
@@ -279,19 +187,17 @@ td.commit {
         display: inline;
     }
 
-    .sidenote,
-    .marginnote {
+    .sidenote {
         display: none;
     }
 
     .margin-toggle:checked + .sidenote,
-    .margin-toggle:checked + .marginnote {
+    .marginblock {
         display: block;
         float: left;
-        left: 1rem;
         clear: both;
         width: 95%;
-        margin: 1rem 2.5%;
+        margin: 1rem 2em;
         vertical-align: baseline;
         position: relative;
     }
@@ -303,119 +209,194 @@ td.commit {
     pre, aside, div.code {
         width: 100%;
     }
+
+    .marginblock {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .full-only {
+      display: none !important;
+    }
+
+    #whoami img {
+      max-width: 12em;
+    }
 }
 
-:root {
-    --bg: white;
-    --bg-plus: #f7f7f7;
-    --current-line: #fbfbfb;
-    --fade: #cfcecb;
-    --fg: black;
-    --fg-plus: black;
-    --doc: black;
-    --warning: #bd745e;
-    --red: #b3534b;
-    --green: #6d9319;
-    --yellow: #d4b100;
+/*
+#whoami nav {
 }
 
-body {
-    font-family: Inter, sans-serif;
-    color: var(--fg);
-    background: var(--bg);
+#whoami nav ul {
+    padding-left: 0rem;
+    margin: 0;
+    list-style: none;
+    text-align: center;
 }
 
-h2 a.anchor-link,
-h3 a.anchor-link,
-h4 a.anchor-link {
-    display: none;
-    font-style: normal;
-    text-decoration: none;
-    font-family: monospace;
-    font-size: smaller;
-    color: var(--doc);
+#whoami nav ul li {
+  font-size: 1rem;
 }
 
-[id] {
-    scroll-margin-top: 4rem;
+#whoami nav ul ul {
+  font-size: 0.95rem;
 }
 
-h2:hover a.anchor-link,
-h3:hover a.anchor-link,
-h4:hover a.anchor-link {
+#whoami nav ul ul li {
+  font-size: 0.95rem;
+}
+
+#whoami nav ul a {
+  font-weight: normal;
+}
+*/
+
+nav#main-nav {
+    text-align: center;
+}
+
+nav#main-nav ul {
+    list-style: none;
+    padding: 1rem 0;
+    margin: 0;
+}
+
+nav#main-nav li {
     display: inline;
 }
 
-.sidenote,
-.marginnote {
-    color: var(--fg-plus);
+nav#main-nav li:not(:first-of-type)::before {
+  width: 2rem;
+    content: " · ";
 }
 
-pre,
-code,
-tt {
-    color: var(--doc);
-    background: var(--bg-plus);
+nav#main-nav a {
+  font-weight: normal;
 }
 
-div.code {
-    white-space: nowrap;
+main {
+    counter-reset: sidenote-counter;
+    max-width: var(--main-width);
+    margin: auto;
 }
 
-div.code,
-span.inlinecode {
-    font-family : monospace;
+h1 {
+    text-align: center;
+    line-height: 1.3em
 }
 
-.paragraph {
-    margin-bottom : .8em;
+#tags-list {
+  text-align: center;
+  font-size: smaller;
+  padding-bottom: 1em;
 }
 
-.code a[href] {
-    color : black !important;
-    text-decoration : none;
-    background : var(--bg-plus);
-    padding : .1rem .15rem .1rem .15rem;
-    border-radius : 15%;
+h2, h3, h4 {
+    font-style: italic;
+    border-bottom: 1px solid black;
+    text-align: left;
 }
 
-.code .icon {
-    display: none;
+h1, h2, h3, h4 {
+    color: black;
+    /*font-family: serif;*/
+    font-weight: normal;
+}
+
+pre {
+  border-radius: .1em;
+  border: 1px solid silver;
 }
 
 .icon svg {
-    display: inline;
+    display: inline-block;
     width: 1em;
     height: .9em;
-    vertical-align: text-top;
 }
 
-a[href], .margin-toggle {
-    color: blue;
+a[href] {
+  text-decoration-line: underline;
+  text-decoration-color: black;
+  text-decoration-style: dashed;
+  text-underline-offset: .3em;
+  color: black;
+  /*font-weight: 500;*/
 }
 
-a[href] .icon svg {
-    fill: blue;
+a[href]:hover {
+  text-decoration-color: black;
 }
 
-a[href]:visited {
-    color: #15157c;
+img.avatar {
+  border: 1px solid black;
+  border-radius: .5em;
 }
 
-a[href]:visited .icon svg {
-    fill: #15157c;
+main nav#series-nav {
+  padding: 1em 2em;
+  border: 1px solid #eee;
+  background: #fafafa;
+  border-radius: .2em;
+}
+main nav#series-nav .series-next {
+    text-align: right;
 }
 
-.url-mark.fa {
-    display: inline;
-    font-size: 90%;
-    width: 1em;
+main nav#series-nav p.series-next::after {
+    content: " →";
 }
 
-.url-mark.fa-github::before {
-    content: "\00a0\f09b";
+main nav#series-nav p.series-prev::before {
+    content: "← ";
 }
 
-.url-mark.fa-external-link::before {
-    content: "\00a0\f08e";
+.index {
+  padding-top: 2em;
+  padding-bottom: 2em;
+}
+
+.index dt,
+.index li {
+  text-align: left;
+}
+
+.index dd {
+    margin-left: 0;
+    margin-bottom: 1rem;
+}
+
+.index dd:not(:empty) {
+    border-bottom: 1px solid #ddd;
+}
+
+.index p {
+    margin-top: 0;
+}
+
+/*  Dirty patching of the github highlight.js theme*/
+p code.hljs,
+dt code.hljs,
+li code.hljs {
+  padding: 0;
+}
+
+table {
+    border-top: 2px solid #555;
+    border-bottom: 2px solid #555;
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1.5rem 0;
+}
+
+th {
+    font-weight: normal;
+    text-transform: uppercase;
+}
+
+td,
+th {
+    border-top: 1px solid silver;
+    height: 2em;
+    padding: 0 1em;
 }

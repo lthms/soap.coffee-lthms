@@ -1,5 +1,5 @@
 function mark(name)
-  return '<span class="icon"><svg><use href="/img/icons.svg#'
+  return '&nbsp;<span class="icon"><svg><use href="/img/icons.svg#'
          .. name ..
          '"></use></svg></span>'
 end
@@ -10,15 +10,18 @@ index, link = next(links)
 
 while index do
   href = HTML.get_attribute(link, "href")
+  todo = not HTML.get_attribute(link, "marked")
 
-  if href then
+  if href and todo then
     if Regex.match(href, "^https?://github.com") then
       icon = HTML.parse(mark("github"))
-      HTML.append_child(link, icon)
+      HTML.insert_after(link, icon)
     elseif Regex.match(href, "^https?://") then
       icon = HTML.parse(mark("external-link"))
-      HTML.append_child(link, icon)
+      HTML.insert_after(link, icon)
     end
+
+    HTML.set_attribute(link, "marked", "")
   end
 
   index, link = next(links, index)

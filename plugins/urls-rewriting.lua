@@ -19,13 +19,22 @@ function prefix_urls (links, attr, prefix_url)
     href = HTML.get_attribute(link, attr)
 
     if href then
-      if Regex.match(href, "^/") then
-        href = Regex.replace(href, "^/*", "")
-        href = prefix_url .. href
-      end
+      todo = not Regex.match(href, "^" .. prefix_url .. "*")
 
-      HTML.set_attribute(link, attr, href)
+        if todo then
+        if Regex.match(href, "^/") then
+          href = Regex.replace(href, "^/*", "")
+          href = prefix_url .. href
+        end
+
+        if Regex.match(href, "index.html$") then
+          href = Regex.replace(href, "index.html$", "")
+        end
+
+        HTML.set_attribute(link, attr, href)
+      end
     end
+
     index, link = next(links, index)
   end
 end

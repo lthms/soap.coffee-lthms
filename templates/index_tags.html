@@ -1,0 +1,8 @@
+<ul class="tags-list">
+{% for tag in tags %}
+  <li>
+    <a href="{{ tag.name }}.html"><span class="icon"><svg><use href="/img/icons.svg#tag"></use></svg></span> <code>{{ tag.name }}</code></a>
+    ({{ tag.contents | length }})
+  </li>
+{% endfor %}
+</ul>

@@ -1,0 +1,9 @@
+<dl>
+  {% for article in entries %}
+  {% set abstract = article.abstract %}
+  <dt>
+    <a href="{{ article.url }}">{{ article.title }}</a>
+  </dt>
+  <dd>{%if abstract %}{{ abstract }}{% endif %}</dd>
+  {% endfor %}
+</dl>

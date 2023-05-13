@@ -10,7 +10,7 @@ function get_title_from_path (path)
          Plugin.fail(path .. ' has no <h1> tag')
       end
    else
-      Plugin.fail(path .. ' is not a file')
+      Log.warning('Missing file: ' .. path)
    end
 end
 
@@ -41,10 +41,10 @@ function generate_nav_items (cwd, cls, template)
   end
 end
 
-cwd = Sys.dirname(page_file)
+cwd = build_dir
 
-home_template = 'This article is part of the series “<a href="{{ url }}">{{ title }}</a>.”'
-nav_template = '<a href="{{ url }}">{{ title }}</a>'
+home_template = 'This page is part of the series “<a href="/{{ url }}">{{ title }}</a>.”'
+nav_template = '<a href="/{{ url }}">{{ title }}</a>'
 
 generate_nav_items(cwd, ".series", home_template)
 generate_nav_items(cwd, ".series-prev", nav_template)

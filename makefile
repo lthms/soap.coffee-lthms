@@ -1,49 +1,39 @@
-PATH := scripts/:${PATH}
+IMAGES = $(wildcard img/*.png)
+COMPRESSED_IMAGES = $(foreach img, ${IMAGES}, site/${img})
+HIGHLIGHT_THEME = github
 
-ARTIFACTS := logs/*.stderr logs/*.stdout
-CONFIGURE := .emacs.d
+.PHONY: default
+default: build
 
-PROCS := $(wildcard *.mk)
-PROCS_DEPS := $(foreach proc,$(PROCS:.mk=.deps),.${proc})
+.PHONY: build-deps
+build-deps: build-ocaml-deps build-node-deps
 
-CMD ?= postbuild
+.PHONY: build-node-deps
+build-node-deps: package-lock.json
 
-EMACS_NAME=cleopatra
+.PHONY: build-ocaml-deps
+build-ocaml-deps: _opam/.init
+	@opam pin dependencies . --no-action --yes
+	@opam install dependencies --deps-only --yes
 
-EMACS := emacsclient -s ${EMACS_NAME}
+_opam/.init:
+	@opam switch create . ocaml-system --yes --no-install --deps-only || true
+	@touch $@
 
-init : ${PROCS_DEPS} needs-emacs
-	@make ${CMD}
+package-lock.json: package.json
+	@npm install
 
-needs-emacs :
-	@pretty-echo.sh "Starting" "emacs daemon"
-	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)" 2> /dev/null || true
-	@ROOT=$(shell pwd) capture.sh "start-server" emacs --daemon=${EMACS_NAME} -Q --load="scripts/init.el"
+style.min.css: style.css package-lock.json
+	@./scripts/css.sh
 
-.PHONY : needs-emacs
+site/styles/highlight.css: package-lock.json .FORCE
+	@cp $(shell npm root)/highlight.js/styles/${HIGHLIGHT_THEME}.css $@
 
-.%.deps : %.mk makefile
-	@gen-deps.sh $< $@
+site/img/%.png: img/%.png
+	@pngcrush -q $^ $@
 
--include ${PROCS_DEPS}
+.PHONY:build
+build: style.min.css site/styles/highlight.css ${COMPRESSED_IMAGES}
+	@soupault
 
-prebuild :
-build : prebuild
-postbuild : build
-
-postbuild :
-	@pretty-echo.sh "Updating" ".gitignore"
-	@update-gitignore.sh $(sort ${CONFIGURE} ${ARTIFACTS} ${PROCS_DEPS})
-	@pretty-echo.sh "Killing" "emacs daemon"
-	@${EMACS} -s ${EMACS_NAME} --eval "(kill-emacs)"
-	@rm -f $(wildcard .*.deps)
-
-.PHONY: prebuild build postbuild
-
-clean :
-	@rm -rf ${ARTIFACTS}
-
-cleanall : clean
-	@rm -rf ${CONFIGURE}
-
-.PHONY : clean cleanall
+.FORCE:

@@ -1,0 +1,146 @@
+[settings]
+  soupault_version = "4.5.0"
+  strict = true
+  verbose = false
+  debug = false
+  site_dir = "site"
+  build_dir = "out/~lthms"
+  page_file_extensions = ["html", "md"]
+  clean_urls = false
+  keep_extensions = ["html"]
+  default_extension = "html"
+  ignore_extensions = ["draft"]
+
+  generator_mode = true
+  complete_page_selector = "html"
+  default_template_file = "templates/main.html"
+  default_content_selector = "main"
+  default_content_action = "append_child"
+  keep_doctype = true
+  doctype = "<!DOCTYPE html>"
+  pretty_print_html = false
+
+  plugin_discovery = true
+  plugin_dirs = ["plugins"]
+
+  caching = true
+  cache_dir = ".soupault-cache"
+
+[preprocessors]
+  md = './scripts/md-render.js'
+
+[widgets.page-title]
+  widget = "title"
+  selector = "h1"
+  default = "~lthms"
+  prepend = "~lthms: "
+  force = false
+
+[widgets.generator-meta]
+  widget = "insert_html"
+  html = '<meta name="generator" content="soupault">'
+  selector = "head"
+
+[widgets.mark-external-urls]
+  widget = "external-urls"
+
+[widgets.urls-rewriting]
+  after = "series"
+  widget = "urls-rewriting"
+  prefix_url = "~lthms"
+
+[widgets.footnote-postprocess]
+  widget = "footnote-postprocess"
+
+[widgets.notes]
+  widget = "notes"
+  after = "footnote-postprocess"
+
+[widgets.css]
+  widget = "css"
+
+[widgets.series]
+  widget = "series"
+
+[widgets.meta]
+  after = "urls-rewriting"
+  widget = "meta"
+
+[widgets.move-tags]
+  widget = "move-tags"
+
+[index]
+  index = true
+  index_first = true
+  dump_json = "test.json"
+  extract_after_widgets = ["series"]
+
+[index.fields.title]
+  selector = ["h1"]
+
+[index.fields.date]
+  selector = ["time#published"]
+  extract_attribute = "datetime"
+  fallback_to_content = false
+
+[index.fields.date_str]
+  selector = ["time#published"]
+
+[index.fields.tags]
+  selector = ["a.tag"]
+  select_all = true
+
+[index.fields.series_url]
+  selector = "p.series a"
+  extract_attribute = "href"
+  fallback_to_content = false
+
+[index.fields.series_name]
+  selector = "p.series a"
+
+[index.fields.series_prev_url]
+  selector = "p.series-prev a"
+  extract_attribute = "href"
+  fallback_to_content = false
+
+[index.fields.series_next_url]
+  selector = "p.series-next a"
+  extract_attribute = "href"
+  fallback_to_content = false
+
+[index.fields.abstract]
+  selector = "#meta-tags .description"
+
+[index.views.tags]
+  section = "posts/"
+  sort_by = "date"
+  sort_type = "calendar"
+  date_formats = ["%F"]
+  index_selector = "#tags-index"
+  index_template_file = "templates/index_tags.html"
+  file = "plugins/tags-index.lua"
+
+[widgets.series-index]
+  widget = "series-index"
+  index_selector = "#series-index"
+  index_template_file = "templates/index_series.html"
+
+[index.views.series]
+  sort_by = "title"
+  sort_type = "lexicographic"
+  sort_descending = false
+  index_selector = "#all-series-index"
+  index_item_template = """
+  <dt><a href="{{ url }}">{{ title }}</a></dt>
+  <dd>{% if abstract %}{{ abstract }}{% endif %}</dd>
+"""
+
+[index.views.archives]
+  section = "posts/"
+  sort_by = "date"
+  sort_type = "calendar"
+  date_formats = ["%F"]
+  index_selector = "#archives-index"
+  index_full_template_file = "templates/index_archives_full.html"
+  index_short_template_file = "templates/index_archives_short.html"
+  file = "plugins/archives-index.lua"
