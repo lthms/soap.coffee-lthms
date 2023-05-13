@@ -1,6 +1,6 @@
 IMAGES = $(wildcard img/*.png)
 COMPRESSED_IMAGES = $(foreach img, ${IMAGES}, site/${img})
-HIGHLIGHT_THEME = github
+HIGHLIGHT_THEME = googlecode
 
 .PHONY: default
 default: build
