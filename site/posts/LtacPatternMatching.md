@@ -20,7 +20,7 @@ In the [a previous article](/posts/LtacMetaprogramming.html) of our series on
 Ltac, we have shown how tactics allow for constructing Coq terms incrementally.
 Ltac programs (“proof scripts”) generate terms, and the shape of said terms can
 be very different regarding the initial context. For instance, `induction
-x`{.coq} will refine the current goal using an inductive principle dedicated to
+x`{.coq} will refine the current goal by using an inductive principle dedicated to
 the type of `x`{.coq}.
 
 This is possible because Ltac allows for pattern matching on types and
@@ -38,7 +38,7 @@ Ltac is not a total language: a tactic may not always succeed.
 Ltac programmers can use `match`{.coq} or `lazymatch`{.coq}. One the one hand,
 with `match`{.coq}, if one pattern matches, but the branch body fails, Coq will
 backtrack and try the next branch. On the other hand, `lazymatch`{.coq} will
-stop on error.
+stop with an error.
 
 So, for instance, the two following tactics will print two different messages:
 
@@ -93,7 +93,7 @@ Ltac successive x y :=
   end.
 ```
 
-`successive x y`{.coq} will fails if `y`{.coq} is not the successor of
+`successive x y`{.coq} will fail if `y`{.coq} is not the successor of
 `x`{.coq}. On the contrary, the “syntactically equivalent” function in Gallina
 will exhibit a totally different behavior.
 
@@ -184,20 +184,20 @@ With `goal`{.coq}, patterns are of the form `H : (pattern), ... |-
 (pattern)`{.coq}.
 
 - At the left side of `|-`{.coq}, we match on hypotheses. Beware that
-  contrary to variable name in pattern, hypothesis names behaves as in
+  contrary to variable names in pattern, hypothesis names behaves as in
   Gallina (i.e., fresh binding, shadowing, etc.). In the branch, we are
-  looking for equations, i.e., an hypothesis of the form `?x = _`{.coq}.
+  looking for equations, i.e., a hypothesis of the form `?x = _`{.coq}.
 - At the right side of `|-`{.coq}, we match on the goal.
 
 In both cases, Ltac makes available an interesting operator,
-`context[(pattern)`{.coq}], which is satisfies if `(pattern)`{.coq} appears somewhere in
+`context[(pattern)`{.coq}], which is satisfied if `(pattern)`{.coq} appears somewhere in
 the object we are pattern matching against. So, the branch of the `match`{.coq}
 reads as follows: we are looking for an equation `H`{.coq} which specifies the
 value of an object `x`{.coq} which appears in the goal. If such an equation
-exists, `subst'`{.coq} tries to `rewrite x`{.coq} as many time as possible.
+exists, `subst'`{.coq} tries to `rewrite x`{.coq} as many times as possible.
 
 This implementation of `subst'`{.coq} is very fragile, and will not work if the
-equation is of the form `_ = ?x`{.coq}, and it may behaves poorly if we have
+equation is of the form `_ = ?x`{.coq}, and it may behave poorly if we have
 “transitive equations”, such as there exists hypotheses `?x = ?y`{.coq} and `?y
-= _`{.coq}. Motivated readers may be interested in proposing more robust
+= _`{.coq}. Motivated readers may be interested in proposing a more robust
 implementation of `subst'`{.coq}.

@@ -14,7 +14,7 @@ secret, which takes the form of a set of unnecessary axioms.
 I thought I couldn’t avoid them at first, but it was before I heard about
 “generalized rewriting,” setoids and morphisms.  Now, I know the truth, and I
 will have to update SpecCert eventually. But, in the meantime, let me try to
-explain how it is possible to rewrite a term in a proof using a ad-hoc
+explain how it is possible to rewrite a term in a proof using an ad hoc
 equivalence relation and, when necessary, a proper morphism.
 
 ## Case Study: Gate System
@@ -35,7 +35,7 @@ Record Gate :=
 
 According to this definition, a gate can be either open or closed. It can also
 be locked, but if it is, it cannot be open at the same time. To express this
-constrain, we embed the appropriate proposition inside the Record. By doing so,
+constraint, we embed the appropriate proposition inside the Record. By doing so,
 we *know* for sure that we will never meet an ill-formed `Gate`{.coq} instance.
 The Coq engine will prevent it, because to construct a gate, one will have to
 prove the `lock_is_close`{.coq} predicate holds.
@@ -158,7 +158,7 @@ Definition gate_eq
 ```
 
 Because “equality” means something very specific in Coq, we won't say “two
-gates are equal” anymore, but “two gates are equivalent”. That is,
+gates are equal” anymore, but “two gates are equivalent.” That is,
 `gate_eq`{.coq} is an equivalence relation. But “equivalence relation” is also
 something very specific. For instance, such relation needs to be symmetric (`R
 x y -> R y x`{.coq}), reflexive (`R x x`{.coq}) and transitive (`R x y -> R y z
@@ -226,7 +226,7 @@ Qed.
 
 ## Equivalence Relations and Rewriting
 
-So here we are, with our ad-hoc definition of gate equivalence. We can use
+So here we are, with our ad hoc definition of gate equivalence. We can use
 `symmetry`{.coq}, `reflexivity`{.coq} and `transitivity`{.coq} along with
 `gate_eq`{.coq} and it works fine because we have told Coq `gate_eq`{.coq} is
 indeed an equivalence relation for `Gate`{.coq}.
@@ -295,9 +295,9 @@ The `rewrite`{.coq} tactic works out of the box with the Coq equality
 `x`{.coq} and `y`{.coq} are equal iff every property on `A`{.coq} which is true
 of `x`{.coq} is also true of `y`{.coq}
 
-This is a pretty strong property, and one a lot of equivalence relations do not
+This is a pretty strong property, and one that a lot of equivalence relations do not
 have. Want an example? Consider the relation `R`{.coq} over `A`{.coq} such that
-forall `x`{.coq} and `y`{.coq}, `R x y`{.coq} holds true. Such relation is
+forall `x`{.coq} and `y`{.coq}, `R x y`{.coq} holds true. Such a relation is
 reflexive, symmetric and reflexive. Yet, there is very little chance that given
 a function `f : A -> B`{.coq} and `R’`{.coq} an equivalence relation over
 `B`{.coq}, `R x y -> R' (f x) (f y)`{.coq}. Only if we have this property, we

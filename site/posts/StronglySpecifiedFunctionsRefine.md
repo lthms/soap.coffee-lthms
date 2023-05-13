@@ -18,19 +18,19 @@ yet hard to master. Fortunately, there are some very good readings
 if you want to learn (I recommend the Coq'Art). This article is
 not one of them.
 
-In this article, we will see how to implement strongly-specified
+In this article, we will see how to implement strongly specified
 list manipulation functions in Coq. Strong specifications are used
 to ensure some properties on functions' arguments and return
 value. It makes Coq type system very expressive. Thus, it is
 possible to specify in the type of the function `pop`{.coq} that the return
-value is the list passed in argument in which the first element has been
-removed for example.
+value is the list passed as an argument in which the first element has been
+removed, for example.
 
 ## Is This List Empty?
 
 It's the first question to deal with when manipulating
 lists. There are some functions that require their arguments not
-to be empty. It's the case for the `pop`{.coq} function, for instance:
+to be empty. It's the case for the `pop`{.coq} function, for instance
 it is not possible to remove the first element of a list that does
 not have any elements in the first place.
 
@@ -41,7 +41,7 @@ two different worlds that do not mix easily. One solution is to
 write two definitions and to prove their equivalence.  That is
 `forall args, predicate args <-> bool_function args = true`{.coq}.
 
-Another solution is to use the `sumbool`{.coq} type as middleman. The
+Another solution is to use the `sumbool`{.coq} type as middlemen. The
 scheme is the following:
 
 - Defining `predicate : args → Prop`{.coq}
@@ -53,7 +53,7 @@ Definition predicate_b (args) :=
   if predicate_dec args then true else false.
 ```
 
-### Defining the `empty`{.coq} Predicate *)
+### Defining the `empty`{.coq} Predicate
 
 A list is empty if it is `[]`{.coq} (`nil`{.coq}). It's as simple as that!
 
@@ -134,7 +134,7 @@ article.
 
 ## Defining Some Utility Functions
 
-### Defining `pop`{.coq} *)
+### Defining `pop`{.coq}
 
 There are several ways to write a function that removes the first
 element of a list. One is to return `nil` if the given list was
@@ -179,7 +179,7 @@ From the following goal:
   list a
 ```
 
-Using the `refine`{.coq} tactic naively, for instance this way:
+Using the `refine`{.coq} tactic naively, for instance, this way:
 
 ```coq
   refine (match l with
@@ -203,14 +203,14 @@ our incomplete Gallina term, found a hole, done some
 type-checking, found that the type of the missing piece of our
 implementation is `list a`{.coq} and therefore has generated a new
 goal of this type.  What `refine`{.coq} has not done, however, is
-remember that we are in the case where `l = []`{.coq}.
+remembering that we are in the case where `l = []`{.coq}.
 
 We need to generate a goal from a hole wherein this information is
-available. It is possible using a long form of `match`{.coq}. The
+available. It is possible to use a long form of `match`{.coq}. The
 general approach is this: rather than returning a value of type
-`list a`{.coq}, our match will return a function of type [l = ?l' ->
-list a], where `?l`{.coq} is value of `l`{.coq} for a given case (that is,
-either `x :: rst`{.coq} or `[]`{.coq}). Of course, As a consequence, the type
+`list a`{.coq}, our match will return a function of type `l = ?l' ->
+list a`{.coq}, where `?l`{.coq} is a value of `l`{.coq} for a given case (that is,
+either `x :: rst`{.coq} or `[]`{.coq}). Of course and as a consequence, the type
 of the `match`{.coq} in now a function which awaits a proof to return
 the expected result. Fortunately, this proof is trivial: it is
 `eq_refl`{.coq}.
@@ -245,20 +245,20 @@ Defined.
 ```
 
 It's better and yet it can still be improved. Indeed, according to its type,
-`pop`{.coq} returns “some list”. As a matter of fact, `pop`{.coq} returns “the
-same list without its first argument”. It is possible to write
-such precise definition thanks to sigma-types, defined as:
+`pop`{.coq} returns “some list.” As a matter of fact, `pop`{.coq} returns “the
+same list without its first argument.” It is possible to write
+such precise definition thanks to sigma types, defined as:
 
 ```coq
 Inductive sig (A : Type) (P : A -> Prop) : Type :=
   exist : forall (x : A), P x -> sig P.
 ```
 
-Rather that `sig A p`{.coq}, sigma-types can be written using the
+Rather than `sig A p`{.coq}, sigma-types can be written using the
 notation `{ a | P }`{.coq}. They express subsets, and can be used to constraint
 arguments and results of functions.
 
-We finally propose a strongly-specified definition of `pop`{.coq}.
+We finally propose a strongly specified definition of `pop`{.coq}.
 
 ```coq
 Definition pop {a} (l : list a | ~ empty l)
@@ -328,11 +328,11 @@ let pop = function
 ```
 
 If one tries to call `pop nil`{.coq}, the `assert`{.coq} ensures the call fails. Extra
-information given by the sigma-type have been stripped away. It can be
+information given by the sigma type has been stripped away. It can be
 confusing, and in practice it means that, we you rely on the extraction
 mechanism to provide a certified OCaml module, you _cannot expose
-strongly-specified functions in its public interface_ because nothing in the
-OCaml type system will prevent a miseuse which will in practice leads to an
+strongly specified functions in its public interface_ because nothing in the
+OCaml type system will prevent a misuse which will in practice leads to an
 `assert false`{.ocaml}. *)
 
 ## Defining `push`{.coq}
@@ -357,7 +357,7 @@ let push l a =
 ## Defining `head`{.coq}
 
 Same as `pop`{.coq} and `push`{.coq}, it is possible to add extra information in the
-type of `head`{.coq}, namely the returned value of `head`{.coq} is indeed the firt value
+type of `head`{.coq}, namely the returned value of `head`{.coq} is indeed the first value
 of `l`{.coq}.
 
 ```coq
@@ -376,7 +376,7 @@ It's not a surprise its definition is very close to `pop`{.coq}.
           end eq_refl).
 ```
 
-The proof are also very similar, and are left to read as an exercise for
+The proof is also very similar, and are left to read as an exercise for
 passionate readers.
 
 ```coq
@@ -399,7 +399,7 @@ let head = function
 
 ## Conclusion
 
-Writing strongly-specified functions allows for reasoning about the result
+Writing strongly specified functions allows for reasoning about the result
 correctness while computing it. This can help in practice. However, writing
 these functions with the `refine`{.coq} tactic does not enable a very idiomatic
 Coq code.

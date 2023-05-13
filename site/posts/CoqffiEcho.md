@@ -58,7 +58,7 @@ stanzas like `coq.theory` and `coq.extraction`.
 The following graph summarizes the dependencies between each component
 (plain arrows symbolize software dependencies).
 
-#[The echo server dependency graph. Dashed boxes are generated.](/img/echo-deps.svg)
+#[The echo server dependency graph. Dashed boxes are generated.](/img/echo-deps.svg [The echo server dependy graph])
 
 We enable Coq-related stanza with `(using coq 0.2)`{.lisp} in the
 `dune-project`{.dune}. file.

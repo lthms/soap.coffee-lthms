@@ -15,14 +15,14 @@ abstract: |
 
 # Mixing Ltac and Gallina for Fun and Profit
 
-One of the most misleading introduction to Coq is to say that “Gallina is
+One of the most misleading introductions to Coq is to say that “Gallina is
 for programs, while tactics are for proofs.”  Indeed, in Coq we construct
 terms of given types, always. Terms encodes both programs and proofs about
 these programs. Gallina is the preferred way to construct programs, and
 tactics are the preferred way to construct proofs.
 
 The key word here is “preferred.” We do not always need to use tactics to
-construct a proof term. Conversly, there are some occasions where
+construct a proof term. Conversely, there are some occasions where
 constructing a program with tactics become handy. Furthermore, Coq actually
 allows for *mixing together* Ltac and Gallina.
 
@@ -38,10 +38,10 @@ metaprogramming (that is, the generation of programs by programs).
 ## A Tale of Two Worlds, and Some Bridges
 
 Constructing terms proofs directly in Gallina often happens when one is
-writing dependently-typed definition. For instance, we can write a type safe
+writing dependently typed definition. For instance, we can write a type-safe
 `from_option`{.coq} function (inspired by [this very nice
 write-up](https://plv.csail.mit.edu/blog/unwrapping-options.html)) such that
-the option to unwrap shall be accompagnied by a proof that said option contains
+the option to unwrap shall be accompanied by a proof that said option contains
 something. This extra argument is used in the `None`{.coq} case to derive a
 proof of `False`{.coq}, from which we can derive
 anything.
@@ -87,7 +87,7 @@ Proof.
 Defined.
 ```
 
-There is a third approach we can consider: mixing Gallina terms, and tactics.
+There is a third approach we can consider: mixing Gallina terms and tactics.
 This is possible thanks to the `ltac:()`{.coq} feature.
 
 ```coq
@@ -104,8 +104,8 @@ Definition from_option'' {α}
 When Coq encounters `ltac:()`{.coq}, it treats it as a hole. It sets up a
 corresponding goal, and tries to solve it with the supplied tactic.
 
-Conversly, there exists ways to construct terms in Gallina when writing a proof
-script. Certains tactics takes such terms as arguments. Besides, Ltac provides
+Conversely, there exists ways to construct terms in Gallina when writing a proof
+script. Certain tactics take such terms as arguments. Besides, Ltac provides
 `constr:()`{.coq} and `uconstr:()`{.coq} which work similarly to
 `ltac:()`{.coq}. The difference between `constr:()`{.coq} and
 `uconstr:()`{.coq} is that Coq will try to assign a type to the argument of
@@ -122,7 +122,7 @@ Tactic Notation "wrap_id" uconstr(x) :=
 Both `x`{.coq} the argument of `wrap_id`{.coq} and `f`{.coq} the anonymous identity function
 are not typed. It is only when they are composed together as an argument of
 `exact`{.coq} (which expects a typed argument, more precisely of the type of the
-goal) that Coq actually tries to typecheck it.
+goal) that Coq actually tries to type check it.
 
 As a consequence, `wrap_id`{.coq} generates a specialized identity function for
 each specific context.
@@ -145,7 +145,7 @@ Besides, we do not need to give more type information about `nil`{.coq}. If
 ## Beware the Automation Elephant in the Room
 
 Proofs and computational programs are encoded in Coq as terms, but there is a
-fundamental difference between them, and it is highlighted by one of the axiom
+fundamental difference between them, and it is highlighted by one of the axioms
 provided by the Coq standard library: proof irrelevance.
 
 Proof irrelevance states that two proofs of the same theorem (i.e., two proof
@@ -176,11 +176,12 @@ add = fun _ y : nat => y
 That being said, if we keep that in mind, and assert the correctness of the
 generated programs (either by providing a proof, or by extensively testing it),
 there is no particular reason not to use Ltac to generate terms when it makes
-sens.
+sense.
 
-Dependently-typed programming can help here. If we decorate the return type of
+Dependently typed programming can help you here. If we decorate the return type of
 a function with the expected properties of the result wrt. the function’s
-arguments, we can ensure the function is correct, and conversly prevent tactics
+arguments, we can ensure the function is correct, and conversely prevent tactics
 such as `auto`{.coq} to generate “incorrect” terms. Interested readers may
 refer to [the dedicated series on this very
 website](/posts/StronglySpecifiedFunctions.html).
+

@@ -65,9 +65,9 @@ types.
     b$ is made of one term of $a$ and one term of $b$ (think tuples).
 
 For an algebraic datatype, one constructor allows for defining “named
-tuples”, that is ad-hoc product types. Besides, constructors are mutually
+tuples,” that is ad hoc product types. Besides, constructors are mutually
 exclusive: you cannot define the same term using two different constructors.
-Therefore, a datatype with several constructors is reminescent of a disjoint
+Therefore, a datatype with several constructors is reminiscent of a disjoint
 union.  Coming back to the $\mathrm{list}$ type, under the syntactic sugar of
 algebraic datatypes, we can define it as
 
@@ -120,7 +120,7 @@ we will have to prove they are “equivalent.”
 Since `=`{.coq} for `Type`{.coq} is not suitable for reasoning about algebraic
 datatypes, we introduce our own equivalence relation, denoted `==`{.coq}.  We
 say two types $\alpha$ and $\beta$ are equivalent up to an isomorphism
-when for any term of type $\alpha$, there exists a counter-part term of type
+when for any term of type $\alpha$, there exists a counterpart term of type
 $\beta$ and vice versa. In other words, $\alpha$ and $\beta$ are equivalent if
 we can exhibit two functions $f$ and $g$ such that:
 
@@ -294,7 +294,7 @@ the form `α == β`{.coq} with the `rewrite` tactic. I personally consider
 providing instances of `Proper`{.coq} whenever it is possible to be a good
 practice, and would encourage any Coq programmers to do so.
 
-#### `nat`{.coq} is a special-purpose `list`
+#### `nat`{.coq} is a special purpose `list`
 
 Did you notice? Now, using `type_equiv`{.coq}, we can prove it!
 
@@ -387,7 +387,7 @@ Qed.
 
 ## The `sum`{.coq} Operator
 
-### `sum`{.coq} Is A Morphism
+### `sum`{.coq} Is a Morphism
 
 To prove this, we compose together the functions whose existence is implied by
 $\alpha = \alpha'$ and $\beta = \beta'$. To that end, we introduce the
@@ -442,9 +442,9 @@ Qed.
 ### `sum`{.coq} Is Associative
 
 The associativity of `sum`{.coq} is straightforward to prove, and should not
-pose a particular challenge to perspective readers[^joke].
+pose a particular challenge to prospective readers[^joke].
 
-[^joke]: If we assume that this article is well-written, that is.
+[^joke]: If we assume that this article is well written, that is.
 
 ```coq
 Lemma sum_assoc {α β γ} : α + β + γ == α + (β + γ).
@@ -482,7 +482,7 @@ Inductive empty := .
 [^empty]: Note that `Inductive empty.`{.coq} is erroneous.
 
     When the `:=`{.coq} is omitted, Coq defines an inductive type with one
-    constructor, making such a type a type equivalent to `unit`{.coq}, not
+    constructor, making such a type equivalent to `unit`{.coq}, not
     `False`{.coq}.
 
 From a high-level perspective, `empty`{.coq} being the neutral element of
@@ -494,10 +494,10 @@ correct? Just like before, by providing two functions of types:
   - `α -> α + empty`{.coq}
   - `α + empty -> α`{.coq}
 
-The first function is `inl`{.coq}, that is one of the constructor of
+The first function is `inl`{.coq}, that is one of the constructors of
 `sum`{.coq}.
 
-The second function is more tricky to write in Coq, because it comes down to
+The second function is trickier to write in Coq, because it comes down to
 writing a function of type is `empty -> α`{.coq}.
 
 ```coq
@@ -611,7 +611,7 @@ Qed.
 ### `prod`{.coq} Has An Absorbing Element *)
 
 And this absorbing element is `empty`{.coq}, just like the absorbing element of
-the multiplication of natural number is $0$ (that is, the neutral element of
+the multiplication of natural numbers is $0$ (that is, the neutral element of
 the addition).
 
 ```coq
@@ -708,4 +708,5 @@ It is exactly what you could have expected (as match the type of
 
 Generating the body of the function is possible in theory, but probably not in
 `Ltac` without modifying a bit `type_equiv`{.coq}. This could be a nice
-use-case for [MetaCoq](https://github.com/MetaCoq/metacoq) though.
+use case for [MetaCoq](https://github.com/MetaCoq/metacoq) though.
+

@@ -32,7 +32,7 @@ Writing again was really nice, and I even gave writing fiction in English a
 shot. That made me uncover a bug in the English support of
 [ogam](https://crates.io/crates/ogam), my markup language for fiction writers,
 which led me to publish a fix on Crates.io. However, as soon as I came back to
-`$WORK`{.bash}, my writing spree ended. That’s Okay, though. It gave me plenty
+`$WORK`{.bash}, my writing spree ended. That’s okay, though. It gave me plenty
 of ideas for future sessions. Thanks, NaNoWriMo! Sorry to quit so soon, and see
 you next year, maybe.
 
@@ -42,5 +42,5 @@ on adding proper support for `coqffi` to
 and Coq! I’m thrilled by this. Thanks,
 [**@Alizter**](https://github.com/Alizter)!
 
-This wraps-up this retrospective. I hope I will have more interesting,
+This wraps up this retrospective. I hope I will have more interesting,
 concrete news to share next month.

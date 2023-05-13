@@ -14,7 +14,7 @@ I always wanted to learn some Lisp dialect. In the meantime,
 take shape. So, of course, my brain got an idea: *why not writing a client for
 lykan in some Lisp dialect?*[^why] I asked on
 [Mastodon](https://mastodon.social/@lthms/100135240390747697) if there were
-good game engine for Lisp, and someone told me about
+good game engines for Lisp, and someone told me about
 [`trivial-gamekit`](https://github.com/borodust/trivial-gamekit).
 
 [^why]: Spoiler alert: this wasn’t the most efficient approach for the lykan
@@ -36,9 +36,9 @@ requirements. Two are related to Lisp:
 2. SBCL or CCL
 
 [Quicklisp](https://quicklisp.org/beta) is an experimental package manager for
-Lisp project, while SBCL and CCL are two Lisp implementations. I had already
+Lisp projects, while SBCL and CCL are two Lisp implementations. I had already
 installed [Clisp](https://www.archlinux.org/packages/?name=clisp), and it took
-me quite some times to understand my mistake. Fortunately,
+me quite some time to understand my mistake. Fortunately,
 [SBCL](https://www.archlinux.org/packages/?name=sbcl) is also packaged in
 ArchLinux.
 
@@ -50,7 +50,7 @@ the process, you will have a new directory `${HOME}/quicklisp`{.bash}[^go].
     workspace](https://github.com/golang/go/wiki/SettingGOPATH).
 
 Quicklisp is not a native feature of SBCL, and requires a small bit of
-configuration to be made available automatically. You have to create a file
+configurations to be made available automatically. You have to create a file
 `${HOME}/.sbclrc`{.bash}, with the following content:
 
 ```lisp
@@ -127,18 +127,18 @@ Basically, this means we use two symbols, `run`{.lisp} and `app`{.lisp}.
 ### A Game Client
 
 The `lysk.lisp` file contains the program in itself. My first goal was to
-obtain the following program: at startup, it shall creates a new window in
+obtain the following program: at startup, it shall create a new window in
 fullscreen, and exit when users release the left button of their mouse. It is
 worth mentioning that I had to report [an issue to the `trivial-gamekit`
 upstream](https://github.com/borodust/trivial-gamekit/issues/30) in order to
 make my program work as expected.
 
-While it may sounds scary —it suggests `trivial-gamekit` is a relatively young
+While it may sound scary —it suggests `trivial-gamekit` is a relatively young
 project— the author has implemented a fix in less than an hour! He also took
 the time to answer many questions I had when I joined the `#lispgames` Freenode
 channel.
 
-Before going any further, lets have a look at the complete file.
+Before going any further, let’s have a look at the complete file.
 
 ```lisp
 (cl:in-package :lysk)
@@ -177,10 +177,10 @@ sbcl --eval '(ql:quickload :lysk)' --eval '(lysk:run)'
 
 It looks like empower a REPL-driven development. That being said, once the
 development is finished, I don't think I will have a lot of success if I ask my
-future players to start sbcl to enjoy my game. Fortunately, `trivial-gamekit`
+future players to start SBCL to enjoy my game. Fortunately, `trivial-gamekit`
 provides a dedicated function to bundle the game as a standalone executable.
 
-Following the advises of the [**@borodust**](https://github.com/borodust) —the
+Following the advice of the [**@borodust**](https://github.com/borodust) —the
 `trivial-gamekit` author— I created a second package to that end. First, we
 need to edit the `lysk.asd` file to detail a second package:
 
@@ -223,7 +223,7 @@ sbcl --eval "(ql:quickload :lysk/bundle)" \
 Objectively, there is not much in this article. However, because I am totally
 new to Lisp, it took me quite some time to get these few lines of code to work
 together. All being told I think this constitutes a good `trivial-gamekit`
-skeleton. Do not hesitate to us it this way.
+skeleton. Do not hesitate to use it this way.
 
 Thanks again to [**@borodust**](https://github.com/borodust), for your time and
 all your answers!

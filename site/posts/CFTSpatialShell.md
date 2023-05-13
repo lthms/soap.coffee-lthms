@@ -10,12 +10,12 @@ abstract: |
 
 # Spatial Shell: Call For Testers
 
-In August, 2022, I have discovered [Material
+In August 2022, I have discovered [Material
 Shell](https://material-shell.com). A few weeks later, I had pieced together a
 working prototype of a dynamic tiling management “a la Material Shell” for
 [sway](https://swaywm.org). By October, the project was basically fulfilling my
 needs, and I had already started to use it on my workstation[^1]. The project
-sat there for a while, until I rediscovered this thing called *holidays*.
+sat there for a while until I rediscovered this thing called *holidays*.
 
 [^1]: I tried so you do not have to: having my graphical session going crazy
       during a work meeting because of a software I had written.
@@ -23,16 +23,16 @@ sat there for a while, until I rediscovered this thing called *holidays*.
 For a short week, I tried to address at many of the remaining issues and
 missing features that I was aware of. Then, I started to write
 [man pages](https://lthms.github.io/spatial-shell/spatial.1.html), which
-turned out to be the perfect opportunity to clean-up every clunkiness I could
-possibly found.
+turned out to be the perfect opportunity to clean up every clunkiness I could
+possibly find.
 
-I can’t help but finding the result rather nice and satisfying, and I hope you
+I can’t help but find the result rather nice and satisfying, and I hope you
 will enjoy it too! [Spatial Shell](https://github.com/lthms/spatial-shell)
 works on my machine, which means it will definitely break on yours. But this is
 where the fun lies, right? At this point, I definitely think the project is
 ready to fall into the hands of (motivated) alpha testers.
 
-Anyway, let me give a tour!
+Anyway, let me give you a tour!
 
 ## Spatial Model
 
@@ -44,7 +44,7 @@ Shell can use two layouts:
 - **Maximize:** One window is displayed at a time
 - **Column:** Several windows are displayed side by side, to your convenience
 
-The reason why **Maximize** is not a particular case of **Column**, but instead a
+The reason **Maximize** is not a particular case of **Column**, but instead a
 layout on its own, is to easily allow you to switch to and back from maximizing
 the focused window. The following picture[^2] summarizes one particular setup with
 tree workspaces, each configured differently.
@@ -54,7 +54,7 @@ tree workspaces, each configured differently.
 #[Spatial Shell allows users to configure the layout of each workspace individually.](/img/spatial-shell-example.png)
 
 - Workspace 1 contains three windows, and uses the **Column** layout to display
-  at most three windows, so every windows are visible, with the focus being on
+  at most three windows, so each window is visible, with the focus being on
   the leftmost one.
 - Workspace 2 contains four windows, and uses the **Column** layout to display at
   most two windows. As a consequence, two windows are not visible.
@@ -81,7 +81,7 @@ More precisely, Spatial Shell comprises two executables:
 - [**spatialmsg**(1)](https://lthms.github.io/spatial-shell/spatialmsg.1.html), a
   client used to control the current instance of spatial.
 
-Assuming `$spatial`{.bash} and `$spatialmsg`{.bash} contains the pathes to
+Assuming `$spatial`{.bash} and `$spatialmsg`{.bash} contains the paths to
 spatial and spatialmsg binaries respectively, then the simplest sway
 configuration to start using Spatial Shell is the following
 
@@ -131,9 +131,9 @@ unfocus opacity 85
 See [**spatial**(5)](https://lthms.github.io/spatial-shell/spatial.5.html) for
 the list of commands supported by Spatial Shell.
 
-As a sidenote, readers familiar with sway will definetely pick the resemblance
+As a side note, readers familiar with sway will definitely pick the resemblance
 with sway and swaymsg, and it actually goes pretty deep. In a nutshell, swaymsg
-connects to a UNIX socket created by sway at startup time, to sends it commands
+connects to a UNIX socket created by sway at startup time, to send it commands
 (see [**spatial**(5)](https://lthms.github.io/spatial-shell/spatial.5.html))
 using a dedicated IPC protocol inherited from i3 (see
 [**sway-ipc**(7)](https://lthms.github.io/spatial-shell/sway-ipc.7.html)). Not
@@ -145,7 +145,7 @@ protocol
 ## Waybar Integration
 
 It is a common practice to use a so-called “bar” with sway, to display some
-useful information about the current state of the system. In the `contrib/`
+useful information about the current state of the system. In the `contrib/`
 directory of [Spatial Shell repository](https://github.com/lthms/spatial-shell),
 interested readers will find a configuration for
 [Waybar](https://github.com/Alexays/Waybar)[^design]. This configuration is

@@ -10,8 +10,8 @@ abstract: |
 # How I Use Stacked Git at `$WORK`{.bash}
 
 According to [my Lobste.rs history](https://lobste.rs/s/s6quvg/stacked_git), I
-have run into [Stacked Git](https://stacked-git.github.io) in early April,
-2021, and I remember its promises hit a soft spot. A few weeks later, I was
+have run into [Stacked Git](https://stacked-git.github.io) in early April
+2021, and I remember that its promises hit a soft spot. A few weeks later, I was
 submitting [a *pull request* to teach Stacked Git to sign
 commits](https://github.com/stacked-git/stgit/pull/100). It was all I needed to
 start using it at `$WORK`{.bash}, and now it has become a cornerstone of my
@@ -25,9 +25,9 @@ present Stacked Git. The website introduces the tool as follows:
 > Stacked Git, *StGit* for short, is an application for managing Git
 > commits as a stack of patches.
 
-There is a few things to unpack here. First and as its name suggests, Stacked
+There are a few things to unpack here. First and as its name suggests, Stacked
 Git is a tool built on top of Git[^pijul]. It is *not* a brand new VCS, and as
-a consequence you keep to use all your existing tools and plugins[^magit].
+a consequence you keep using all your existing tools and plugins[^magit].
 Secondly, Stacked Git helps you curate your Git history, by turning your
 commits into patches, and your branches into stacks of patches. This speaks to
 me, maybe because I have been fascinated by email-based workflows for quite
@@ -77,12 +77,12 @@ At a given time, a patch can either be (1) applied, (2) unapplied, or (3)
 hidden. On the one hand, if a patch is applied it is part of the Git history.
 On the other hand, unapplying a patch means removing it from the working branch
 (but not from the stack of patches of Stacked Git). If a patch becomes
-unrelevant, but you don’t want to remove it entierely because it can become
+irrelevant, but you don’t want to remove it entirely because it can become
 handy later, you can hide it. A hidden patch sits beside the stack of patches,
 and can be reintegrated if need be.
 
-Analoguous to `git log` ---which allows you to visualize your Git history---,
-`stg series` gives you a view the state of your stack of patches. Patches
+Analogous to `git log` ---which allows you to visualize your Git history---,
+`stg series` gives you a view of the state of your stack of patches. Patches
 prefixed with `+` (or `>`) are applied, while `-` means the patch is unapplied.
 
 Then,
@@ -94,9 +94,9 @@ Then,
 - `stg goto NAME` unapplies or applies the necessary patches so that
   `NAME` becomes the top patch of the list of applied patches.
 
-`HEAD` and the worktree are updated accordingly.
+Both `HEAD` and the work tree are updated accordingly.
 
-In addition, `stg sink` and `stg float` allow to reorganize your
+In addition, `stg sink` and `stg float` allow reorganizing your
 stack of patches, moving patches around.
 Basically, they are like `git rebase -i`, but without having to use
 `$EDITOR`.
@@ -105,7 +105,7 @@ Modifying patches is done with `stg refresh`.
 It’s akin to `git commit --amend`, except it is more powerful because
 you can modify any applied patches with the `-p` option.
 I’d always encourage you to `stg goto` first, because `stg refresh
--p` remains unfortunately error prone (nothing prevents you to target
+-p` remains unfortunately error-prone (nothing prevents you from targeting
 the wrong patch).
 But when used carefully, it can be very handy.
 
@@ -114,17 +114,17 @@ It is akin to `git rebase --onto`, but more straightforward. What happens is
 Stacked Git pop all the patches of my stack, reset the `HEAD` of the current
 branch to `REF`, and tries applying the patches one by one In case of
 conflicts, the process stop, and I am left with an empty patch, and a dirty
-worktree with conflicts to solve. The hidden gem is that, contrary to `git
+work tree with conflicts to solve. The hidden gem is that, contrary to `git
 rebase`, the repository is not “in the middle of a rebase.”
 
-Suppos there are many conflicting patches still waiting in my stack of patches,
+Suppose there are many conflicting patches still waiting in my stack of patches,
 and an urgent task I need to take care of first. I can just leave them here. I
 can switch to another branch, and when I come back, I get my patches back. I
 call this feature “incremental rebases.”
 
 [^rebase]: Stacked Git is supposedly able to detect, during a rebase, which of
     your patches have been applied to your target branch. I’d rather use `stg
-    uncommit`{.bash} before do the rebase, though.
+    uncommit`{.bash} before doing the rebase, though.
 
 And that is basically it. In a nutshell, Stacked Git equips commits with the
 same features as branches.
@@ -146,7 +146,7 @@ Stacked Git makes just everything so more convenient to me.
 
 I’ve been introduced to Git with a pretty simple workflow: I am
 supposed to start working on a feature, and once it’s ready, I
-can commit, and move on to the next task on my todo list.
+can commit, and move on to the next task on my to-do list.
 
 To me, this approach is backward.
 It makes you set your intent after the fact.
@@ -154,7 +154,7 @@ With Stacked Git, I often try to plan my final history /before
 writing the very first line of code/.
 Using `stack new`, I create my patches, and take the time to write
 their description.
-It helps me visualizing where I want to go.
+It helps me visualize where I want to go.
 Then, I use `stack goto` to go back to the beginning of my stack,
 and start working.
 
@@ -171,11 +171,11 @@ which I find very annoying, because it does not provide meaningful
 ways to compare two versions of your submission[^gitlab].
 
 [^gitlab]: There is a notion of “versions” in Gitlab, but its ergonomics fall
-    short of my expectations for such tool.
+    short of my expectations for such a tool.
 
-What we end up doing is creating “fixup commits”, and we push them
+What we end up doing is creating “fixup commits,” and we push them
 to Gitlab so that reviewers can easily verify that their feedback
-have correctly been taken into account.
+has correctly been taken into account.
 
 A fixup commit is a commit that will eventually be squashed into
 another.
@@ -227,7 +227,7 @@ For a few months, I have been involved in a project wherein we
 decided /not/ to fall in the same trap again.
 We agreed on a “planning of merge requests” and started working.
 The first merge request was soon opened.
-We’ve nominated a “owner” to take care of the review, and the rest
+We’ve nominated an “owner” to take care of the review, and the rest
 of the team carried on.
 Before the first merge request was merged, the second one was
 declared ready, and another owner was appointed.
@@ -238,7 +238,7 @@ It turns out Stacked Git is a wonderful tool to help me keep this
 under control.
 
 I only have one branch, and I use the same workflow to deal with
-feedbacks, even if they are coming from more than one one merge
+feedback, even if they are coming from more than one merge
 request.
 To remember the structure of everything, I just prefix the name of
 my patches with a merge request nickname.
@@ -253,9 +253,9 @@ So my stack will look something like this:
 ```
 
 A reviewer leaves a hard-truth comment that requires a significant rework of
-the oldest merge request? `stg goto` reverts my worktree in the appropriate
+the oldest merge request? `stg goto` reverts my work tree in the appropriate
 state, and `stg push` allows me to deal with conflicts one patch at a time. If
-at some point I need to spend more time on the oldest merge request, I can
+I need to spend more time on the oldest merge request at some point, I can
 continue my work, knowing the patches related to the newest one are awaiting in
 my stack.
 

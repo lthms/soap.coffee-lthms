@@ -22,7 +22,7 @@ relying on the presence of these functions to decide whether a file provides a
 theme or not. As of now, `nordless-theme` and `lavenderless-theme` have been
 updated accordingly, and [they appear on Peach
 Melpa](https://peach-melpa.org/themes/lavenderless-theme/variants/lavenderless).
-Their loading can also be defered using the `:defer`{.lisp} keyword of the
+Their loading can also be deferred using the `:defer`{.lisp} keyword of the
 `use-package`{.lisp} macro.
 
 if you happen to be a user of `colorless-themes`, feel free to shoot an email!

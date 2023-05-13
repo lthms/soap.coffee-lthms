@@ -22,12 +22,12 @@ logical reasoning. For instance, to reason by induction, one can use the
 `destruct`{.coq} or `case_eq`{.coq} tactics, etc.  It is not uncommon for new
 Coq users to be introduced to Ltac, the Coq default tactic language, using this
 proof-centric approach. This is not surprising, since writing proofs remains
-the main use-case for Ltac. In practice though, this discourse remains an
+the main use case for Ltac. In practice, though, this discourse remains an
 abstraction which hides away what actually happens under the hood when Coq
-executes a proof scripts.
+executes a proof script.
 
 To really understand what Ltac is about, we need to recall ourselves that
-Coq kernel is mostly a typechecker. A theorem statement is expressed as a
+Coq kernel is mostly a type checker. A theorem statement is expressed as a
 “type” (which lives in a dedicated sort called `Prop`{.coq}), and a proof of
 this theorem is a term of this type, just like the term `S (S O)`{.coq} ($2$)
 is of type `nat`{.coq}.  Proving a theorem in Coq requires to construct a term
@@ -62,7 +62,7 @@ tactic has been used, the term we are trying to construct consists solely in a
 hole, while Coq presents us a goal with no hypothesis, and with the exact type
 of our theorem, that is `forall (n : nat), n + O = n`{.coq}.
 
-A typical Coq course will explain students the `intro`{.coq} tactic allows for
+A typical Coq course will explain to students the `intro`{.coq} tactic allows for
 turning the premise of an implication into an hypothesis within the context.
 
 $$C \vdash P \rightarrow Q$$
@@ -72,7 +72,7 @@ becomes
 $$C,\ P \vdash Q$$
 
 This is a fundamental rule of deductive reasoning, and `intro`{.coq} encodes it.
-It achieves this by refining the current hole into an anymous function.
+It achieves this by refining the current hole into an anonymous function.
 When we use
 
 ```coq
@@ -91,7 +91,7 @@ into
   fun (n : nat) => ?Goal2
 ```
 
-The next step of this proof is to reason about induction on [n]. For [nat],
+The next step of this proof is to reason about induction on `n`. For `nat`,
 it means that to be able to prove
 
 $$\forall n, \mathrm{P}\ n$$
@@ -174,7 +174,7 @@ Inductive eq (A : Type) (x : A) : A -> Prop :=
 Coming back to our current goal, proving `@eq nat (Nat.add 0 0) 0`{.coq}[^equ1]
 requires to construct a term of a type whose only constructor is
 `eq_refl`{.coq}. `eq_refl`{.coq} accepts one argument, and encodes the proof
-that said argument is equal to itself. In practice, Coq typechecker will accept
+that said argument is equal to itself. In practice, Coq type checker will accept
 the term `@eq_refl _ x`{.coq} when it expects a term of type `@eq _ x y`{.coq}
 *if* it can reduce `x`{.coq} and `y`{.coq} to the same term.
 
@@ -217,7 +217,7 @@ the same term.
 However, at this point of the proof, we have the `IHn`{.coq} hypothesis (*i.e.*, the
 `IHn`{.coq} argument of the anonymous function whose body we are trying to
 construct). The `rewrite`{.coq} tactic allows for substituting in a type an
-occurence of `x`{.coq} by `y`{.coq} as long as we have a proof of `x = y`{.coq}. *)
+occurrence of `x`{.coq} by `y`{.coq} as long as we have a proof of `x = y`{.coq}. *)
 
 ```coq
     rewrite IHn.
@@ -247,10 +247,10 @@ the proof term that we have carefully constructed.
        n)
 ```
 
-We can finally use `Qed`{.coq} or `Defined`{.coq} to tell Coq to typecheck this
-term. That is, Coq does not trust Ltac, but rather typecheck the term to
+We can finally use `Qed`{.coq} or `Defined`{.coq} to tell Coq to type check this
+term. That is, Coq does not trust Ltac, but rather type check the term to
 verify it is correct. This way, in case Ltac has a bug which makes it
-construct ill-formed type, at the very least Coq can reject it.
+construct an ill-formed type, at the very least Coq can reject it.
 
 ```coq
 Qed.
@@ -258,7 +258,7 @@ Qed.
 
 In conclusion, tactics are used to incrementally refine hole inside a term
 until the latter is complete. They do it in a very specific manner, to
-encode certain reasoning rule.
+encode certain reasoning rules.
 
 On the other hand, the `refine`{.coq} tactic provides a generic, low-level way
 to do the same thing. Knowing how a given tactic works allows for mimicking

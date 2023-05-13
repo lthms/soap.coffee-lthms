@@ -23,14 +23,14 @@ in Rust or Elixir, but it works great in Haskell. Unfortunately, it is not an
 easy concept and it can be hard to understand. This article is not an attempt to
 do so, but rather a postmortem review of one situation where I found them
 extremely useful. If you think you have understood how they work, but don’t see
-the point yet, you might find here a beginning of answer.
+the point yet, you might find here a beginning of the answer.
 
 Recently, I ran into a very good example of why Monad Transformers worth it[^doubts]. I
 have been working on a project called ogma for a couple years now. In a
 nutshell, I want to build “a tool” to visualize in time and space a
-storytelling. We are not here just yet, but in the meantime I have wrote a
+storytelling. We are not here just yet, but, in the meantime, I have written a
 software called `celtchar` to build a novel from a list of files. One of its
-newest feature is the choice of language, and by extension, the typographic
+newest features is the choice of language, and by extension, the typographic
 rules. This information is read from a configuration file very early in the
 program flow. Unfortunately, its use comes much later, after several function
 calls.
@@ -40,7 +40,7 @@ calls.
     Transformers are a great abstraction, but nowadays I would probably try to
     choose another approach.
 
-In Haskell, you deal with that kind of challenges by relying on the Reader
+In Haskell, you deal with that kind of challenge by relying on the Reader
 Monad. It carries an environment in a transparent way. The only thing is, I was
 already using the State Monad to carry the computation result. But that’s not an
 issue with the Monad Transformers.
@@ -53,7 +53,7 @@ issue with the Monad Transformers.
 As you may have already understood, I wasn't using the “raw” `State`{.haskell}
 Monad, but rather the transformer version `StateT`{.haskell}. The underlying
 Monad was `IO`{.haskell}, because I needed to be able to read some files from
-the filesystem. By replacing `IO`{.haskell} by `ReaderT Language IO`{.haskell},
+the file system. By replacing `IO`{.haskell} by `ReaderT Language IO`{.haskell},
 I basically fixed my “carry the variable to the correct function call easily”
 problem.
 
@@ -68,7 +68,7 @@ And that was basically it.
 
 Now, my point is not that Monad Transformers are the ultimate beast we will have
 to tame once and then everything will be shiny and easy[^funny]. There are a lot of
-other way to achieve what I did with my `Builder`{.haskell} stack. For instance, in an
+other ways to achieve what I did with my `Builder`{.haskell} stack. For instance, in an
 OO language, I probably would have to add a new class member to my `Builder`{.haskell}
 class and I would have done basically the same thing.
 
@@ -76,8 +76,8 @@ class and I would have done basically the same thing.
 
 However, there is something I really like about this approach: the
 `Builder`{.haskell} type definition gives you a lot of useful information
-already. Both the `State`{.haskell} and `Reader`{.haskell} Monads have a well
-established semantics most Haskellers will understand in a glance. A bit of
-documentation won’t hurt, but I suspect it is not as necessary as one could
+already. Both the `State`{.haskell} and `Reader`{.haskell} Monads have a
+well-established semantics most Haskellers will understand in a glance. A bit
+of documentation won’t hurt, but I suspect it is not as necessary as one could
 expect. Moreover, the presence of the `IO`{.haskell} Monad tells everyone using
 the `Builder`{.haskell} Monad might cause I/O.

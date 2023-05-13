@@ -31,7 +31,7 @@ again[^minimalism].
 The change I am the most excited about is that I have *finally* reduced the
 boilerplate in need to write to use a new theme. I am very indecisive when
 it comes to theming. I like to have my choices, and I get tired of any
-colorscheme pretty quickly. As a consequence, I introduced a customizable
+color scheme pretty quickly. As a consequence, I introduced a customizable
 variable to let me select a theme dynamically, and have this choice persist
 across Emacs session.
 
@@ -71,7 +71,7 @@ things to me, instead of the echo area.
 The winning setup for now is the one that uses the [`quick-peek`
 package](https://github.com/cpitclaudel/quick-peek). That is,
 [`flycheck-inline`](https://github.com/flycheck/flycheck-inline) (customized to
-use quick-peek, as suggested in their README), and
+use `quick-peek`, as suggested in their README), and
 [`eldoc-overlay`](https://melpa.org/#/eldoc-overlay). This works well enough,
 so the pop-ups of eldoc are maybe a bit too distracting.
 
@@ -79,7 +79,7 @@ so the pop-ups of eldoc are maybe a bit too distracting.
 
 In my quest for pop-ups, I ran into several issues with the packages I tried
 out. For instance, [`eldoc-box`](https://github.com/casouri/eldoc-box) was very
-nice, but also very slow for some reason. It turns out there were an issue
+nice, but also very slow for some reason. It turns out there was an issue
 about that slowness, wherein the culprit was identified. This allowed me to
 [submit a pull request that got merged rather
 quickly](https://github.com/casouri/eldoc-box/pull/48).
@@ -112,7 +112,7 @@ the time to actually document them properly.
 ### Under the Hood
 
 Overall, the cost of using **`cleopatra`** was not worth the burden, and so I
-got ride of it. Fortunately, it was not very difficult, since the job of
+got rid of it. Fortunately, it was not very difficult, since the job of
 **`cleopatra`** was to extracting the generation processes from org files; I
 just add to implement a small `makefile` to make use of these files, without
 having to rely on **`cleopatra`** anymore.
@@ -132,5 +132,5 @@ some point.
 
 Finally, I have created [a public
 mailing](https://lists.sr.ht/~lthms/public-inbox) list that is available if you
-want to start a discussion on one of my article. Don’t hesitate to use it, or
+want to start a discussion on one of my articles. Don’t hesitate to use it, or
 to register to it!

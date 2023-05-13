@@ -65,7 +65,7 @@ in a less direct manner.
 `coqffi` supports a set of primitive types, *i.e.*, a set of OCaml
 types for which it knows an equivalent type in Coq. The list is the
 following (the Coq types are fully qualified in the table, but not in
-the generated Coq module as the necessary `Import` statement are
+the generated Coq module as the necessary `Import` statements are
 generated too).
 
 | OCaml type        | Coq type                      |
@@ -87,7 +87,7 @@ signed primitive integers to Coq users. They are implemented on top of the
 deprecated once the support for [signed primitive
 integers](https://github.com/coq/coq/pull/13559) is implemented[^compat].
 
-[^compat]: This is actually one of the sources of incompatibilities of `coqffi`
+[^compat]: This is actually one of the sources of incompatibility of `coqffi`
     with most recent versions of Coq.
 
 When processing the entries of a given interface model, `coqffi` will
@@ -157,7 +157,7 @@ Polymorphism is supported, *i.e.*, `type 'a t`{.ocaml} becomes `Axiom t :
 forall (a : Type), Type`{.coq}.
 
 It is possible to provide a “model” for a type using the `coq_model`
-annotation, for instance for reasoning purposes. For instance, we can specify
+annotation, for instance, for reasoning purposes. That is, we can specify
 that a type is equivalent to a `list`.
 
 ```ocaml
@@ -174,7 +174,7 @@ It is important to be careful when using the =coq_model= annotation. More
 precisely, the fact that `t` is a `list` in the “Coq universe” shall not be
 used while the implementation phase, only the verification phase.
 
-Unamed polymorphic type parameters are also supported. In presence of
+Unnamed polymorphic type parameters are also supported. In presence of
 such parameters, `coqffi` will find it a name that is not already
 used. For instance,
 
@@ -190,7 +190,7 @@ Axiom ast : forall (b : Type) (a : Type), Type.
 
 Finally, `coqffi` has got an experimental feature called `transparent-types`
 (enabled by using the `-ftransparent-types` command-line argument). If the type
-definition is given in the module interface, then `coqffi` tries to generates
+definition is given in the module interface, then `coqffi` tries to generate
 an equivalent definition in Coq. For instance,
 
 ```ocaml
@@ -236,7 +236,7 @@ is satisfied.
 
 ### Pure values
 
-`coqffi` decides whether or not a given OCaml values is pure or impure
+`coqffi` decides whether or not a given OCaml value is pure or impure
 with the following heuristics:
 
 - Constants are pure
@@ -247,7 +247,7 @@ with the following heuristics:
   functions (which do not live inside the
   [~Lwt~](https://ocsigen.org/lwt/5.3.0/manual/manual) monad) are pure
 
-Similarly to types, `coqffi` generates axioms (or definitions, if the
+Similarly to types, `coqffi` generates axioms (or definitions if the
 `coq_model` annotation is used) for pure values. Then,
 
 ```ocaml
@@ -272,7 +272,7 @@ becomes
 Axiom map : forall (a : Type) (b : Type), (a -> b) -> list a -> list b.
 ```
 
-Again, unamed polymorphic type are supported, so
+Again, unnamed polymorphic typse are supported, so
 
 ```ocaml
 val ast_to_string : _ ast -> string [@@pure]
@@ -400,7 +400,7 @@ Definition console_unsafe_semantics : semantics CONSOLE :=
 primitives —*i.e.*, functions which live inside the `Lwt` monad— when
 the `lwt` feature is enabled.
 
-The treatment is very analoguous to the one for impure primitives: (1)
+The treatment is very analogous to the one for impure primitives: (1)
 a typeclass is generated (with the `_Async` suffix), and (2) an
 instance for the `Lwt` monad is generated. Besides, an instance for
 the “synchronous” primitives is also generated for `Lwt`. If the
@@ -418,7 +418,7 @@ you are using an alias type in place of `Lwt.t`.
 
 OCaml features an exception mechanism. Developers can define their
 own exceptions using the `exception` keyword, whose syntax is similar
-to constructors definition. For instance,
+to the constructors’ definition. For instance,
 
 ```ocaml
 exception Foo of int * bool
@@ -427,7 +427,7 @@ exception Foo of int * bool
 introduces a new exception `Foo` which takes two parameters of type `int`{.ocaml} and
 `bool`{.ocaml}. `Foo (x, y)` constructs of value of type `exn`{.ocaml}.
 
-For each new exceptions introduced in an OCaml module, `coqffi`
+For each new exception introduced in an OCaml module, `coqffi`
 generates (1) a so-called “proxy type,” and (2) conversion functions
 to and from this type.
 
@@ -462,7 +462,7 @@ and how `coqffi` supports it will probably be generalized in future releases.
 
 Finally, `coqffi` has a minimal support for functions which may raise
 exceptions. Since OCaml type system does not allow to identify such
-functions, they need to be annotated explicitely, using the
+functions, they need to be annotated explicitly, using the
 =may_raise= annotation. In such a case, `coqffi` will change the
 return type of the function to use the =sum= Coq inductive type.
 
@@ -481,7 +481,7 @@ Axiom from_option : forall (a : Type), option a -> sum a exn.
 ### Modules
 
 Lastly, `coqffi` supports OCaml modules described within `mli` files,
-when they are specify as `module T : sig ... end`{.ocaml}. For instance,
+when they are specified as `module T : sig ... end`{.ocaml}. For instance,
 
 ```ocaml
 module T : sig

@@ -11,16 +11,16 @@ abstract: |
 # A Literate Toolchain To Build This Website
 
 A literate program is a particular type of software program where code is not
-directly written in source files, but rather in text document as code
+directly written in source files, but rather in a text document as code
 snippets. In essence, literate programming allows for writing in the same place
 both the software program and its technical documentation.
 
 **`cleopatra`** is a “literate toolchain” I have implemented to build this
 website, and you are currently reading it[^past]. That is, **`cleopatra`** is
-both the build system and an article of this website! To acheive this,
+both the build system and an article of this website! To achieve this,
 **`cleopatra`** has been written as a collection of org files which can be
 either “tangled” using [Babel](https://orgmode.org/worg/org-contrib/babel/) or
-“exported” as a HTML document. Tangling here refers to extracted marked code
+“exported” as a HTML document. Tangling here refers to extract marked code
 blocks into files.
 
 [^past]: This sentence was true when this article was published, but things
@@ -37,7 +37,7 @@ blocks into files.
     Because I have too much free time, probably.
 
 The page you are currently reading is **`cleopatra`** entry point. Its
-primilarly purpose is to define two Makefiles —`makefile` and `bootstrap.mk`—
+primary purpose is to define two Makefiles —`makefile` and `bootstrap.mk`—
 and the necessary emacs-lisp script to tangle this document.
 
 On the one hand, `makefile` is the main entrypoint of **`cleopatra`**. It
@@ -51,9 +51,9 @@ On the other hand, `bootstrap.mk` is used to declare the various “generation
 processes” used to generate this website.
 
 `makefile` and the emacs-lisp scripts are versioned, because they are necessary
-to bootstrap **`cleopatra`**; but since they are also define in this document,
+to bootstrap **`cleopatra`**; but since they are also defined in this document,
 it means **`cleopatra`** can update itself, in some sense. This is to be kept in mind
-when modifying this document to hastly.
+when modifying this document to hastily.
 
 ## Global Constants and Variables
 
@@ -107,7 +107,7 @@ cleanall : clean
 ```
 
 Generation processes can declare new build outputs using the `+=` assignement
-operators. Using another operator will likely provent an underisable result.
+operators. Using another operator will likely provoke an undesirable result.
 
 ## Tangling Org Documents
 
@@ -233,7 +233,7 @@ precisely, a generation process `proc` is defined in `proc.mk`. The rules of
 `proc-prebuild` for the `prebuild` stage.
 
 Eventually, the following dependencies are expected between within the chain of
-generation processes for every generation processes.
+generation processes for every generation process.
 
 ```makefile
 prebuild : proc-prebuild
@@ -255,7 +255,7 @@ regarding the `include` directive. If there exists a rule to generate a
 Makefile used as an operand of `include`, `make` will use this rule to update
 (if necessary) said Makefile before actually including it.
 
-Therefore, rules of the following form achieve our ambition of extensibility.
+Therefore, the rules of the following form achieve our ambition of extensibility.
 
 ```makefile
 include ${PROC}.mk
@@ -359,7 +359,7 @@ the current approach is
 2. To modify `style/main.sass` in `theme`
    to import this file
 
-Eventually, the second step will be automated, but in the meantime
+Eventually, the second step will be automated, but, in the meantime,
 this customization is mandatory.
 
 ### Configuring Soupault
@@ -392,7 +392,7 @@ In the present website, contents can be written in the following format:
 
 - **HTML Files:** This requires no particular set-up, since HTML is the *lingua
   franca* of `soupault`.
-- **Regular Coq files:** Coq is a system which allows to write machine-checked
+- **Regular Coq files:** Coq is a system which allows writing machine-checked
   proofs, and it comes with a source “prettifier” called `coqdoc`. [Learn more
   about the generation process for Coq
   files](https://src.soap.coffee/soap.coffee/lthms.git/tree/site/cleopatra/Contents/Coq.org?id=9329e9883a52eb95c0803a46560c396d149ef2c6).

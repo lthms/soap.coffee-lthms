@@ -63,8 +63,8 @@ Proof.
 Defined.
 ```
 
-We have witness in my previous article about strongly-specified
-functions that mixing proofs and regular terms may leads to
+We have seen in my previous article about strongly specified
+functions that mixing proofs and regular terms may lead to
 cumbersome code.
 
 From that perspective, `Program`{.coq} helps. Indeed, the `lock`{.coq} function
@@ -85,7 +85,7 @@ Definition lock' (reg: SmramcRegister)
 
 Another way to "embed proofs in a program" is by specifying pre-
 and post-conditions for its component. In Coq, this is done using
-sigma-types.
+sigma types.
 
 On the one hand, a precondition is a proposition a function input has to
 satisfy in order for the function to be applied.  For instance, a precondition
@@ -108,8 +108,8 @@ Definition head {a} (l : list a | l <> [])
 ```
 
 We recall that because `{ l: list a | l <> [] }`{.coq} is not the same as `list
-a`{.coq}, in theory we cannot just compare `l`{.coq} with [x :: l'] (we need to
-use `proj1_sig`{.coq}). One benefit on `Program`{.coq} is to deal with it using
+a`{.coq}, in theory we cannot just compare `l`{.coq} with `x :: l'`{.coq} (we need to
+use `proj1_sig`{.coq}). One advantage of `Program`{.coq} is to deal with it using
 an implicit coercion.
 
 Note that for the type inference to work as expected, the
@@ -177,13 +177,13 @@ Arguments vnil {a}.
 ```
 
 I had three functions in mind: `take`{.coq}, `drop`{.coq} and `extract`{.coq}.
-I learned few lessons. My main take-away remains: do not use sigma-types,
-`Program`{.coq} and dependent-types together. From my point of view, Coq is not
+I learned a few lessons. My main takeaway remains: do not use sigma types,
+`Program`{.coq} and dependent types together. From my point of view, Coq is not
 yet ready for this. Maybe it is possible to make those three work together, but
 I have to admit I did not find out how. As a consequence, my preconditions are
 defined as extra arguments.
 
-To be able to specify the post conditions my three functions and
+To be able to specify the post conditions of my three functions and
 some others, I first defined `nth`{.coq} to get the _nth_ element of a
 vector.
 
@@ -258,7 +258,7 @@ Defined.
 As a side note, I wanted to define the post condition as follows:
 `{ v': vector A e | forall (i : nat | i < e), nth v' i = nth v i
 }`{.coq}. However, this made the goals and hypotheses become very hard
-to read and to use. Sigma-types in sigma-types: not a good
+to read and to use. Sigma types in sigma types: not a good
 idea.
 
 ```ocaml
@@ -523,7 +523,7 @@ Qed.
 ## Is It Usable?
 
 This post mostly gives the "happy ends" for each function. I think I tried
-to hard for what I got in return and therefore I am convinced `Program`{.coq}
+too hard for what I got in return and therefore I am convinced `Program`{.coq}
 is not ready (at least for a dependent type, I cannot tell for the rest). For
 instance, I found at least one bug in Program logic (I still have to report
 it). Have a look at the following code:

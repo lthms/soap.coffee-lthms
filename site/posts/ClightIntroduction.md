@@ -83,13 +83,13 @@ Identifiers in Clight are (`positive`{.coq}) indices.  The `fn_body` field is of
 type `statement`{.coq}, with the particular constructor `Sreturn`{.coq} whose argument
 is of type `option expr`{.coq}, and `statement`{.coq} and `expr`{.coq} look like the two main
 types to study.  The predicates `step1`{.coq} and `step2`{.coq} allow for reasoning
-about the execution of a `function`{.coq}, step by step (hence the name). It
+about the execution of a `function`{.coq}, step-by-step (hence the name). It
 appears that `clightgen` generates Clight terms using the function call
 convention encoded by `step2`{.coq}.  To reason about a complete execution, it
 appears that we can use `star`{.coq} (from the `Smallstep`{.coq} module) which is
 basically a trace of `step`{.coq}. These semantics are defined as predicates (that
 is, they live in `Prop`{.coq}). They allow for reasoning about
-state-transformation, where a state is either
+state transformation, where a state is either
 
 - A function call, with a given list of arguments and a continuation
 - A function return, with a result and a continuation
@@ -325,7 +325,7 @@ familiar: `smart_inv`{.coq}, then renaming, etc.
 ```
 
 We are almost done. Let’s simplify as much as possible `fetch_x`{.coq} and
-`fetch_y`{.coq}. Each time, the `smart_inv`{.coq} tactic generates two suboals,
+`fetch_y`{.coq}. Each time, the `smart_inv`{.coq} tactic generates two subgoals,
 but only the first one is relevant. The second one is not, and can be
 discarded.
 
@@ -379,7 +379,7 @@ The definitions of Clight are straightforward, and the [CompCert
 documentation](http://compcert.inria.fr/doc/index.html) is very pleasant to
 read. Understanding Clight and its semantics can be very interesting if you
 are working on a language that you want to translate into machine code.
-However, proving functional properties of a given C snippet using only CompCert
+However, proving some functional properties of a given C snippet using only CompCert
 can quickly become cumbersome. From this perspective, the
 [VST](https://github.com/PrincetonUniversity/VST) project is very interesting,
 as its main purpose is to provide tools to reason about Clight programs more

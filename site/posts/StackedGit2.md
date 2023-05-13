@@ -14,7 +14,7 @@ enough has changed to motivate a spin-off piece.
 
 ## Stacked Git is *Fast*
 
-Firstly, it is important to state that my main complain about
+Firstly, it is important to state that my main complaint about
 Stacked Git is now a thing of the past[^edit]! Stacked Git does not feel slow
 anymore, and far from it. This is because [Stacked Git 2.0 has been rewritten
 in Rust](https://github.com/stacked-git/stgit/discussions/185). While RiiR
@@ -67,7 +67,7 @@ takes for a given MR to be integrated into the main branch.
     drawbacks too.
 
     During the past year, I’ve pushed fairly large commits which could have
-    been splitted into several smaller ones, for the sake of keeping my “one
+    been split into several smaller ones, for the sake of keeping my “one
     commit per MR” policy. I have also had to manage large stacks of MRs.
 
 My previous approach based on git branches did not scale well with
@@ -122,7 +122,7 @@ these commits, and I need to publish each commit individually using
 
 The pragmatic answer is definitely to come back to git branches *for
 this particular use case*, but it's not the *fun* answer. So from
-time to time, I try to experiment alternative approaches. My current
+time to time, I try to experiment with alternative approaches. My current
 intuition is that, by adopting a naming convention for my patches, I
 could probably implement a thin tooling on top of Stacked Git to
 deal with dependents commits.

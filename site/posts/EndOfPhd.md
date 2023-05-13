@@ -56,13 +56,13 @@ Our contribution is two-fold:
    verification of complex systems made of interconnected components as a first
    step towards addressing the challenge posed by the scale of the x86 hardware
    architecture. This approach is not specific to hardware models, and could
-   also be leveraged to reason about composition of software components as
+   also be leveraged to reason about the composition of software components as
    well. In addition, we have implemented our approach in the Coq theorem
-   prover, and the resulting framework takes advantages of Coq proof automation
+   prover, and the resulting framework takes advantage of Coq proof automation
    features to provide general-purpose facilities to reason about components
    interactions.
 
-## Publicatinos
+## Publications
 
 If you are interested, you can have a look at the paper I wrote during my PhD:
 
@@ -78,4 +78,3 @@ You can also have a look at the Coq frameworks I have published:
 
 - [SpecCert on Github](https://github.com/lthms/speccert) (CeCILL-B)
 - [FreeSpec on Github](https://github.com/lthms/FreeSpec) (MPL-2.0)
-

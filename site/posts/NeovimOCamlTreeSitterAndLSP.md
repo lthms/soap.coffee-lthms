@@ -21,7 +21,7 @@ OCaml hacking and calling it a day. In a nutshell, OCaml `mli` files are
 quickly turning into a random mess of nonsensical colors, and I didn’t know
 why. I tried to blame
 [`tree-sitter-ocaml`](https://github.com/tree-sitter/tree-sitter-ocaml/issues/72),
-but of course I was wrong.
+but, of course I was wrong.
 
 The issue is subtle, and to be honest, I don’t know if I totally grasp it. But
 from my rough understanding, it breaks down as follows.

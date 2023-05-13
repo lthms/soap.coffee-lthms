@@ -27,7 +27,7 @@ which may print to and read from the standard output. A function
 `askPassword`{.haskell} which displays a prompt and get the user password would
 have this type signature:
 
-[^fm2018]: The odds were in my favour: the aforementioned academic article has
+[^fm2018]: The odds were in my favor: the aforementioned academic article has
     been accepted.
 
 ```haskell
@@ -42,7 +42,7 @@ become burdensome to use.
 
 Basically, when my colleague showed me his Rust project and how he was using
 `error-chain`, the question popped out. *Can we use an approach similar to
-`Eff`{.haskell} to implement a Haskell-flavoured `error-chain`?*
+`Eff`{.haskell} to implement a Haskell-flavored `error-chain`?*
 
 Spoiler alert: the answer is yes. In this post, I will dive into the resulting
 API, leaving for another time the details of the underlying implementation[^api].
@@ -131,13 +131,13 @@ for the latter, the current implementation of `ResultT`{.haskell} is probably
 less powerful, but to be honest I mostly cared about the “extensible” thing, so
 it is not very surprising.
 
-This monad is not an alternative to neither Monad Stacks a la mtl nor to the
+This monad is an alternative to neither Monad Stacks a la mtl nor to the
 `Eff`{.haskell} monad. In its current state, it aims to be a more powerful and
 flexible version of `EitherT`{.haskell}.
 
 ### Parameters
 
-As often in Haskell, the `ResultT`{.haskell} monad can be parameterised in
+As often in Haskell, the `ResultT`{.haskell} monad can be parameterized in
 several ways.
 
 ```haskell
@@ -152,7 +152,7 @@ data ResultT msg (err :: [*]) m a
   `ResultT`{.haskell} is not intended to be stacked itself
 - `a`{.haskell} is the expected type of the computation result
 
-[^row]: You might have notice `err`{.haskell} is of kind `[*]`{.haskell}. To write such a thing,
+[^row]: You might have noticed `err`{.haskell} is of kind `[*]`{.haskell}. To write such a thing,
     you will need the
     [`DataKinds`{.haskell}](https://www.schoolofhaskell.com/user/konn/prove-your-haskell-for-great-safety/dependent-types-in-haskell)
     GHC pragmas.
@@ -197,7 +197,7 @@ readContent :: (Contains err FileError, MonadIO m)
             -> ResultT msg err m String
 ```
 
-We could leverage this function in a given project, for instance to read its
+We could leverage this function in a given project, for instance, to read its
 configuration files (for the sake of the example, it has several configuration
 files). This function can use its own type to describe ill-formed description
 (`ConfigurationError`{.haskell}).
@@ -277,7 +277,7 @@ row of errors, by providing as many functions as required. Finally,
 only one function tied to a given typeclass, on the condition that the handling
 errors implement this typeclass.
 
-Using `recover`{.haskell} and its siblings often requires to help a bit the
+Using `recover`{.haskell} and its siblings often require to help a bit the
 Haskell type system, especially if we use lambdas to define the error handlers.
 Doing that is usually achieved with the `Proxy a`{.haskell} dataype (where
 `a`{.haskell} is a phantom type). I would rather use the
@@ -300,7 +300,7 @@ use more errors thanks to the `recover*` functions.
 
 [^tap]: The
     [TypeApplications](https://medium.com/@zyxoas/abusing-haskell-dependent-types-to-make-redis-queues-safer-cc31db943b6c)
-    pragmas is probably one of my favourites.
+    pragmas is probably one of my favorites.
 
     When I use it, it feels almost like if I were writing a Coq document.
 
@@ -309,7 +309,7 @@ use more errors thanks to the `recover*` functions.
 `ResultT`{.haskell} only cares about error handling. The rest of the work is up
 to the underlying monad `m`{.haskell}. That being said, nothing forbids us to
 provide fine-grained API, *e.g.*, for Filesystem-related functions. From an
-error handling perspective, the functions provided by Prelude (the standard
+error handling perspective, the functions provided by `Prelude` (the standard
 library of Haskell) are pretty poor, and the documentation is not really
 precise regarding the kind of error we can encounter while using it.
 
