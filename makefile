@@ -36,4 +36,8 @@ site/img/%.png: img/%.png
 build: style.min.css site/styles/highlight.css ${COMPRESSED_IMAGES}
 	@soupault
 
+.PHONY: clean
+clean:
+	@rm -rf out/
+
 .FORCE:
