@@ -38,7 +38,7 @@ html {
 }
 
 body {
-    font-family: Inter, sans-serif;
+    font-family: Inter, Roboto, sans-serif;
     line-height: 1.8;
     max-width: var(--body-width);
     text-align: justify;
@@ -78,11 +78,11 @@ figcaption p {
 /* See {{Note: width}} */
 @media (min-width: 82rem) {
     .fullwidth, figure {
-        margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));
+        /*margin-left: calc(-1 * (var(--margin-width) + var(--gutter-width)));*/
     }
 
     figure, figcaption, .fullwidth {
-        width: var(--body-width);
+        /*width: var(--body-width);*/
     }
 
 
@@ -399,4 +399,25 @@ th {
     border-top: 1px solid silver;
     height: 2em;
     padding: 0 1em;
+}
+
+.running-container {
+  text-align: center;
+}
+
+.running-container .kilometer {
+  width: 2em;
+  height: 2em;
+  margin: .2em;
+  display: inline-block;
+  border-radius: .5em;
+}
+
+.kilometer.race {
+  box-shadow: 0 0 2px 2px gold;
+}
+
+.running-container p {
+  text-align: justify;
+  font-size: smaller;
 }

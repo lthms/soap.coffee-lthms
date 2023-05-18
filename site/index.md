@@ -8,11 +8,11 @@ abstract: |
 
 # Hi 👋
 
-My name is Thomas Letan, and this is my little corner of the Internet.
+Welcome to my little corner of the Internet.
 
 You will find it dusty more often than not, but it’s been there for quite a
 while now, and its contents might be of interest for you. If that is the case,
-I’m thrilled.
+I’m thrilled!
 
 ## Latest Posts
 

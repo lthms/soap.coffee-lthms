@@ -9,6 +9,7 @@
     </description>
     <atom:link href="https://soap.coffee/~lthms/posts/index.xml" rel="self" type="application/rss+xml" />
     {% for article in contents %}
+    {% if article.date %}
     <item>
       <title>{{ article.title | striptags }}</title>
       <link>{{ base }}{{ article.url }}</link>
@@ -20,6 +21,7 @@
         {% endif %}
       </description>
     </item>
+    {% endif %}
     {% endfor %}
   </channel>
 </rss>

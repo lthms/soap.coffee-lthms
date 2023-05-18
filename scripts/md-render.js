@@ -81,9 +81,6 @@ fs.readFile(path, 'utf8', (err, data) => {
     }
   }
 
-  const now = new Date();
-  process.stdout.write(span(`${icon('circle-arrow')}&nbsp;Generated on ${datetime(now, 'generated')}`, 'footnote-p full-only narrow'));
-
   process.stdout.write('</span>');
 
   if (series) {
