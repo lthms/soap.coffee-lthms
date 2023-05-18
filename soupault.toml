@@ -69,6 +69,9 @@
 [widgets.move-tags]
   widget = "move-tags"
 
+[widgets.running]
+  widget = "running"
+
 [index]
   index = true
   index_first = true
