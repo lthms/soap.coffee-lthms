@@ -5,6 +5,7 @@ tags: ['spatial-shell', 'nanowrimo', 'coqffi']
 series:
   parent: series/Retrospectives.html
   prev: posts/September2022.html
+  next: posts/May2023.html
 abstract: |
     Spatial Sway has basically reached the MVP stage, I failed to fully commit
     to this year’s NaNoWriMo, and someone has worked on adding some support for
