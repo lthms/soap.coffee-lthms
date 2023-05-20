@@ -65,6 +65,7 @@
 [widgets.meta]
   after = "urls-rewriting"
   widget = "meta"
+  site_base_url = "https://soap.coffee/"
 
 [widgets.move-tags]
   widget = "move-tags"
