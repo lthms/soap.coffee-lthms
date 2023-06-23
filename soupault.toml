@@ -87,6 +87,9 @@
   extract_attribute = "datetime"
   fallback_to_content = false
 
+[index.fields.feature]
+  selector = ["#meta-tags .feature"]
+
 [index.fields.date_str]
   selector = ["time#published"]
 

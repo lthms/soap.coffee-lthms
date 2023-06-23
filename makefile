@@ -1,6 +1,6 @@
 IMAGES = $(wildcard img/*.png)
 COMPRESSED_IMAGES = $(foreach img, ${IMAGES}, site/${img})
-HIGHLIGHT_THEME = googlecode
+HIGHLIGHT_THEME = base16/unikitty-light
 
 .PHONY: default
 default: build

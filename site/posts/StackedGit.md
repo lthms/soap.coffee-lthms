@@ -2,6 +2,7 @@
 published: 2022-01-16
 modified: 2022-08-07
 tags: ['stacked-git', 'workflow']
+feature: true
 abstract: |
     I’ve been using Stacked Git at work since early 2021, and as of January
     2022, it has become a cornerstone of my daily workflow.

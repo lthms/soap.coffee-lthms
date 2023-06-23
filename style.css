@@ -288,7 +288,7 @@ h1 {
 
 #tags-list {
   text-align: center;
-  font-size: smaller;
+  font-size: .9em;
   padding-bottom: 1em;
 }
 
@@ -379,6 +379,10 @@ p code.hljs,
 dt code.hljs,
 li code.hljs {
   padding: 0;
+}
+
+.hljs {
+  color: #222;
 }
 
 table {

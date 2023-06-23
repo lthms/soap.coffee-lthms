@@ -61,13 +61,17 @@ fs.readFile(path, 'utf8', (err, data) => {
   const modified = md.meta.modified;
   const tags = md.meta.tags;
   const abstract = md.meta.abstract;
+  const feature = md.meta.feature;
 
+  process.stdout.write('<div id="meta-tags">');
   if (abstract) {
     const abstract_rendered =  renderer().render(abstract);
-    process.stdout.write('<div id="meta-tags">');
     process.stdout.write(`<div class="description">${abstract_rendered}</div>`);
-    process.stdout.write('</div>');
   }
+  if (feature) {
+    process.stdout.write(`<div class="feature">yes</div>`);
+  }
+  process.stdout.write('</div>');
 
   process.stdout.write('<span id="timestamps" class="marginblock">');
 

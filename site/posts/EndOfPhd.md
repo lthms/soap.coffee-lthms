@@ -1,6 +1,7 @@
 ---
 published: 2019-01-15
 tags: ['research']
+feature: yes
 abstract: |
     It has been a long journey —4 years, 10 days— but I have completed my PhD
     on October 25, 2018.

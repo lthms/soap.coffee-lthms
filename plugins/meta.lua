@@ -71,3 +71,20 @@ if timestamps then
   target = HTML.select_one(page, "#whoami")
   HTML.insert_after(target, timestamps)
 end
+
+tags = HTML.select(page, "#tags-list .tag") 
+tags_str = {}
+i = 1
+while tags[i] do
+  tags_str[i] = HTML.strip_tags(tags[i])
+  i = i + 1
+end
+
+if tags_str[1] then
+  keywords = HTML.parse(
+    '<meta name="keywords" content="' .. String.join(", ", tags_str) 
+    .. '">'
+  )
+
+  HTML.append_child( head, keywords)
+end
