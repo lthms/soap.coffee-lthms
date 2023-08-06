@@ -6,7 +6,7 @@ abstract: |
     be if I knew
 ---
 
-# Hi 👋
+# Hi!
 
 Welcome to my little corner of the Internet.
 

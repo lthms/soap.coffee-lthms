@@ -15,10 +15,10 @@ while index do
   if href and todo then
     if Regex.match(href, "^https?://github.com") then
       icon = HTML.parse(mark("github"))
-      HTML.insert_after(link, icon)
+      HTML.append_child(link, icon)
     elseif Regex.match(href, "^https?://") then
       icon = HTML.parse(mark("external-link"))
-      HTML.insert_after(link, icon)
+      HTML.append_child(link, icon)
     end
 
     HTML.set_attribute(link, "marked", "")
