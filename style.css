@@ -58,9 +58,10 @@ main {
     margin: auto;
 }
 
-img {
+img, video {
     max-width: 100%;
 }
+
 
 figure {
   padding-top: 1rem;

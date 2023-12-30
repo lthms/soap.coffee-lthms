@@ -22,6 +22,9 @@ function renderer() {
                   } else {
                     return `<div id="archives-index">${placeholder}</div>`
                   }
+                },
+                video (url) {
+                  return `<video controls><source src="${url}" /></video>`
                 }
               })
             .use(require('markdown-it-highlightjs'), { inline: true, auto: false });
