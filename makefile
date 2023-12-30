@@ -40,4 +40,8 @@ build: style.min.css site/styles/highlight.css ${COMPRESSED_IMAGES}
 clean:
 	@rm -rf out/
 
+.PHONY: serve
+serve:
+	@cd out/; python -m http.server 2> /dev/null &
+
 .FORCE:
