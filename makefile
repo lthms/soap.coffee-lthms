@@ -23,7 +23,7 @@ _opam/.init:
 package-lock.json: package.json
 	@npm install
 
-style.min.css: style.css package-lock.json
+style.min.css: scripts/css.sh style.css package-lock.json
 	@./scripts/css.sh
 
 site/styles/highlight.css: package-lock.json .FORCE
