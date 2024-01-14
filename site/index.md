@@ -16,7 +16,7 @@ I’m thrilled!
 
 ## Latest Posts
 
-@[archives](5)
+@[archives](7)
 
 [See more →](/posts)
 
