@@ -33,7 +33,7 @@
   widget = "title"
   selector = "h1"
   default = "~lthms"
-  prepend = "~lthms: "
+  append = " · ~lthms"
   force = false
 
 [widgets.generator-meta]
