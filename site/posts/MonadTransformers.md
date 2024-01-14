@@ -1,5 +1,6 @@
 ---
 published: 2017-07-15
+modified: 2024-01-07
 tags: ['haskell', 'opinions']
 abstract: |
     Monads are hard to get right, monad transformers are harder. Yet, they
@@ -7,6 +8,11 @@ abstract: |
 ---
 
 # Monad Transformers are a Great Abstraction
+
+> [!IMPORTANT]
+> Time has passed since the publication of this article. Whether or not I agree
+> with its conclusions is an open question. Monad Transformers are a great
+> abstraction, but nowadays I would most certainly choose another approach.
 
 Monads are hard to get right. I think it took me around a year of Haskelling to
 feel like I understood them. The reason is, to my opinion, there is not such
@@ -25,7 +31,7 @@ do so, but rather a postmortem review of one situation where I found them
 extremely useful. If you think you have understood how they work, but don’t see
 the point yet, you might find here a beginning of the answer.
 
-Recently, I ran into a very good example of why Monad Transformers worth it[^doubts]. I
+Recently, I ran into a very good example of why Monad Transformers worth it. I
 have been working on a project called ogma for a couple years now. In a
 nutshell, I want to build “a tool” to visualize in time and space a
 storytelling. We are not here just yet, but, in the meantime, I have written a
@@ -34,11 +40,6 @@ newest features is the choice of language, and by extension, the typographic
 rules. This information is read from a configuration file very early in the
 program flow. Unfortunately, its use comes much later, after several function
 calls.
-
-[^doubts]: Time has passed since the publication of this article. Whether or
-    not I remain in sync with its conclusions is an open question. Monad
-    Transformers are a great abstraction, but nowadays I would probably try to
-    choose another approach.
 
 In Haskell, you deal with that kind of challenge by relying on the Reader
 Monad. It carries an environment in a transparent way. The only thing is, I was

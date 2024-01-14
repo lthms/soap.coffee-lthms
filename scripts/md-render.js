@@ -6,6 +6,7 @@ function renderer() {
             .use(require('markdown-it-meta'))
             .use(require('markdown-it-footnote'))
             .use(require('markdown-it-figure'))
+            .use(require('markdown-it-github-alerts'))
             .use(require('markdown-it-custom-block'), {
                 allSeries (placeholder) {
                   return `<div class="index" id="all-series-index"></div>`

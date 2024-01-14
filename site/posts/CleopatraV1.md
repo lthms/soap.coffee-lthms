@@ -1,6 +1,6 @@
 ---
 published: 2020-02-04
-modified: 2023-05-12
+modified: 2024-01-07
 tags: ['meta', 'literate-programming', 'emacs']
 abstract: |
     Our literate programming toolchain cannot live solely inside Org files,
@@ -9,6 +9,15 @@ abstract: |
 ---
 
 # A Literate Toolchain To Build This Website
+
+> [!IMPORTANT]
+> What you are reading is actually the rendered version of a Markdown document
+> that was manually “translated” from the Org original document, named
+> `Bootstrap.org`. `Bootstrap.org` was probably complete gibberish for anyone
+> who isn’t me. This version was actually heavily reworked to try to fix that.
+>
+> In any case, the tool-suite described here has not been used to generate this
+> website for a while now.
 
 A literate program is a particular type of software program where code is not
 directly written in source files, but rather in a text document as code
@@ -26,15 +35,6 @@ blocks into files.
 [^past]: This sentence was true when this article was published, but things
     have changed since then.
 
-    What you are reading is actually the rendered version of a Markdown
-    document that was manually “translated” from the Org original document,
-    named `Bootstrap.org`. Interested readers can [have a look at the original
-    version
-    here](https://src.soap.coffee/soap.coffee/lthms.git/tree/site/cleopatra?id=9329e9883a52eb95c0803a46560c396d149ef2c6).
-
-    Truth be told, said version is probably complete gibberish for anyone who
-    isn’t me. For this reason, this version was actually heavily reworked…
-    Because I have too much free time, probably.
 
 The page you are currently reading is **`cleopatra`** entry point. Its
 primary purpose is to define two Makefiles —`makefile` and `bootstrap.mk`—

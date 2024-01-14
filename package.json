@@ -9,6 +9,7 @@
       "markdown-it-meta": "^0.0.1",
       "markdown-it-custom-block": "^0.1.2",
       "markdown-it-mermaid": "^0.2.5",
+      "markdown-it-github-alerts": "^0.2.0",
       "@ryanxcharles/markdown-it-katex": "^4.0.1"
   }
 }
