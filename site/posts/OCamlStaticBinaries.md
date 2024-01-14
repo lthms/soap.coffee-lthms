@@ -1,6 +1,7 @@
 ---
 tags: ['ocaml']
 published: 2023-12-31
+modified: 2024-01-14
 abstract: |
     Building static binaries can come in handy. Most notably, when the time
     comes to distribute executables. Fortunately, building static binaries from
@@ -121,8 +122,9 @@ repository](https://github.com/lthms/spatial-shell/blob/cc026c67a4645a01bf6cc660
 if you are interested.
 
 If you have spotted an error in this article, or if you think the solution
-proposed here can be improved, do not hesitate to [reach out to
-me](mailto:~lthms/public-inbox@lists.sr.ht). Or, even better, open an issue on
-[Spatial Shell tracker](https://github.com/lthms/spatial-shell/issues)!
-Afterall, these are the very steps I’m relying on in order to provide static
-binaries, so I’d like to know if I am doing something wrong 😅.
+proposed here can be improved, do not hesitate to reach out to me (ideally
+though my [public inbox](mailto:~lthms/public-inbox@lists.sr.ht)). Or, even
+better, open an issue on [Spatial Shell
+tracker](https://github.com/lthms/spatial-shell/issues)! Afterall, these are
+the very steps I’m relying on in order to provide static binaries, so I’d like
+to know if I am doing something wrong 😅.
