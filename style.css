@@ -228,6 +228,18 @@ label.margin-toggle:not(.sidenote-number) {
     }
 }
 
+#whoami .name {
+  padding-top: .33em;
+  line-height: 1;
+  font-size: 200%;
+  font-weight: 600;
+}
+
+#whoami .legend {
+  font-size: 150%;
+  color: #555;
+}
+
 /*
 #whoami nav {
 }
