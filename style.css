@@ -226,6 +226,11 @@ label.margin-toggle:not(.sidenote-number) {
     #whoami img {
       max-width: 12em;
     }
+
+    #whoami {
+      width: 100%;
+      margin: auto;
+    }
 }
 
 #whoami .name {
