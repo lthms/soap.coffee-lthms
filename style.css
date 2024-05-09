@@ -42,7 +42,7 @@ html {
 
 body {
     font-family: Inter, Roboto, sans-serif;
-    line-height: 1.8;
+    line-height: 1.9;
     max-width: var(--body-width);
     text-align: justify;
     padding-top: 1em;
