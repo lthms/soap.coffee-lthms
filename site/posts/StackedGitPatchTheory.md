@@ -1,6 +1,6 @@
 ---
 published: 2023-01-26
-tags: ['stacked-git', 'ideas']
+tags: ['git', 'opinions']
 abstract: |
     Could patch dependencies could help reduce the friction my branchless
     workflow suffers from when it comes to stacked MRs?

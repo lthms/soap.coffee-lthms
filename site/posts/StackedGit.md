@@ -1,7 +1,7 @@
 ---
 published: 2022-01-16
 modified: 2022-08-07
-tags: ['stacked-git', 'workflow']
+tags: ['git', 'workflow']
 feature: true
 abstract: |
     I’ve been using Stacked Git at work since early 2021, and as of January

@@ -1,6 +1,6 @@
 ---
 published: 2023-01-16
-tags: ['stacked-git', 'workflow']
+tags: ['git', 'workflow']
 abstract: |
     One year has passed, and I keep using Stacked Git almost daily. How I am
     using it has slightly changed, though.
