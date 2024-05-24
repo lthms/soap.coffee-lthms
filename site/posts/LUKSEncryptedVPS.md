@@ -1,14 +1,15 @@
 ---
 published: 2024-02-25
-modified: 2024-04-26
+modified: 2024-05-23
 series:
-    parent: series/Jasmine.html
+    parent: series/SelfHosting.html
+    #next: posts/NspawnContainers.html
 tags:
     - self-hosting
     - sysadmin
 abstract: |
     I describe how I have set up the host (an Arch Linux system on a
-    LUKS-encrypted partition) of `jasmine`, my new VPS.
+    LUKS-encrypted partition) of `jasmine`.
 ---
 
 # Installing a LUKS-Encrypted Arch Linux on a Vultr VPS
@@ -28,8 +29,8 @@ how to make this work.
 Hopefully, most of what is in this write-up will stand the test of time and
 remain true three years from now, when I migrate again 😅.
 
-[^jasmine]: `jasmine` is the little name of the new server—I have taken the
-    habit to name my servers and personal computers after Disney princesses.
+[^jasmine]: `jasmine` being my shiny new server—I have taken the habit to name
+    my servers and personal computers after Disney princesses.
 
 [Vultr]: https://vultr.com
 

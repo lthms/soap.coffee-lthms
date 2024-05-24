@@ -376,6 +376,7 @@ img.avatar {
 
 main nav#series-nav {
   padding: 1em 2em;
+  margin-bottom: 1em;
   border: 1px solid #eee;
   background: #fafafa;
   border-radius: .2em;

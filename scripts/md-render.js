@@ -61,6 +61,7 @@ fs.readFile(path, 'utf8', (err, data) => {
 
   const document = md.render(data);
   const series = md.meta.series;
+  const draft = md.meta.draft;
   const published = md.meta.published;
   const modified = md.meta.modified;
   const tags = md.meta.tags;
@@ -113,5 +114,10 @@ fs.readFile(path, 'utf8', (err, data) => {
     process.stdout.write('</div>');
   }
 
-  process.stdout.write(`<article>${document}</article>`);
+  let warning = "";
+  if (draft) {
+    warning = renderer().render('> [!CAUTION]\n> You are about to read a draft, still to be completed and properly published. Please keep this in mind. Do not hesitate to reach out if you have any feedback, though!\n');
+  }
+
+  process.stdout.write(`<article>${warning} ${document}</article>`);
 })

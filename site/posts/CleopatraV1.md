@@ -299,7 +299,7 @@ Babel](https://orgmode.org/worg/org-tutorials/org-latex-export.html). We call
 
 We derive the rule to tangle `bootstrap.mk` using `extends`, using the following Org mode syntax.
 
-```org
+```
 #+BEGIN_SRC makefile :noweb yes
 # makefile:
 <<extends(IN="Bootstrap.org", PROC="bootstrap", AUX="scripts/update-gitignore.sh")>>
