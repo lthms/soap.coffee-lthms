@@ -1,0 +1,9 @@
+(library
+ (name website_content))
+
+(rule
+ (target website_content.ml)
+ (deps
+  (source_tree ~lthms))
+ (action
+  (run ocaml-crunch -m plain -o %{target} -s ~lthms)))

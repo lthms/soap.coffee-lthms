@@ -1,0 +1,5 @@
+(executable
+ (name main)
+ (public_name server)
+ (package server)
+ (libraries website_content dream sha camlzip))

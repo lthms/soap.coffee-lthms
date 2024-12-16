@@ -7,7 +7,19 @@
 
 (package
   (allow_empty)
-  (synopsis "OCaml dependencies for lthms’ website")
+  (synopsis "OCaml dependencies for lthms’ website generation")
   (name dependencies)
-  (depends soupault))
+  (depends soupault crunch dream sha camlzip))
+
+(package
+  (allow_empty)
+  (synopsis "OCaml dependencies for lthms’ website server")
+  (name server)
+  (depends crunch dream sha camlzip))
+
+(package
+  (allow_empty)
+  (synopsis "OCaml dependencies for hacking lthms’ website")
+  (name dev-dependencies)
+  (depends ocaml-lsp-server ocamlformat utop))
 

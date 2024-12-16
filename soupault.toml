@@ -9,7 +9,7 @@
   clean_urls = false
   keep_extensions = ["html"]
   default_extension = "html"
-  ignore_extensions = ["draft"]
+  ignore_extensions = ["draft", "gitkeep"]
 
   generator_mode = true
   complete_page_selector = "html"

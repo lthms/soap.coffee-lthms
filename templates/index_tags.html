@@ -4,7 +4,7 @@
     {% if article.feature %}
     ★
     {% endif %}
-    <a href="{{ tag.name }}.html"><span class="icon"><svg><use href="/img/icons.svg#tag"></use></svg></span> <code>{{ tag.name }}</code></a>
+    <a href="/tags/{{ tag.name }}.html"><span class="icon"><svg><use href="/img/icons.svg#tag"></use></svg></span> <code>{{ tag.name }}</code></a>
     ({{ tag.contents | length }})
   </li>
 {% endfor %}

@@ -1,4 +1,4 @@
-out/
+out/~lthms
 _build/
 _opam/
 node_modules/
@@ -7,3 +7,4 @@ package-lock.json
 style.min.css
 site/img/*.png
 site/styles/highlight.css
+soap.coffee
