@@ -32,8 +32,8 @@
 [widgets.page-title]
   widget = "title"
   selector = "h1"
-  default = "~lthms"
-  append = " · ~lthms"
+  default = "Thomas Letan’s website"
+  append = " · Thomas Letan’s website"
   force = false
 
 [widgets.generator-meta]
