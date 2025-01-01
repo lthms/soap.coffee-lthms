@@ -16,6 +16,15 @@ while index do
     if Regex.match(href, "^https?://github.com") then
       icon = HTML.parse(mark("github"))
       HTML.append_child(link, icon)
+    elseif Regex.match(href, "^https?://x.com") then
+      icon = HTML.parse(mark("twitter"))
+      HTML.append_child(link, icon)
+    elseif Regex.match(href, "^https?://www.youtube.com") then
+      icon = HTML.parse(mark("youtube"))
+      HTML.append_child(link, icon)
+    elseif Regex.match(href, "^https?://bsky.app") then
+      icon = HTML.parse(mark("bsky"))
+      HTML.append_child(link, icon)
     elseif Regex.match(href, "^https?://") then
       icon = HTML.parse(mark("external-link"))
       HTML.append_child(link, icon)
