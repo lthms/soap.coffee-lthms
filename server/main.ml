@@ -28,7 +28,9 @@ let content_types =
 
 let one_year = 3600 * 24 * 365
 let five_minutes = 60 * 5
-let cache_policy duration = Format.sprintf "public, max-age=%d" duration
+
+let cache_policy duration =
+  Format.sprintf "public, max-age=%d, must-revalidate" duration
 
 let cache_configuration =
   [ (".png", cache_policy one_year); (".svg", cache_policy one_year) ]
