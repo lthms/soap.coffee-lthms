@@ -11,7 +11,7 @@ abstract: |
     “Retrospective” series.
 ---
 
-# What Happened in 2024
+# What Happened in 2024?
 
 We are done with 2024, and now is a good time to reflect on what has happened
 over the past 12 months. I was not planning to, but [my feed convinced me to
@@ -121,7 +121,7 @@ That being said, I am quite happy with the content published in 2024.
 [vestigal]: VestigialStructures.html
 [dream]: DreamWebsite.html
 [nspawn]: https://github.com/lthms/nspawn
-[cft]: http://localhost:8000/~lthms/posts/SpatialShell6.html
+[cft]: SpatialShell6.html
 
 Overall, I still enjoy having my own little corner of the Internet, but if there is
 one thing I’d like to improve in 2025, it is its reach. I’d like you folks to
