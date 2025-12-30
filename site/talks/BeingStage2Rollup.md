@@ -8,6 +8,7 @@ abstract: |
 series:
     parent: series/Talks.html
     prev: talks/EVMCompatibleTezos.html
+    next: talks/ScalingWithoutCompromise.html
 ---
 
 # Being a Stage 2 Rollup from Day 1: Etherlink’s Journey
