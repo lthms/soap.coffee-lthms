@@ -468,3 +468,9 @@ th {
   text-align: justify;
   font-size: smaller;
 }
+
+.youtube {
+  width: 100%;
+  border: 0;
+  aspect-ratio: 16 / 9;
+}

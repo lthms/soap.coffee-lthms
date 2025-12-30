@@ -26,6 +26,9 @@ function renderer() {
                 },
                 video (url) {
                   return `<video controls><source src="${url}" /></video>`
+                },
+                youtube (url) {
+                  return `<iframe src="${url}" class="youtube" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`
                 }
               })
             .use(require('markdown-it-highlightjs'), { inline: true, auto: false });
