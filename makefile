@@ -67,7 +67,7 @@ clean:
 
 .PHONY: serve
 serve:
-	@cd out/; python -m http.server 2> /dev/null &
+	@cd out/; python -m http.server 2> /dev/null
 
 .PHONY: build-docker
 build-docker:
