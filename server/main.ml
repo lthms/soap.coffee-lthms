@@ -135,4 +135,6 @@ let website_handlers =
        Website_content.file_list
 
 let () =
-  Dream.run ~port:8901 @@ Dream.logger @@ Dream.router [ website_handlers ]
+  Dream.run ~interface:"0.0.0.0" ~port:8901
+  @@ Dream.logger
+  @@ Dream.router [ website_handlers ]
