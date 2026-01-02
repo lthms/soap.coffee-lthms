@@ -69,17 +69,4 @@ clean:
 serve:
 	@cd out/; python -m http.server 2> /dev/null
 
-.PHONY: build-docker
-build-docker:
-	docker build \
-		-f ./build.Dockerfile \
-		--target soap.coffee \
-		-t www/soap.coffee:latest \
-		.
-
-static: build-docker
-	docker create --name soap-coffee-build www/soap.coffee:latest
-	docker cp soap-coffee-build:/bin/soap.coffee .
-	docker rm -f soap-coffee-build
-
 .FORCE:
