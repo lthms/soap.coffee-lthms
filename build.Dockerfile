@@ -22,7 +22,7 @@ COPY out ./out
 COPY dune .
 RUN eval $(opam env) && dune build server/main.exe --profile=static
 
-FROM alpine:3.21 AS soap.coffee
+FROM scratch AS soap.coffee
 
 COPY --from=builder /root/_build/default/server/main.exe /bin/soap.coffee
 ENTRYPOINT ["/bin/soap.coffee"]
