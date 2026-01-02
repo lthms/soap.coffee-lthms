@@ -10,10 +10,15 @@ build-docker:
 		-t $(IMAGE):latest \
 		.
 
+.PHONY: push-staging
+push-staging:
+	docker tag $(IMAGE):latest $(REGISTRY)/$(IMAGE):staging
+	docker push $(REGISTRY)/$(IMAGE):staging
+
 .PHONY: push
 push:
-	docker tag $(IMAGE):latest $(REGISTRY)/$(IMAGE):latest
-	docker push $(REGISTRY)/$(IMAGE):latest
+	docker tag $(IMAGE):latest $(REGISTRY)/$(IMAGE):live
+	docker push $(REGISTRY)/$(IMAGE):live
 
 .PHONY: static
 static: build-docker
