@@ -1,3 +1,13 @@
+let interface =
+  match Sys.getenv_opt "SOAP_COFFEE_INTERFACE" with
+  | Some interface -> interface
+  | None -> "127.0.0.1"
+
+let port =
+  match Sys.getenv_opt "SOAP_COFFEE_PORT" with
+  | Some port_str -> int_of_string port_str
+  | None -> 8901
+
 let read_exn path = Option.get (Website_content.read path)
 let assert_f ~error_msg f v = if not (f v) then failwith error_msg else v
 let gzip_encoded = ("Content-Encoding", "gzip")
@@ -135,6 +145,5 @@ let website_handlers =
        Website_content.file_list
 
 let () =
-  Dream.run ~interface:"0.0.0.0" ~port:8901
-  @@ Dream.logger
+  Dream.run ~interface ~port @@ Dream.logger
   @@ Dream.router [ website_handlers ]
