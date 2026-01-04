@@ -1,7 +1,10 @@
 ---
 published: 2024-12-25
 modified: 2024-12-27
-tags: [ocaml, meta]
+tags: 
+    - docker
+    - meta
+    - ocaml
 abstract: |
     This article is a kind of experience report of writing an HTTP server
     serving my website directly from memory, no file system involved. Just keep
