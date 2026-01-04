@@ -121,9 +121,19 @@ let wrap_with_log before after k =
   Dream.log "%s" after;
   res
 
+let staging handler req =
+  let open Lwt.Syntax in
+  let+ res = handler req in
+  Dream.add_header res "X-Robots-Tag" "none";
+  res
+
+let middlewares =
+  if Option.is_some (Sys.getenv_opt "SOAP_COFFEE_STAGING") then [ staging ]
+  else []
+
 let website_handlers =
   wrap_with_log "Computing handlers..." "Handlers are ready" @@ fun () ->
-  Dream.scope "" []
+  Dream.scope "" middlewares
   @@ [
        Dream.scope "~lthms" []
        @@ List.concat_map
