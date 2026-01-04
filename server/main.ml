@@ -123,28 +123,34 @@ let wrap_with_log before after k =
 
 let website_handlers =
   wrap_with_log "Computing handlers..." "Handlers are ready" @@ fun () ->
-  Dream.scope "~lthms" []
-  @@ List.concat_map
-       (fun path ->
-         let content = read_exn path in
-         let gzip_content = gzip content in
-         let etag = Sha256.(string content |> to_hex) in
-         let headers = content_type_header path @ cache_header path in
-         if path = "index.html" then
-           (* Special case to deal with "index.html" which needs to be
-              recognized by the route "/" *)
-           [
-             make_handler ~headers ~etag ~content ~gzip_content "/";
-             make_handler ~headers ~etag ~content ~gzip_content "";
-             make_handler ~headers ~etag ~content ~gzip_content "index.html";
-           ]
-         else
-           make_handler_remove_suffix ~headers ~etag ~content ~gzip_content path
-             "/index.html"
-           @ make_handler_remove_suffix ~headers ~etag ~content ~gzip_content
-               path "index.html"
-           @ [ make_handler ~headers ~etag ~content ~gzip_content path ])
-       Website_content.file_list
+  Dream.scope "" []
+  @@ [
+       Dream.scope "~lthms" []
+       @@ List.concat_map
+            (fun path ->
+              let content = read_exn path in
+              let gzip_content = gzip content in
+              let etag = Sha256.(string content |> to_hex) in
+              let headers = content_type_header path @ cache_header path in
+              if path = "index.html" then
+                (* Special case to deal with "index.html" which needs to be
+                   recognized by the route "/" *)
+                [
+                  make_handler ~headers ~etag ~content ~gzip_content "/";
+                  make_handler ~headers ~etag ~content ~gzip_content "";
+                  make_handler ~headers ~etag ~content ~gzip_content
+                    "index.html";
+                ]
+              else
+                make_handler_remove_suffix ~headers ~etag ~content ~gzip_content
+                  path "/index.html"
+                @ make_handler_remove_suffix ~headers ~etag ~content
+                    ~gzip_content path "index.html"
+                @ [ make_handler ~headers ~etag ~content ~gzip_content path ])
+            Website_content.file_list;
+       Dream.get "" (fun req -> Dream.redirect ~code:301 req "/~lthms");
+       Dream.get "/" (fun req -> Dream.redirect ~code:301 req "/~lthms");
+     ]
 
 let () =
   Dream.run ~interface ~port @@ Dream.logger
