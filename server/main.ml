@@ -31,6 +31,8 @@ let content_types =
     (".css", "text/css");
     (".xml", "text/xml");
     (".png", "image/png");
+    (".jpg", "image/jpeg");
+    (".jpeg", "image/jpeg");
     (".svg", "image/svg+xml");
     (".gz", "application/gzip");
     (".pub", "text/plain");
