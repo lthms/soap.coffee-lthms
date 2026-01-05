@@ -5,7 +5,6 @@ tags:
     - docker
     - meta
     - self-hosting
-    - sysadmin
     - terraform
     - vultr
 series:

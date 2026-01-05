@@ -6,7 +6,6 @@ series:
     next: posts/i-cannot-ssh-into-my-server-anymore.html
 tags:
     - self-hosting
-    - sysadmin
     - vultr
 abstract: |
     I describe how I have set up the host (an Arch Linux system on a
