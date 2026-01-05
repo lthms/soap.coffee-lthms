@@ -71,8 +71,8 @@ to provision and manage a VM to host them. Ansible can provision VMs, but that
 road comes with its own set of struggles. Writing good playbooks has always
 felt surprisingly difficult to me. In particular, a good playbook is supposed
 to handle two very different scenarios—provisioning a brand new machine, and
-updating a pre-existing deployment—and I have found making sure they both
-produce the same result particularly challenging.
+updating a pre-existing deployment—and I have found it particularly challenging
+to ensure that both paths reliably produce the same result.
 
 [Kubernetes] was _very_ appealing on paper. I have seen engineers turn compose
 files into [Helm charts] and be done with it. If I could do the same thing,
@@ -137,8 +137,8 @@ The logical thing to do was to have `tinkerbell` run two containers:
 
 #[Nothing beats a straightforward architecture](https://mermaid.ink/img/pako:eNo9UMtOwzAQ_BVrTyCllZs4JPEBiYZjuQASEnUPTrxJLBK7ch1BafPvuC_2tDM7M7vaA9RWIXBoevtdd9J5snoVhoR6Wpe9RuM3ZDZ7PPKcEs5YciTLtYBSKrUnd--rt3sBm4t-N1atk9uOeG2-0FXY95fB8hZwJOX6A6ud9nj1oFEQQeu0Au7diBEM6AZ5gnA4SQT4DgcUwENrcPRO9gKEmYJtK82ntcPN6ezYdsAb2e8CGrdKenzWMtw0_LMuLERX2tF44AnLziHAD_ATIM3mMY3zlCZskRUPRQR74DGL58WCXrk8S6cIfs9b6TxlWZ4EcsFYkdOgR6W9dS-Xj9bWNLqF6Q97DWuS?type=png)
 
-Nothing fancy or unexpected here, which is why it felt like a good target for a
-first deployment. It was time to open Neovim to write some YAML.
+Nothing fancy or unexpected here, which made it a good target for a first
+deployment. It was time to open Neovim to write some YAML.
 
 ### Declarative, …
 
@@ -301,10 +301,9 @@ occasion as a container orchestrator—could take care of the rest.
 I excitedly turned `caddy.service` into `caddy.container`, redeployed
 `tinkerbell`, ran into the exact same issue I had encountered before and
 discovered the easiest way for two Quadlet-defined containers to talk to each
-other was to introduce a [*pod*][pod]. In a nutshell, containers attached to
-the same pod share the same localhost interface, which means they can
-effectively communicate together as long as they do not try to use the same
-ports.
+other was to introduce a [*pod*][pod]. Unlike Docker Compose which uses DNS
+over a bridge network, a pod shares the network namespace, allowing containers
+to communicate over *localhost*.
 
 To define a pod, one needs to create a `.pod` file, and to reference it in
 their `.container` files using the `PodName=` configuration option. A “few”
@@ -358,12 +357,15 @@ Podman auto-updates.
 To deploy a new version of a containerized application, you pull the new image
 and restart the container. When you commit to this pattern, why should you be
 the one performing this action? Instead, your VM can regularly check registries
-for new images, and *update the required containers when necessary*. In
-practice, Podman makes this approach trivial. I just needed to label my
-containers with `io.containers.autoupdate` set to `registry`, enable the
-`podman-auto-update` timer[^dropin], and that was it.
+for new images, and *update the required containers when necessary*.
 
-And that is when I realized something. At this point, publishing an image
+In practice, Podman made this approach trivial to put in place. I just needed
+to label my containers with `io.containers.autoupdate` set to `registry`,
+enable the `podman-auto-update` timer[^dropin], and that was it. Now, every
+time I update the tag `www/soap.coffee:live` to point to a newer version of my
+image, my website is updated within the hour.
+
+And that is when the final piece clicked. At this point, publishing an image
 becomes the only deployment step. I didn’t need SSH anymore.
 
 [^dropin]: By default, the timer is triggered once a day, which felt
@@ -376,7 +378,7 @@ the system I have put in place. In retrospect, none of this is particularly
 novel. It feels more like I am converging toward a set of practices the
 industry has been gravitating toward for years.
 
-#[A man looking at the “CoreOS & Quadlets” butterfly and wondering if he’s looking at Infrastructure as Code. I’m not entirely sure of the answer.](/img/iac-meme.jpg)
+#[A man looking at the “CoreOS & Quadlets” butterfly and wondering whether he’s looking at Infrastructure as Code. I’m not entirely sure of the answer.](/img/iac-meme.jpg)
 
 The journey is far from being over, though. `tinkerbell` is up and running, and
 it served you this HTML page just fine, but the moment I put SSH out of the
