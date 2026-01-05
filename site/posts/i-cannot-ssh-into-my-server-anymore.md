@@ -1,4 +1,5 @@
 ---
+published: 2026-01-05
 tags:
     - coreos
     - docker
@@ -19,10 +20,13 @@ abstract: |
 
 # I Cannot SSH Into My Server Anymore (And That’s Fine)
 
-This week, I had clear objectives in mind: decommissioning `moana`, my trusty
-$100+/month VPS, and setting up `tinkerbell`, its far less costly successor.
-Now that the latter is up and running, I cannot even SSH into it. In fact,
-*nothing* can.
+> *I would like to thank Yann Régis-Gianas, Sylvain Ribstein and Paul Laforgue
+> for their feedback and careful review.*
+
+To kick off 2026, I had clear objectives in mind: decommissioning `moana`, my
+trusty $100+/month VPS, and setting up `tinkerbell`, its far less costly
+successor. Now that the latter is up and running, I cannot even SSH into it. In
+fact, *nothing* can.
 
 There is no need. To publish a new article, I push a new Docker image to the
 appropriate registry with the correct tag. `tinkerbell` will fetch and deploy
@@ -39,7 +43,7 @@ character. This stack checks all the boxes I care about.
 [Terraform]: https://developer.hashicorp.com/terraform
 
 > [!NOTE]
-> For interested readers, I have published [`tinkerbell`’s full setup][repo] on
+> For interested readers, I have published `tinkerbell`’s [full setup][repo] on
 > GitHub. This article reads as an experiment log, and if you are only
 > interested in the final result, you should definitely have a look.
 
@@ -54,7 +58,7 @@ DevOps colleagues had taught me over the past two years.
 
 [^blog]: In the end, I never took the time to publish a write-up about it, so
     in a nutshell: everything relied on [a small script][nspawn] that enabled
-    me to seamlessly create interconnected [nspawn containers].
+    me to create interconnected [nspawn containers] on the spot.
 
 [nspawn]: https://github.com/lthms/nspawn
 [nspawn containers]: https://man7.org/linux/man-pages/man5/systemd.nspawn.5.html
@@ -66,8 +70,10 @@ future-proof way to deploy it in production™.
 [Docker Compose] alone wasn’t a good fit. I like compose files, but one needs
 to provision and manage a VM to host them. Ansible can provision VMs, but that
 road comes with its own set of struggles. Writing good playbooks has always
-felt surprisingly difficult to me, and I’ve never managed to keep a server tidy
-over time using that approach.
+felt surprisingly difficult to me. In particular, a good playbook is supposed
+to handle two very different scenarios—provisioning a brand new machine, and
+updating a pre-existing deployment—and I have found making sure they both
+produce the same result particularly challenging.
 
 [Kubernetes] was _very_ appealing on paper. I have seen engineers turn compose
 files into [Helm charts] and be done with it. If I could do the same thing,
@@ -80,8 +86,11 @@ would defeat the initial motivation behind retiring `moana`.
 obviously stood out. That said, I had very little intuition on how it could
 work in practice. So I started digging. I learned about Ignition first. Its
 purpose is to provision a VM exactly once, at first boot. If you need to change
-something afterwards, you throw away your VM and create a new one[^fp]. I found
-out how to use systemd unit files to start containers via `podman` CLI
+something afterwards, you throw away your VM and create a new one. This may
+seem counter-intuitive, but since it eliminates the main reason I was looking
+for an alternative to Ansible, I was hooked[^fp].
+
+I found out how to use systemd unit files to start containers via `podman` CLI
 commands. That was way too cumbersome, so I pushed on for a way to orchestrate
 containers *à la* Docker Compose. That’s when I discovered Podman Quadlets and
 [auto-updates].
@@ -89,8 +98,8 @@ containers *à la* Docker Compose. That’s when I discovered Podman Quadlets an
 With that, everything clicked. I knew what I wanted to do, and I was very
 excited about it.
 
-[^fp]: CoreOS and Ignition taught me to think about virtual machines the same
-    way OCaml or Haskell taught me to think about data: as immutable values.
+[^fp]: CoreOS and Ignition enable me to think about virtual machines the same
+    way OCaml or Haskell trained me to think about data: as immutable values.
 
 [Docker Compose]: https://docs.docker.com/compose/
 [Kubernetes]: https://kubernetes.io/
@@ -98,7 +107,7 @@ excited about it.
 [CoreOS]: https://fedoraproject.org/coreos/
 [auto-updates]: https://docs.podman.io/en/stable/markdown/podman-auto-update.1.html
 
-## Shaping The Immutable VM
+## Assembling `tinkerbell`
 
 For more than a year now, my website has been [served from RAM by a standalone,
 static binary built in OCaml][dream], with TLS termination handled by Nginx and
@@ -120,7 +129,7 @@ The logical thing to do was to have `tinkerbell` run two containers:
   did just that. I published it to a free-plan, public Docker registry hosted
   on Vultr that I created for the occasion[^offline].
 
-[^offline]: Which means getting an off-line copy of this website is now as
+[^offline]: Which means getting an offline copy of this website is now as
     simple as calling `docker pull ams.vultrcr.com/lthms/www/soap.coffee:live`.
 
 [dream]: ./DreamWebsite.html
@@ -173,11 +182,11 @@ going to work. I generated the Ignition configuration file.
 butane main.bu > main.ign
 ```
 
-Then, I decided to investigate how to write the Terraform module that would
-create a Vultr VM. The resulting file is twofold. First, we need to configure
-Terraform to be able to interact with the Vultr API, using the [Vultr
-provider]. Second, I needed to [create the VM][vultr_instance][^cli] and fed it
-the Ignition configuration.
+Then, I decided to investigate how to define the Vultr VM in Terraform. The
+resulting configuration is twofold. First, we need to configure Terraform to be
+able to interact with the Vultr API, using the [Vultr provider]. Second, I
+needed to [create the VM][vultr_instance][^cli] and feed it the Ignition
+configuration.
 
 [Vultr provider]: https://registry.terraform.io/providers/vultr/vultr/latest/docs
 [vultr_instance]: https://registry.terraform.io/providers/vultr/vultr/latest/docs/resources/instance 
@@ -246,10 +255,10 @@ everything working, but was left with a sour taste in my mouth.
 This would simply not do. I wasn’t defining anything, I was writing a shell
 script in the most cumbersome way possible.
 
-Then, I remembered my initial train of thoughts and started to search for a way
+Then, I remembered my initial train of thought and started to search for a way
 to have Docker Compose work on CoreOS[^podman]. That is when I discovered
-Quadlet, whose [initial repository does a good job
-justifying][why-quadlet][^archived]. In particular,
+Quadlet, whose [initial repository does a good job justifying its
+existence][why-quadlet][^archived]. In particular,
 
 > With quadlet, you describe how to run a container in a format that is very
 > similar to regular systemd config files. From these actual systemd
@@ -281,6 +290,15 @@ I wasn’t wasting my time teaching systemd how to start containers anymore. I
 was now declaring what should exist, so that systemd—repurposed for the
 occasion as a container orchestrator—could take care of the rest.
 
+> [!TIP]
+> If your containers are basically ignored by systemd, be smarter than me. Do
+> not try to blindly change your `.container` files and redeploy your VM in a
+> very painful and frustrating loop. Simply ask systemd for the generator logs.
+>
+> ```
+> sudo journalctl -b | grep -i quadlet 
+> ```
+
 I excitedly turned `caddy.service` into `caddy.container`, redeployed
 `tinkerbell`, ran into the exact same issue I had encountered before and
 discovered the easiest way for two Quadlet-defined containers to talk to each
@@ -294,16 +312,12 @@ their `.container` files using the `PodName=` configuration option. A “few”
 redeployments later, I got everything working again, and I was ready to call it
 a day.
 
-> [!TIP]
-> If your containers are basically ignored by systemd, be smarter than me. Do
-> not try to blindly change your `.container` files and redeploy your VM in a
-> very painful and frustrating loop. Simply ask systemd for the generator logs.
->
-> ```
-> sudo journalctl -b | grep -i quadlet 
-> ```
-
 And with that, `tinkerbell` was basically ready.
+
+> [!CAUTION]
+> I’ve later learned that restarting a container that is part of a pod will
+> have the (to me, unexpected) side-effect to restart all the other containers
+> of that pod.
 
 [pod]: https://docs.podman.io/en/latest/_static/api.html?version=latest#tag/pods
 
@@ -363,7 +377,7 @@ the system I have put in place. In retrospect, none of this is particularly
 novel. It feels more like I am converging toward a set of practices the
 industry has been gravitating toward for years.
 
-#[Always has been—ah, no, it’s not the correct meme.](/img/iac-meme.jpg)
+#[A man looking at the “CoreOS & Quadlets” butterfly and wondering if he’s looking at Infrastructure as Code. I’m not entirely sure of the answer.](/img/iac-meme.jpg)
 
 The journey is far from being over, though. `tinkerbell` is up and running, and
 it served you this HTML page just fine, but the moment I put SSH out of the
