@@ -124,7 +124,7 @@ let wrap_with_log before after k =
 let staging handler req =
   let open Lwt.Syntax in
   let+ res = handler req in
-  Dream.add_header res "X-Robots-Tag" "none";
+  Dream.add_header res "X-Robots-Tag" "noindex, nofollow, noarchive, nosnippet";
   res
 
 let middlewares =
