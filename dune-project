@@ -9,7 +9,7 @@
   (allow_empty)
   (synopsis "OCaml dependencies for lthms’ website generation")
   (name dependencies)
-  (depends soupault crunch dream sha camlzip))
+  (depends (soupault (= 4.11.0)) crunch dream sha camlzip))
 
 (package
   (allow_empty)

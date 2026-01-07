@@ -7,7 +7,7 @@ homepage: "https://soap.coffee/~lthms"
 bug-reports: "mailto:~lthms/public-inbox@lists.sr.ht"
 depends: [
   "dune" {>= "3.7"}
-  "soupault"
+  "soupault" {= "4.11.0"}
   "crunch"
   "dream"
   "sha"
