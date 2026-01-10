@@ -1,5 +1,6 @@
 ---
 published: 2026-01-05
+modified: 2026-01-10
 tags:
     - coreos
     - docker
@@ -24,12 +25,20 @@ abstract: |
 
 To kick off 2026, I had clear objectives in mind: decommissioning `moana`, my
 trusty $100+/month VPS, and setting up `tinkerbell`, its far less costly
-successor. Now that the latter is up and running, I cannot even SSH into it. In
-fact, *nothing* can.
+successor.
 
-There is no need. To publish a new article, I push a new Docker image to the
-appropriate registry with the correct tag. `tinkerbell` will fetch and deploy
-it. All on its own.
+On the one hand, I have been using `moana` to self-host a number of services,
+and it was very handy to know that I had always a go-to place to experiment
+with whatever caught my interest. On the other hand, $100/month is obviously a
+lot of money, and looking back at how I used it in 2025, it was not
+particularly well spent. It was time to downsize.
+
+Now that `tinkerbell` is up and running, I cannot even SSH into it. In fact,
+*nothing* can.
+
+There is no need. To update one of the services it hosts, I push a new container
+image to the appropriate registry with the correct tag. `tinkerbell` will fetch
+and deploy it. All on its own.
 
 In this article, I walk through the journey that led me to the smoke and
 mirrors behind this magic trick: [Fedora CoreOS], [Ignition] and [Podman
@@ -62,9 +71,17 @@ DevOps colleagues had taught me over the past two years.
 [nspawn]: https://github.com/lthms/nspawn
 [nspawn containers]: https://man7.org/linux/man-pages/man5/systemd.nspawn.5.html
 
-My initial idea was to start from [the image I had already written for this
-website](./DreamWebsite.html), and to look for the most straightforward and
-future-proof way to deploy it in production™.
+My initial idea was to start with this very website, since it was the only
+service deployed on `moana` that I really wanted to keep. Since [I had written
+a container image for this website](./DreamWebsite.html), I just had to look
+for the most straightforward and future-proof way to deploy it in production™—
+something I could later extend to deploy more cool projects, if I ever wanted
+to[^overkill].
+
+[^overkill]: If my goal was limited to host a static website, this whole setup
+    would arguably be both overengineered and counterproductive. `tinkerbell`
+    was to become my little foothold in the Internet, though. My “cloud
+    homelabs,” of sorts.
 
 [Docker Compose] alone wasn’t a good fit. I like compose files, but one needs
 to provision and manage a VM to host them. Ansible can provision VMs, but that
@@ -125,8 +142,8 @@ The logical thing to do was to have `tinkerbell` run two containers:
   certificates,” I was sold on giving it a try.
 - **The website itself:** Static binaries can be wrapped inside a container
   with close to zero overhead using the [`scratch`][scratch] base image, so I
-  did just that. I published it to a free-plan, public Docker registry hosted
-  on Vultr that I created for the occasion[^offline].
+  did just that. I published it to a free-plan, public registry hosted on Vultr
+  that I created for the occasion[^offline].
 
 [^offline]: Which means getting an offline copy of this website is now as
     simple as calling `docker pull ams.vultrcr.com/lthms/www/soap.coffee:live`.
